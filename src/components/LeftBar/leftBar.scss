@@ -1,0 +1,59 @@
+.leftBar {
+    flex: 1;
+    padding: 8px;
+
+    .top {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        padding: 4px;
+
+        h1 {
+            font-size: 2.4rem;
+            font-weight: 500;
+        }
+    }
+
+    .bottom {
+        display: flex;
+        flex-direction: column;
+        gap: 10px;
+
+        .menu {
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+
+            h3 {
+                font-size: 1.6rem;
+                font-weight: 200;
+                color: gray;
+            }
+
+            .items {
+                display: flex;
+                flex-direction: column;
+                gap: 8px;
+                
+                .item {
+                    display: flex;
+                    gap: 8px;
+                    align-items: center;
+                    cursor: pointer;
+                    padding: 4px;
+                    color: gray;
+                    font-weight: 400;
+
+
+                    .icon {
+                        font-size: 2rem;
+                    }
+
+                    span {
+                        font-size: 1.2rem;
+                    }
+                }
+            }
+        }   
+    }
+}

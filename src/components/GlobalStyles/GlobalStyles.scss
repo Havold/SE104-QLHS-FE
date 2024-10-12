@@ -1,0 +1,40 @@
+// @import url('https://fonts.googleapis.com/css2?family=Roboto:ital,wght@0,100;0,300;0,400;0,500;0,700;0,900;1,100;1,300;1,400;1,500;1,700;1,900&display=swap');
+
+:root {
+    --primary: #7d38f3;
+    --primary-hover: #7d38f347;
+    --primary-text: #5f27bf;
+    --primary-hover-dark: #52289b;
+    --background-color-dark: #150933; // #111
+    --font-color-dark: rgb(220, 220, 220);
+    --border-color-dark: #333;
+    --default-layout-background-dark: #c2beff;
+}
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+html {
+    font-size: 62.5%;
+}
+
+body {
+    font-family: "Poppins", sans-serif;
+    font-size: 1.6rem;
+    text-rendering: optimizeSpeed;
+    color: black;
+}
+
+a[href] {
+    text-decoration: none;
+    display: inline-block;
+    width: fit-content;
+    outline: none;
+}
+
+button {
+    border: none;
+}
