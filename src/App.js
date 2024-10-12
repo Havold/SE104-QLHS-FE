@@ -14,9 +14,9 @@ function App() {
   };
   const Layout = () => {
     return (
-      <div style={{display: 'flex'}}>
-        <LeftBar/>
-        <div style={{flex: 5}}>
+      <div className="h-screen flex">
+        <LeftBar className='w-[14%] md:w-[15%] lg:w-[16%] xl:w-[14%] p-2'/>
+        <div className='w-[86%] md:w-[85%] lg:w-[84%] xl:w-[86%]'>
           <NavBar/>
           <Outlet />
         </div>

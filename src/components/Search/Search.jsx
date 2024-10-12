@@ -1,11 +1,10 @@
 import { SearchRounded } from '@mui/icons-material'
-import './search.scss'
 
 const Search = () => {
   return (
-    <div className='search'>
-        <SearchRounded className='icon'/>
-        <input type="text" placeholder='Search...'/>
+    <div className='hidden md:flex items-center p-[6px] gap-2 rounded-[999px] border border-gray-300'>
+        <SearchRounded className='text-base text-[gray]'/>
+        <input className='border-none w-[200px] text-[12px] bg-transparent focus:outline-none placeholder:text-[gray]' type="text" placeholder='Search...'/>
     </div>
   )
 }

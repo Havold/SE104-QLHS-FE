@@ -15,82 +15,81 @@ import {
   SchoolOutlined,
   SettingsSuggestOutlined,
 } from "@mui/icons-material";
-import "./leftBar.scss";
 
-const LeftBar = () => {
+const LeftBar = ({className}) => {
   const menus = [
     {
       title: "MENU",
       items: [
         {
           id: 1,
-          icon: <HomeOutlined className="icon"/>,
+          icon: <HomeOutlined fontSize="small"/>,
           title: "Home",
           href: "/",
         },
         {
           id: 2,
-          icon: <SchoolOutlined className="icon"/>,
+          icon: <SchoolOutlined fontSize="small"/>,
           title: "Teachers",
           href: "/teachers",
         },
         {
           id: 3,
-          icon: <PeopleAltOutlined className="icon"/>,
+          icon: <PeopleAltOutlined fontSize="small"/>,
           title: "Students",
           href: "/students",
         },
         {
           id: 4,
-          icon: <EscalatorWarningOutlined className="icon"/>,
+          icon: <EscalatorWarningOutlined fontSize="small"/>,
           title: "Parents",
           href: "/parents",
         },
         {
           id: 5,
-          icon: <HouseOutlined className="icon"/>,
+          icon: <HouseOutlined fontSize="small"/>,
           title: "Classes",
           href: "/classes",
         },
         {
           id: 6,
-          icon: <LocalLibraryOutlined className="icon"/>,
+          icon: <LocalLibraryOutlined fontSize="small"/>,
           title: "Lessons",
           href: "/lessons",
         },
         {
           id: 7,
-          icon: <HomeWorkOutlined className="icon"/>,
+          icon: <HomeWorkOutlined fontSize="small"/>,
           title: "Exams",
           href: "/exams",
         },
         {
           id: 8,
-          icon: <AssignmentOutlined className="icon"/>,
+          icon: <AssignmentOutlined fontSize="small"/>,
           title: "Assignments",
           href: "/assignments",
         },
         {
           id: 9,
-          icon: <Diversity3Outlined className="icon"/>,
+          icon: <Diversity3Outlined fontSize="small"/>,
           title: "Attendance",
           href: "/attendance",
         },
         {
           id: 10,
-          icon: <CalendarMonthOutlined className="icon"/>,
+          icon: <CalendarMonthOutlined fontSize="small"/>,
           title: "Events",
           href: "/events",
         },
         {
           id: 11,
-          icon: <ReviewsOutlined className="icon"/>,
+          icon: <ReviewsOutlined fontSize="small"/>,
           title: "Messages",
           href: "/messages",
         },
         {
           id: 12,
-          icon: <CampaignOutlined className="icon"/>,
+          icon: <CampaignOutlined fontSize="small"/>,
           title: "Announcement",
           href: "/announcement",
         },
@@ -101,19 +100,19 @@ const LeftBar = () => {
       items: [
         {
           id: 1,
-          icon: <AccountCircleOutlined className="icon"/>,
+          icon: <AccountCircleOutlined fontSize="small"/>,
           title: "Profile",
           href: "/profile",
         },
         {
           id: 2,
-          icon: <SettingsSuggestOutlined className="icon"/>,
+          icon: <SettingsSuggestOutlined fontSize="small"/>,
           title: "Settings",
           href: "/settings",
         },
         {
           id: 3,
-          icon: <LogoutRounded className="icon"/>,
+          icon: <LogoutRounded className="text-xl"/>,
           title: "Logout",
           href: "/logout",
         },
@@ -121,18 +120,18 @@ const LeftBar = () => {
     },
   ];
   return (
-    <div className="leftBar">
-      <div className="top">
-        <h1>METAN</h1>
+    <div className={className}>
+      <div className="flex items-center justify-center p-1">
+        <h1 className="text-2xl font-medium ">METAN</h1>
       </div>
-      <div className="bottom">
+      <div className="flex flex-col gap-[10px]">
         {menus.map((menu, index) => {
-          return (<div className="menu">
-            <h3>{menu.title}</h3>
-            <div className="items">
-              {menu.items.map(item => <div className="item">
+          return (<div key={index} className="flex flex-col gap-[10px]">
+            <h3 className="font-extralight text-[gray] text-base">{menu.title}</h3>
+            <div className="flex flex-col gap-2">
+              {menu.items.map(item => <div className="flex gap-2 items-center p-1 text-[gray] font-normal cursor-pointer">
                 {item.icon}
-                <span>{item.title}</span>
+                <span className="hidden lg:block text-[12px]">{item.title}</span>
               </div>)}
             </div>
           </div>)
