@@ -1,3 +1,4 @@
+import CountChart from '../../components/CountChart/CountChart'
 import UserCard from '../../components/UserCard/UserCard'
 import './admin.scss'
 
@@ -28,11 +29,22 @@ const Admin = () => {
     <div className='flex p-2'>
       {/* LEFT */}
       <div className='w-full lg:w-2/3'>
+        {/* TOP */}
         <div className='flex justify-between flex-wrap gap-4'>
           {data.map((item, index) => {
             return (<UserCard key={index} type={item.type} date={item.date} total={item.total} />)
           })}
         </div>
+        {/* CENTER */}
+        <div className='flex flex-col lg:flex-row'>
+          {/* COUNT CHART */}
+          <div className="w-full lg:w-1/3 h-[450px]">
+            <CountChart/>
+          </div>
+          {/* ATTENDANCE CHART */}
+          <div className="w-full lg:w-2/3 h-[450px]"></div>
+        </div>
+        {/* BOTTOM */}
       </div>
       {/* RIGHT */}
       <div className='w-full lg:w-1/3 '></div>
