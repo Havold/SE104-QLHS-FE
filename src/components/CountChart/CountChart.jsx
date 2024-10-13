@@ -1,9 +1,8 @@
 import { MoreHorizRounded } from "@mui/icons-material";
-import React, { PureComponent } from "react";
+import React from "react";
 import {
   RadialBarChart,
   RadialBar,
-  Legend,
   ResponsiveContainer,
 } from "recharts";
 
@@ -27,10 +26,10 @@ const CountChart = () => {
   ];
 
   return (
-    <div className="flex flex-col w-full h-full bg-white p-4">
+    <div className="flex flex-col w-full h-full rounded-2xl bg-white p-4">
       {/* TITLE */}
       <div className="flex justify-between items-center">
-        <h2 className="text-[24px] font-bold">Students</h2>
+        <h2 className="text-[18px] font-bold">Students</h2>
         <MoreHorizRounded className="cursor-pointer" />
       </div>
       {/* CHARTS */}
@@ -58,12 +57,12 @@ const CountChart = () => {
         <div className="flex flex-col items-center gap-1">
           <div className="w-4 h-4 rounded-full bg-webSky"></div>
           <h1 className="text-xl font-bold">1,234</h1>
-          <h2 className="text-sm text-gray-300 font-extralight">Boys (65%)</h2>
+          <h2 className="text-sm text-gray-300 font-light">Boys (65%)</h2>
         </div>
         <div className="flex flex-col items-center gap-1">
           <div className="w-4 h-4 rounded-full bg-webYellow"></div>
           <h1 className="text-xl font-bold">1,234</h1>
-          <h2 className="text-sm text-gray-300 font-extralight">Girls (35%)</h2>
+          <h2 className="text-sm text-gray-300 font-light">Girls (35%)</h2>
         </div>
       </div>
     </div>

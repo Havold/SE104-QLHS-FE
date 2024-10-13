@@ -1,3 +1,4 @@
+import AttendanceChart from '../../components/AttendanceChart/AttendanceChart'
 import CountChart from '../../components/CountChart/CountChart'
 import UserCard from '../../components/UserCard/UserCard'
 import './admin.scss'
@@ -28,7 +29,7 @@ const Admin = () => {
   return (
     <div className='flex p-2'>
       {/* LEFT */}
-      <div className='w-full lg:w-2/3'>
+      <div className='flex flex-col gap-2 w-full lg:w-2/3'>
         {/* TOP */}
         <div className='flex justify-between flex-wrap gap-4'>
           {data.map((item, index) => {
@@ -36,13 +37,15 @@ const Admin = () => {
           })}
         </div>
         {/* CENTER */}
-        <div className='flex flex-col lg:flex-row'>
+        <div className='flex gap-2 flex-col lg:flex-row'>
           {/* COUNT CHART */}
           <div className="w-full lg:w-1/3 h-[450px]">
             <CountChart/>
           </div>
           {/* ATTENDANCE CHART */}
-          <div className="w-full lg:w-2/3 h-[450px]"></div>
+          <div className="w-full lg:w-2/3 h-[450px]">
+            <AttendanceChart/>
+          </div>
         </div>
         {/* BOTTOM */}
       </div>
