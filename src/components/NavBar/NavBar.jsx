@@ -11,7 +11,7 @@ const NavBar = () => {
           <ReviewsOutlined fontSize="small" className="cursor-pointer text-[gray]" />
           <div className="relative cursor-pointer">
             <CampaignOutlined fontSize="small" className="text-[gray] " />
-            <div className=" w-4 h-4 flex items-center justify-center absolute top-0 -right-2 bg-[#7d38f3] text-white rounded-full text-[10px]"><span>1</span></div>
+            <div className="w-4 h-4 flex items-center justify-center absolute top-0 -right-2 bg-[#7d38f3] text-[white] rounded-full text-[10px]"><span>1</span></div>
           </div>
         <div className="flex items-center gap-2 cursor-pointer">
           <div className="flex flex-col items-end">

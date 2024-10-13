@@ -120,16 +120,16 @@ const LeftBar = ({className}) => {
     },
   ];
   return (
-    <div className={className}>
+    <div className={className +' overflow-auto hover:custom-scrollbar-hover '}>
       <div className="flex items-center justify-center p-1">
-        <h1 className="text-2xl font-medium ">METAN</h1>
+        <h1 className="text-2xl font-medium cursor-pointer text-center ">METAN</h1>
       </div>
       <div className="flex flex-col gap-[10px]">
         {menus.map((menu, index) => {
           return (<div key={index} className="flex flex-col gap-[10px]">
             <h3 className="font-extralight text-[gray] text-base">{menu.title}</h3>
             <div className="flex flex-col gap-2">
-              {menu.items.map(item => <div className="flex gap-2 items-center p-1 text-[gray] font-normal cursor-pointer">
+              {menu.items.map(item => <div className="flex gap-2 items-center p-2 text-[gray] font-normal cursor-pointer hover:bg-webSkyLight">
                 {item.icon}
                 <span className="hidden lg:block text-[12px]">{item.title}</span>
               </div>)}

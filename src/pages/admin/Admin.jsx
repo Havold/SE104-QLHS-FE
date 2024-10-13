@@ -1,8 +1,42 @@
+import UserCard from '../../components/UserCard/UserCard'
 import './admin.scss'
 
 const Admin = () => {
+  const data = [
+    {
+    type: 'students',
+    date: '2024/25',
+    total: '6,123',
+  },
+  {
+    type: 'teachers',
+    date: '2024/25',
+    total: '1,123',
+  },
+  {
+    type: 'parents',
+    date: '2024/25',
+    total: '1,123',
+  },
+  {
+    type: 'staffs',
+    date: '2024/25',
+    total: '1,123',
+  },
+]
   return (
-    <div className='admin'>Admin</div>
+    <div className='flex p-2'>
+      {/* LEFT */}
+      <div className='w-full lg:w-2/3'>
+        <div className='flex justify-between flex-wrap gap-4'>
+          {data.map((item, index) => {
+            return (<UserCard key={index} type={item.type} date={item.date} total={item.total} />)
+          })}
+        </div>
+      </div>
+      {/* RIGHT */}
+      <div className='w-full lg:w-1/3 '></div>
+    </div>
   )
 }
 
