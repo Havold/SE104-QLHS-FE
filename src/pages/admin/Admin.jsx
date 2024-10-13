@@ -1,5 +1,6 @@
 import AttendanceChart from '../../components/AttendanceChart/AttendanceChart'
 import CountChart from '../../components/CountChart/CountChart'
+import FinanceChart from '../../components/FinanceChart/FinanceChart'
 import UserCard from '../../components/UserCard/UserCard'
 import './admin.scss'
 
@@ -48,6 +49,9 @@ const Admin = () => {
           </div>
         </div>
         {/* BOTTOM */}
+        <div className="w-full h-[450px]">
+          <FinanceChart/>
+        </div>
       </div>
       {/* RIGHT */}
       <div className='w-full lg:w-1/3 '></div>
