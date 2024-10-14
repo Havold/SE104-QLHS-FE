@@ -5,7 +5,7 @@ import { ReviewsOutlined, CampaignOutlined } from "@mui/icons-material";
 const NavBar = () => {
   const avatar ='https://i.pinimg.com/564x/97/bb/06/97bb067e30ff6b89f4fbb7b9141025ca.jpg'
   return (
-    <div className="flex items-center justify-between p-2">
+    <div className="flex items-center justify-between p-2 sticky top-0 bg-white z-50">
         <Search />
       <div className="flex items-center gap-12 w-full justify-end ">
           <ReviewsOutlined fontSize="small" className="cursor-pointer text-[gray]" />
