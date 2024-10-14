@@ -79,7 +79,7 @@ const FinanceChart = () => {
     <div className="w-full h-full bg-white rounded-2xl p-4">
         {/* TITLE */}
         <div className="flex justify-between items-center">
-            <h2 className="text-[18px] font-bold" >Finance</h2>
+            <h2 className="text-[18px] font-semibold" >Finance</h2>
             <MoreHorizRounded className="cursor-pointer" />
         </div>
         <div className="w-full h-[90%]">
