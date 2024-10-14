@@ -27,7 +27,7 @@ const events = [
 function EventCalendar() {
   const [value, setValue] = useState(new Date());
   return (
-    <div className="bg-white p-4 rounded-md">
+    <div className="bg-white p-4 rounded-2xl">
       <Calendar onChange={setValue} value={value} />
       <div className="flex items-center justify-between">
         <h3 className="text-[18px] font-semibold my-2">Events</h3>

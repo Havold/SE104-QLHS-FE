@@ -1,5 +1,5 @@
-import { FastRewind, MoreHorizRounded } from "@mui/icons-material";
-import React, { PureComponent } from "react";
+import {MoreHorizRounded } from "@mui/icons-material";
+import React from "react";
 import {
   LineChart,
   Line,

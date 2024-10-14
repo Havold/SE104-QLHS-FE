@@ -11,7 +11,7 @@ module.exports = {
     extend: {
       colors: {
         webSky: '#C3EBFA',
-        webSkyLight: '#EDF9FD',
+        webSkyLight: '#edf9fd',
         webPurple: '#CFCEFF',
         webPurpleLight: '#F1F0FF',
         webYellow: '#FAE27C',
