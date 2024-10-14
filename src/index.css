@@ -31,16 +31,16 @@
         box-sizing: border-box;
     
         &::-webkit-scrollbar {
-            width: 4px;
+            width: 6px;
         }
     
         &::-webkit-scrollbar-thumb {
-            background-color: transparent;
+            background-color: #C3EBFA;
             border-radius: 4px;
         }
     
         &::-webkit-scrollbar-track {
-            background-color: transparent;
+            background-color: #EDF9FD;
         }
     }
     
@@ -68,6 +68,18 @@
 }
 
 @layer utilities {
+
+    .custom-scrollbar-transparent::-webkit-scrollbar {
+        width: 4px;
+    }
+    .custom-scrollbar-transparent::-webkit-scrollbar-thumb {
+        background-color: transparent;
+    }
+
+    .custom-scrollbar-transparent::-webkit-scrollbar-track {
+        background-color: transparent;
+    }
+
     .custom-scrollbar-hover::-webkit-scrollbar-thumb {
         background-color: #C3EBFA;
         transition: background-color 0.3s ease;
