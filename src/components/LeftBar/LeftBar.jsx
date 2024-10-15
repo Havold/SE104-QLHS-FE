@@ -166,7 +166,7 @@ const LeftBar = ({ className }) => {
                 {menu.items.map((item) => {
                   if (item.visible.includes(role))
                     return (
-                      <div className="flex gap-2 items-center p-2 text-[gray] font-normal cursor-pointer hover:bg-webSkyLight">
+                      <div key={item.id} className="flex gap-2 items-center p-2 text-[gray] font-normal cursor-pointer hover:bg-webSkyLight">
                         {item.icon}
                         <span className="hidden lg:block text-[12px]">
                           {item.title}
