@@ -10,6 +10,7 @@ import Login from "./pages/login/Login";
 import ListTeachers from "./pages/ListTeachers/ListTeachers";
 import ListStudents from "./pages/ListStudents/ListStudents";
 import ListParents from "./pages/ListParents/ListParents";
+import ListSubjects from "./pages/ListSubjects/ListSubjects";
 
 function App() {
   const ProtectedRoute = ({ children }) => {
@@ -70,7 +71,11 @@ function App() {
         {
           path: '/list/parents',
           element: <ListParents/>
-        }
+        },
+        {
+          path: '/list/subjects',
+          element: <ListSubjects/>
+        },
       ],
     },
   ]);
