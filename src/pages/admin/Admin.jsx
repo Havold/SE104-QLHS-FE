@@ -4,7 +4,6 @@ import CountChart from "../../components/CountChart/CountChart";
 import EventCalendar from "../../components/EventCalendar/EventCalendar";
 import FinanceChart from "../../components/FinanceChart/FinanceChart";
 import UserCard from "../../components/UserCard/UserCard";
-import "./admin.scss";
 
 const Admin = () => {
   const data = [

@@ -7,6 +7,7 @@ import Student from "./pages/student/Student";
 import NavBar from "./components/NavBar/NavBar";
 import LeftBar from "./components/LeftBar/LeftBar";
 import Login from "./pages/login/Login";
+import ListTeachers from "./pages/ListTeachers/ListTeachers";
 
 function App() {
   const ProtectedRoute = ({ children }) => {
@@ -16,7 +17,7 @@ function App() {
     return (
       <div className="h-screen flex">
         <LeftBar className='w-[14%] md:w-[15%] lg:w-[16%] xl:w-[14%] p-2'/>
-        <div className='w-[86%] md:w-[85%] lg:w-[84%] xl:w-[86%]'>
+        <div className='flex flex-col w-[86%] md:w-[85%] lg:w-[84%] xl:w-[86%]'>
           <NavBar/>
           <Outlet />
         </div>
@@ -56,6 +57,10 @@ function App() {
           path: "/student",
           element: <Student />,
         },
+        {
+          path: '/list/teachers',
+          element: <ListTeachers/>
+        }
       ],
     },
   ]);
