@@ -9,6 +9,7 @@ import LeftBar from "./components/LeftBar/LeftBar";
 import Login from "./pages/login/Login";
 import ListTeachers from "./pages/ListTeachers/ListTeachers";
 import ListStudents from "./pages/ListStudents/ListStudents";
+import ListParents from "./pages/ListParents/ListParents";
 
 function App() {
   const ProtectedRoute = ({ children }) => {
@@ -65,6 +66,10 @@ function App() {
         {
           path: '/list/students',
           element: <ListStudents/>
+        },
+        {
+          path: '/list/parents',
+          element: <ListParents/>
         }
       ],
     },

@@ -49,7 +49,7 @@ const LeftBar = ({ className }) => {
           id: 4,
           icon: <EscalatorWarningOutlined fontSize="small" />,
           title: "Parents",
-          href: "/parents",
+          href: "/list/parents",
           visible: ["admin", "teacher"],
         },
         {
