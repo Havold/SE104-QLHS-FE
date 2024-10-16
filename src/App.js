@@ -8,6 +8,7 @@ import NavBar from "./components/NavBar/NavBar";
 import LeftBar from "./components/LeftBar/LeftBar";
 import Login from "./pages/login/Login";
 import ListTeachers from "./pages/ListTeachers/ListTeachers";
+import ListStudents from "./pages/ListStudents/ListStudents";
 
 function App() {
   const ProtectedRoute = ({ children }) => {
@@ -60,6 +61,10 @@ function App() {
         {
           path: '/list/teachers',
           element: <ListTeachers/>
+        },
+        {
+          path: '/list/students',
+          element: <ListStudents/>
         }
       ],
     },

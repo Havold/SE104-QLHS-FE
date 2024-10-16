@@ -17,6 +17,7 @@ import {
   SettingsSuggestOutlined,
 } from "@mui/icons-material";
 import { role } from "../../lib/data";
+import { Link } from "react-router-dom";
 
 const LeftBar = ({ className }) => {
   const menus = [
@@ -34,14 +35,14 @@ const LeftBar = ({ className }) => {
           id: 2,
           icon: <SchoolOutlined fontSize="small" />,
           title: "Teachers",
-          href: "/teachers",
+          href: "/list/teachers",
           visible: ["admin", "teacher"],
         },
         {
           id: 3,
           icon: <PeopleAltOutlined fontSize="small" />,
           title: "Students",
-          href: "/students",
+          href: "/list/students",
           visible: ["admin", "teacher"],
         },
         {
@@ -166,17 +167,20 @@ const LeftBar = ({ className }) => {
                 {menu.items.map((item) => {
                   if (item.visible.includes(role))
                     return (
-                      <div key={item.id} className="flex gap-2 items-center p-2 text-[gray] font-normal cursor-pointer hover:bg-webSkyLight">
-                        {item.icon}
-                        <span className="hidden lg:block text-[12px]">
-                          {item.title}
-                        </span>
-                      </div>
+                      <Link to={item.href}>
+                        <div
+                          key={item.id}
+                          className="flex gap-2 items-center p-2 text-[gray] font-normal cursor-pointer hover:bg-webSkyLight"
+                        >
+                          {item.icon}
+                          <span className="hidden lg:block text-[12px]">
+                            {item.title}
+                          </span>
+                        </div>
+                      </Link>
                     );
                   return null;
-                }
-                
-                )}
+                })}
               </div>
             </div>
           );

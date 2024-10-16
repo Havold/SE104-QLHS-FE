@@ -157,7 +157,6 @@
     a[href] {
         text-decoration: none;
         display: inline-block;
-        width: fit-content;
         outline: none;
     }
     
