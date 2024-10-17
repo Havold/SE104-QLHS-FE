@@ -11,6 +11,7 @@ import ListTeachers from "./pages/ListTeachers/ListTeachers";
 import ListStudents from "./pages/ListStudents/ListStudents";
 import ListParents from "./pages/ListParents/ListParents";
 import ListSubjects from "./pages/ListSubjects/ListSubjects";
+import ListClasses from "./pages/ListClasses/ListClasses";
 
 function App() {
   const ProtectedRoute = ({ children }) => {
@@ -75,6 +76,10 @@ function App() {
         {
           path: '/list/subjects',
           element: <ListSubjects/>
+        },
+        {
+          path: '/list/classes',
+          element: <ListClasses/>
         },
       ],
     },

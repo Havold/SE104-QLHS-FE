@@ -64,7 +64,7 @@ const LeftBar = ({ className }) => {
           id: 6,
           icon: <HouseOutlined fontSize="small" />,
           title: "Classes",
-          href: "/classes",
+          href: "/list/classes",
           visible: ["admin", "teacher"],
         },
         {
