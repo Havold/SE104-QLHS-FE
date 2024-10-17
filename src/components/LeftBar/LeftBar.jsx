@@ -71,7 +71,7 @@ const LeftBar = ({ className }) => {
           id: 7,
           icon: <LocalLibraryOutlined fontSize="small" />,
           title: "Lessons",
-          href: "/lessons",
+          href: "/list/lessons",
           visible: ["admin", "teacher"],
         },
         {

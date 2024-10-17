@@ -7,11 +7,12 @@ import Student from "./pages/student/Student";
 import NavBar from "./components/NavBar/NavBar";
 import LeftBar from "./components/LeftBar/LeftBar";
 import Login from "./pages/login/Login";
-import ListTeachers from "./pages/ListTeachers/ListTeachers";
-import ListStudents from "./pages/ListStudents/ListStudents";
-import ListParents from "./pages/ListParents/ListParents";
-import ListSubjects from "./pages/ListSubjects/ListSubjects";
-import ListClasses from "./pages/ListClasses/ListClasses";
+import ListTeachers from "./pages/listTeachers/ListTeachers";
+import ListStudents from "./pages/listStudents/ListStudents";
+import ListParents from "./pages/listParents/ListParents";
+import ListSubjects from "./pages/listSubjects/ListSubjects";
+import ListClasses from "./pages/listClasses/ListClasses";
+import ListLessons from "./pages/listLessons/ListLessons";
 
 function App() {
   const ProtectedRoute = ({ children }) => {
@@ -80,6 +81,10 @@ function App() {
         {
           path: '/list/classes',
           element: <ListClasses/>
+        },
+        {
+          path: '/list/lessons',
+          element: <ListLessons/>
         },
       ],
     },
