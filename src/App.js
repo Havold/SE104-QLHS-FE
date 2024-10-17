@@ -13,6 +13,8 @@ import ListParents from "./pages/listParents/ListParents";
 import ListSubjects from "./pages/listSubjects/ListSubjects";
 import ListClasses from "./pages/listClasses/ListClasses";
 import ListLessons from "./pages/listLessons/ListLessons";
+import ListExams from "./pages/listExams/ListExams";
+import ListAssignments from "./pages/listAssignments/ListAssignments";
 
 function App() {
   const ProtectedRoute = ({ children }) => {
@@ -85,6 +87,14 @@ function App() {
         {
           path: '/list/lessons',
           element: <ListLessons/>
+        },
+        {
+          path: '/list/exams',
+          element: <ListExams/>
+        },
+        {
+          path: '/list/assignments',
+          element: <ListAssignments/>
         },
       ],
     },

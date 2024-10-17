@@ -10,7 +10,7 @@ import {
 import Pagination from "../../components/Pagination/Pagination";
 import Table from "../../components/Table/Table";
 import { Link } from "react-router-dom";
-import { role, lessonsData } from "../../lib/data";
+import { role, assignmentsData } from "../../lib/data";
 
 const columns = [
   {
@@ -28,12 +28,17 @@ const columns = [
     className: 'hidden lg:table-cell',
   },
   {
+    header: 'Due Date',
+    accessor: 'dueDate',
+    className: 'hidden md:table-cell',
+  },
+  {
     header: "Actions",
     accessor: "actions",
   },
 ];
 
-const ListLessons = () => {
+const ListAssignments = () => {
   const renderRows = (data) => {
     return data.map((item) => (
       <tr
@@ -45,6 +50,7 @@ const ListLessons = () => {
         </td>
         <td className="hidden md:table-cell">{item.class}</td>
         <td className="hidden lg:table-cell">{item.teacher}</td>
+        <td className="hidden md:table-cell">{item.dueDate}</td>
         <td>
           <div className="flex gap-4">
             <Link to={`/list/teachers/${item.teacherId}`}>
@@ -72,7 +78,7 @@ const ListLessons = () => {
       {/* TOP */}
       <div className="flex flex-col lg:flex-row justify-between">
         <h1 className="hidden lg:block text-[18px] font-semibold">
-          All Lessons
+          All Assignments
         </h1>
         <div className="flex flex-col lg:flex-row gap-4">
           <SearchList />
@@ -90,11 +96,11 @@ const ListLessons = () => {
         </div>
       </div>
       {/* LIST */}
-      <Table columns={columns} renderRows={renderRows} data={lessonsData} />
+      <Table columns={columns} renderRows={renderRows} data={assignmentsData} />
       {/* PAGINATION */}
       <Pagination />
     </div>
   );
 };
 
-export default ListLessons;
+export default ListAssignments;

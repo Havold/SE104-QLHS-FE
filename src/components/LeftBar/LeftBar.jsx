@@ -78,14 +78,14 @@ const LeftBar = ({ className }) => {
           id: 8,
           icon: <HomeWorkOutlined fontSize="small" />,
           title: "Exams",
-          href: "/exams",
+          href: "/list/exams",
           visible: ["admin", "teacher", "parent", "student"],
         },
         {
           id: 9,
           icon: <AssignmentOutlined fontSize="small" />,
           title: "Assignments",
-          href: "/assignments",
+          href: "/list/assignments",
           visible: ["admin", "teacher", "parent", "student"],
         },
         {
