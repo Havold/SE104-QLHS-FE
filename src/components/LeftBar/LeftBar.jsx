@@ -156,7 +156,7 @@ const LeftBar = ({ className }) => {
     <div
       className={
         className +
-        " overflow-auto custom-scrollbar-transparent hover:custom-scrollbar-hover "
+        " overflow-auto custom-scrollbar-transparent hover:custom-scrollbar-hover bg-white custom-box-shadow "
       }
     >
       <div className="flex items-center justify-center p-1">

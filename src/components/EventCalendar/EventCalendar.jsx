@@ -27,7 +27,7 @@ const events = [
 function EventCalendar() {
   const [value, setValue] = useState(new Date());
   return (
-    <div className="bg-white p-4 rounded-2xl">
+    <div className="bg-white p-4 rounded-2xl custom-box-shadow">
       <Calendar onChange={setValue} value={value} />
       <div className="flex items-center justify-between">
         <h3 className="text-[18px] font-semibold my-2">Events</h3>
@@ -35,7 +35,7 @@ function EventCalendar() {
       </div>
       <div className="flex flex-col gap-2">
         {events.map((event) => (
-          <div key={event.id} className="flex flex-col p-4 gap-2 border border-gray-100 rounded-md border-t-4 odd:border-t-webSky even:border-t-webPurple">
+          <div key={event.id} className="flex flex-col p-4 gap-2 border border-gray-100 rounded-md border-t-4 odd:border-t-webSky even:border-t-webPurple custom-box-shadow">
             <div className="flex justify-between items-center">
               <h3 className="text-sm font-semibold text-gray-600">{event.title}</h3>
               <span className="text-[10px] text-gray-300">{event.time}</span>

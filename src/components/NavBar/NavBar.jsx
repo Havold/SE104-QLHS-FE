@@ -5,7 +5,7 @@ import { ReviewsOutlined, CampaignOutlined } from "@mui/icons-material";
 const NavBar = () => {
   const avatar ='https://i.pinimg.com/564x/97/bb/06/97bb067e30ff6b89f4fbb7b9141025ca.jpg'
   return (
-    <div className="flex items-center justify-between p-2 sticky top-0 bg-white z-50">
+    <div className="flex items-center justify-between p-2 sticky top-0 bg-white custom-box-shadow z-50">
         <Search />
       <div className="flex items-center gap-12 w-full justify-end ">
           <ReviewsOutlined fontSize="small" className="cursor-pointer text-[gray]" />
@@ -18,7 +18,7 @@ const NavBar = () => {
             <h3 className="text-[12px]">John Doe</h3>
             <div className="text-[10px] text-[gray]">Admin</div>
           </div>
-            <img className="w-[40px] h-[40px] rounded-full" src={avatar} alt="profilePic" />
+            <img className="w-[40px] h-[40px] rounded-full object-cover" src={avatar} alt="profilePic" />
         </div>
       </div>
     </div>

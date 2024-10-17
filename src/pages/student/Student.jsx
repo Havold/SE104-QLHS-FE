@@ -1,4 +1,4 @@
-import Announcements from "../../components/Announcements/Annoucements";
+import Announcements from "../../components/Announcements/Announcements";
 import BigCalendar from "../../components/BigCalendar/BigCalendar";
 import EventCalendar from "../../components/EventCalendar/EventCalendar";
 import "./student.scss";

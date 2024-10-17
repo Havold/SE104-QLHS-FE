@@ -46,7 +46,7 @@ const data = [
 
 const AttendanceChart = () => {
   return (
-    <div className="w-full h-full rounded-2xl bg-white p-4">
+    <div className="w-full h-full rounded-2xl bg-white p-4 custom-box-shadow">
       <div className="flex justify-between items-center">
         <h2 className="text-[18px] font-semibold">Attendance</h2>
         <MoreHorizRounded className="cursor-pointer" />

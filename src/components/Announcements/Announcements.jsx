@@ -2,7 +2,7 @@ import React from "react";
 
 const Announcements = () => {
   return (
-    <div className="flex flex-col bg-white p-3 rounded-2xl">
+    <div className="flex flex-col bg-white p-3 rounded-2xl custom-box-shadow">
       <div className="flex items-center justify-between">
         <h3 className="text-[18px] font-semibold">Announcements</h3>
         <span className="text-[12px] text-gray-400 cursor-pointer">View All</span>

@@ -26,7 +26,7 @@ const CountChart = () => {
   ];
 
   return (
-    <div className="flex flex-col w-full h-full rounded-2xl bg-white p-4">
+    <div className="flex flex-col w-full h-full rounded-2xl bg-white p-4 custom-box-shadow">
       {/* TITLE */}
       <div className="flex justify-between items-center">
         <h2 className="text-[18px] font-semibold">Students</h2>

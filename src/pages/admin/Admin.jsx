@@ -1,4 +1,4 @@
-import Announcements from "../../components/Announcements/Annoucements";
+import Announcements from "../../components/Announcements/Announcements";
 import AttendanceChart from "../../components/AttendanceChart/AttendanceChart";
 import CountChart from "../../components/CountChart/CountChart";
 import EventCalendar from "../../components/EventCalendar/EventCalendar";
