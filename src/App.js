@@ -15,6 +15,9 @@ import ListClasses from "./pages/listClasses/ListClasses";
 import ListLessons from "./pages/listLessons/ListLessons";
 import ListExams from "./pages/listExams/ListExams";
 import ListAssignments from "./pages/listAssignments/ListAssignments";
+import ListResults from "./pages/listResults/ListResults";
+import ListEvents from "./pages/listEvents/ListEvents";
+import ListAnnouncements from "./pages/listAnnouncements/ListAnnouncements";
 
 function App() {
   const ProtectedRoute = ({ children }) => {
@@ -23,9 +26,9 @@ function App() {
   const Layout = () => {
     return (
       <div className="h-screen flex">
-        <LeftBar className='w-[14%] md:w-[15%] lg:w-[16%] xl:w-[14%] p-2'/>
-        <div className='flex flex-col w-[86%] md:w-[85%] lg:w-[84%] xl:w-[86%]'>
-          <NavBar/>
+        <LeftBar className="w-[14%] md:w-[15%] lg:w-[16%] xl:w-[14%] p-2" />
+        <div className="flex flex-col w-[86%] md:w-[85%] lg:w-[84%] xl:w-[86%]">
+          <NavBar />
           <Outlet />
         </div>
       </div>
@@ -34,7 +37,7 @@ function App() {
   const router = createBrowserRouter([
     {
       path: "/login",
-      element: <Login/>,
+      element: <Login />,
     },
     {
       path: "/register",
@@ -65,36 +68,56 @@ function App() {
           element: <Student />,
         },
         {
-          path: '/list/teachers',
-          element: <ListTeachers/>
+          path: "/list/teachers",
+          element: <ListTeachers />,
         },
         {
-          path: '/list/students',
-          element: <ListStudents/>
+          path: "/list/students",
+          element: <ListStudents />,
         },
         {
-          path: '/list/parents',
-          element: <ListParents/>
+          path: "/list/parents",
+          element: <ListParents />,
         },
         {
-          path: '/list/subjects',
-          element: <ListSubjects/>
+          path: "/list/subjects",
+          element: <ListSubjects />,
         },
         {
-          path: '/list/classes',
-          element: <ListClasses/>
+          path: "/list/classes",
+          element: <ListClasses />,
         },
         {
-          path: '/list/lessons',
-          element: <ListLessons/>
+          path: "/list/lessons",
+          element: <ListLessons />,
         },
         {
-          path: '/list/exams',
-          element: <ListExams/>
+          path: "/list/exams",
+          element: <ListExams />,
         },
         {
-          path: '/list/assignments',
-          element: <ListAssignments/>
+          path: "/list/assignments",
+          element: <ListAssignments />,
+        },
+        {
+          path: "/list/results",
+          element: <ListResults />,
+        },
+        {
+          path: "/list/attendance",
+          element: <ListResults />,
+        },
+        {
+          path: "/list/events",
+          element: <ListEvents />,
+        },
+        {
+          path: "/list/messages",
+          element: <ListResults />,
+        },
+        {
+          path: "/list/announcements",
+          element: <ListAnnouncements />,
         },
       ],
     },
