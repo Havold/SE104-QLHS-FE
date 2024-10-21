@@ -19,9 +19,9 @@ const columns = [
     accessor: "info",
   },
   {
-    header: 'Students Name',
-    accessor: 'studentsName',
-    className: 'hidden lg:table-cell'
+    header: "Students Name",
+    accessor: "studentsName",
+    className: "hidden lg:table-cell",
   },
   {
     header: "Phone",
@@ -52,16 +52,14 @@ const ListParents = () => {
             <span className="text-[8px] text-gray-500">{item.email}</span>
           </div>
         </td>
-        <td className="hidden lg:table-cell">{item.students.join(', ')}</td>
+        <td className="hidden lg:table-cell">{item.students.join(", ")}</td>
         <td className="hidden md:table-cell">{item.phone}</td>
         <td className="hidden lg:table-cell">{item.address}</td>
         <td>
           <div className="flex gap-4">
-            <Link to={`/list/teachers/${item.id}`}>
-              <FormModal table='parent' type='edit' data={item} />
-            </Link>
+            <FormModal table="parent" type="edit" data={item} />
             {role === "admin" ? (
-              <FormModal table='parent' type='delete' id={item.id} />
+              <FormModal table="parent" type="delete" id={item.id} />
             ) : (
               <></>
             )}
@@ -87,7 +85,7 @@ const ListParents = () => {
             <button className="flex items-center justify-center w-9 h-9 rounded-full bg-webYellow">
               <SortRounded fontSize="small" />
             </button>
-            <FormModal table='parent' type='create'/>
+            <FormModal table="parent" type="create" />
           </div>
         </div>
       </div>

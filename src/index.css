@@ -141,6 +141,8 @@
     
         &::-webkit-scrollbar-track {
             background-color: #EDF9FD;
+            border-radius: 10px;
+
         }
     }
     
