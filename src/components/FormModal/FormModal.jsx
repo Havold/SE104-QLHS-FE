@@ -4,8 +4,15 @@ import {
   DeleteOutline,
   EditOutlined,
 } from "@mui/icons-material";
-import React, { useEffect, useState } from "react";
-import { TeacherForm } from "../forms/TeacherForm";
+import React, { lazy, Suspense, useEffect, useState } from "react";
+
+const TeacherForm = lazy(() => import('../forms/TeacherForm').then(module => ({ default: module.TeacherForm })));
+const StudentForm = lazy(() => import('../forms/StudentForm').then(module => ({ default: module.StudentForm })));
+
+const forms = {
+  teacher: (data, type) => <TeacherForm data={data} type={type} />,
+  student: (data, type) => <StudentForm data={data} type={type} />,
+};
 
 const FormModal = ({ table, type, id, data }) => {
   const [openForm, setOpenForm] = useState(false);
@@ -23,7 +30,7 @@ const FormModal = ({ table, type, id, data }) => {
         </button>
       </form>
     ) : (
-      <TeacherForm type={type} />
+      forms[table](data, type)
     );
   };
   useEffect(() => {
@@ -49,7 +56,7 @@ const FormModal = ({ table, type, id, data }) => {
       <AddRounded fontSize="small" />
     ) : type === "delete" ? (
       <DeleteOutline style={{ fontSize: 16, color: "whitesmoke" }} />
-    ) : table === "teacher" ? (
+    ) : table === "teacher" || table === "student" ? (
       <EditOutlined style={{ fontSize: 20, color: "black" }} />
     ) : (
       <EditOutlined style={{ fontSize: 16, color: "whitesmoke" }} />
@@ -71,7 +78,7 @@ const FormModal = ({ table, type, id, data }) => {
               }}
               className="absolute top-4 right-4 cursor-pointer"
             />
-            <Form />
+            <Suspense fallback={<div>Loading...</div>}><Form /></Suspense>
           </div>
         </div>
       ) : (
