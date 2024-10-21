@@ -2,6 +2,7 @@ import {
   AssignmentRounded,
   BusinessCenterRounded,
   CakeRounded,
+  EditOutlined,
   EmailRounded,
   HouseRounded,
   LocalLibraryRounded,
@@ -12,6 +13,7 @@ import BigCalendar from "../../components/BigCalendar/BigCalendar";
 import Announcements from "../../components/Announcements/Announcements";
 import { Link } from "react-router-dom";
 import PerformanceChart from "../../components/PerformanceChart/PerformanceChart";
+import FormModal from "../../components/FormModal/FormModal";
 
 const TeacherProfile = () => {
   const avatar =
@@ -31,7 +33,10 @@ const TeacherProfile = () => {
               alt="profilePic"
             />
             <div className="flex flex-col gap-2">
-              <h2 className="text-[24px] font-semibold">Dean Guerrero</h2>
+              <div className="flex items-center gap-2">
+                <h2 className="text-[24px] font-semibold">Dean Guerrero</h2>
+                <FormModal table='teacher' type='edit'/>
+              </div>{" "}
               <p className="text-[16px] text-gray-400">
                 Lorem ipsum dolor sit amet consectetur adipisicing elit.
               </p>
@@ -138,7 +143,7 @@ const TeacherProfile = () => {
           </div>
         </div>
         {/* PERFORMANCE CHART */}
-        <PerformanceChart/>
+        <PerformanceChart />
         {/* ANNOUNCEMENTS */}
         <Announcements />
       </div>

@@ -1,15 +1,11 @@
 import React from "react";
 import SearchList from "../../components/SearchList/SearchList";
 import {
-  AddRounded,
-  DeleteOutline,
-  EditOutlined,
   SortRounded,
   TuneRounded,
 } from "@mui/icons-material";
 import Pagination from "../../components/Pagination/Pagination";
 import Table from "../../components/Table/Table";
-import { Link } from "react-router-dom";
 import { role, parentsData } from "../../lib/data";
 import FormModal from "../../components/FormModal/FormModal";
 

@@ -5,7 +5,7 @@ import {
   EditOutlined,
 } from "@mui/icons-material";
 import React, { useEffect, useState } from "react";
-import { TeacherForm } from "./forms/TeacherForm";
+import { TeacherForm } from "../forms/TeacherForm";
 
 const FormModal = ({ table, type, id, data }) => {
   const [openForm, setOpenForm] = useState(false);
@@ -23,7 +23,7 @@ const FormModal = ({ table, type, id, data }) => {
         </button>
       </form>
     ) : (
-      <TeacherForm type={type}/>
+      <TeacherForm type={type} />
     );
   };
   useEffect(() => {
@@ -49,6 +49,8 @@ const FormModal = ({ table, type, id, data }) => {
       <AddRounded fontSize="small" />
     ) : type === "delete" ? (
       <DeleteOutline style={{ fontSize: 16, color: "whitesmoke" }} />
+    ) : table === "teacher" ? (
+      <EditOutlined style={{ fontSize: 20, color: "black" }} />
     ) : (
       <EditOutlined style={{ fontSize: 16, color: "whitesmoke" }} />
     );

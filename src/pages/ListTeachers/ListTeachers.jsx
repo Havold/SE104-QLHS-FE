@@ -1,8 +1,6 @@
 import React from "react";
 import SearchList from "../../components/SearchList/SearchList";
 import {
-  AddRounded,
-  DeleteOutline,
   SortRounded,
   TuneRounded,
   VisibilityOutlined,
@@ -11,6 +9,7 @@ import Pagination from "../../components/Pagination/Pagination";
 import Table from "../../components/Table/Table";
 import { Link } from "react-router-dom";
 import { role, teachersData } from "../../lib/data";
+import FormModal from "../../components/FormModal/FormModal";
 
 const columns = [
   {
@@ -81,9 +80,7 @@ const ListTeachers = () => {
               </button>
             </Link>
             {role === "admin" ? (
-              <button className="flex w-8 h-8 rounded-full bg-webPurple items-center justify-center">
-                <DeleteOutline style={{ fontSize: 16, color: "whitesmoke" }} />
-              </button>
+              <FormModal type="delete" table="teacher" id={item.teacherId} />
             ) : (
               <></>
             )}
@@ -109,9 +106,7 @@ const ListTeachers = () => {
             <button className="flex items-center justify-center w-4 h-4 p-4 rounded-full bg-webYellow">
               <SortRounded fontSize="small" />
             </button>
-            <button className="flex items-center justify-center w-4 h-4 p-4 rounded-full bg-webYellow">
-              <AddRounded fontSize="small" />
-            </button>
+            <FormModal type="create" table="teacher" />
           </div>
         </div>
       </div>
