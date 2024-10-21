@@ -11,6 +11,7 @@ import Pagination from "../../components/Pagination/Pagination";
 import Table from "../../components/Table/Table";
 import { Link } from "react-router-dom";
 import { role, parentsData } from "../../lib/data";
+import FormModal from "../../components/FormModal/FormModal";
 
 const columns = [
   {
@@ -56,17 +57,11 @@ const ListParents = () => {
         <td className="hidden lg:table-cell">{item.address}</td>
         <td>
           <div className="flex gap-4">
-            <Link to={`/list/teachers/${item.teacherId}`}>
-              <button className="flex w-8 h-8 rounded-full bg-webSky items-center justify-center">
-                <EditOutlined
-                  style={{ fontSize: 16, color: "whitesmoke" }}
-                />
-              </button>
+            <Link to={`/list/teachers/${item.id}`}>
+              <FormModal table='parent' type='edit' data={item} />
             </Link>
             {role === "admin" ? (
-              <button className="flex w-8 h-8 rounded-full bg-webPurple items-center justify-center">
-                <DeleteOutline style={{ fontSize: 16, color: "whitesmoke" }} />
-              </button>
+              <FormModal table='parent' type='delete' id={item.id} />
             ) : (
               <></>
             )}
@@ -85,16 +80,14 @@ const ListParents = () => {
         </h1>
         <div className="flex flex-col lg:flex-row gap-4">
           <SearchList />
-          <div className="flex gap-4">
-            <button className="flex items-center justify-center w-4 h-4 p-4 rounded-full bg-webYellow">
+          <div className="flex gap-4 items-center">
+            <button className="flex items-center justify-center w-9 h-9 rounded-full bg-webYellow">
               <TuneRounded style={{ fontSize: 16 }} />
             </button>
-            <button className="flex items-center justify-center w-4 h-4 p-4 rounded-full bg-webYellow">
+            <button className="flex items-center justify-center w-9 h-9 rounded-full bg-webYellow">
               <SortRounded fontSize="small" />
             </button>
-            <button className="flex items-center justify-center w-4 h-4 p-4 rounded-full bg-webYellow">
-              <AddRounded fontSize="small" />
-            </button>
+            <FormModal table='parent' type='create'/>
           </div>
         </div>
       </div>
