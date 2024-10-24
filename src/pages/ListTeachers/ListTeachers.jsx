@@ -8,7 +8,7 @@ import {
 import Pagination from "../../components/Pagination/Pagination";
 import Table from "../../components/Table/Table";
 import { Link } from "react-router-dom";
-import { role, teachersData } from "../../lib/data";
+import { role } from "../../lib/data";
 import FormModal from "../../components/FormModal/FormModal";
 import { makeRequest } from "../../axios";
 
@@ -71,7 +71,7 @@ const renderRows = (data) => {
           {item.subjects.map((subject) => subject.name).join(", ")}
         </td>
         <td className="hidden lg:table-cell">
-          {item.lessons.map((item) => item.class.name).join(", ")}
+          {item.lessons.map((lesson) => lesson.class.name).join(", ")}
         </td>
         <td className="hidden md:table-cell">{item.phone}</td>
         <td className="hidden lg:table-cell">{item.address}</td>
