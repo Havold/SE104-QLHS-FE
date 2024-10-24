@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import SearchList from "../../components/SearchList/SearchList";
 import {
   SortRounded,
@@ -10,6 +10,7 @@ import Table from "../../components/Table/Table";
 import { Link } from "react-router-dom";
 import { role, teachersData } from "../../lib/data";
 import FormModal from "../../components/FormModal/FormModal";
+import { makeRequest } from "../../axios";
 
 const columns = [
   {
@@ -47,9 +48,9 @@ const columns = [
   },
 ];
 
-const ListTeachers = () => {
-  const renderRows = (data) => {
-    return data.map((item) => (
+const renderRows = (data) => {
+  return data ? (
+    data.map((item) => (
       <tr
         className="text-sm border-b-2 border-gray-100 even:bg-slate-100 hover:bg-webPurpleLight "
         key={item.id}
@@ -57,22 +58,26 @@ const ListTeachers = () => {
         <td className="flex items-center gap-4 p-4">
           <img
             className="md:hidden lg:block w-8 h-8 rounded-full object-cover"
-            src={item.photo}
+            src={item.photo ? item.photo : "/assets/noAvatar.jpg"}
             alt="profilePic"
           />
           <div className="flex flex-col">
-            <h2 className="text-[12px] font-semibold">{item.name}</h2>
+            <h2 className="text-[12px] font-semibold">{`${item.firstName} ${item.lastName}`}</h2>
             <span className="text-[8px] text-gray-500">{item.email}</span>
           </div>
         </td>
-        <td className="hidden lg:table-cell">{item.teacherId}</td>
-        <td className="hidden lg:table-cell">{item.subjects.join(", ")}</td>
-        <td className="hidden lg:table-cell">{item.classes.join(", ")}</td>
+        <td className="hidden lg:table-cell">{item.id}</td>
+        <td className="hidden lg:table-cell">
+          {item.subjects.map((subject) => subject.name).join(", ")}
+        </td>
+        <td className="hidden lg:table-cell">
+          {item.lessons.map((item) => item.class.name).join(", ")}
+        </td>
         <td className="hidden md:table-cell">{item.phone}</td>
         <td className="hidden lg:table-cell">{item.address}</td>
         <td>
           <div className="flex gap-4">
-            <Link to={`/list/teachers/${item.teacherId}`}>
+            <Link to={`/list/teachers/${item.id}`}>
               <button className="flex w-8 h-8 rounded-full bg-webSky items-center justify-center">
                 <VisibilityOutlined
                   style={{ fontSize: 16, color: "whitesmoke" }}
@@ -80,15 +85,32 @@ const ListTeachers = () => {
               </button>
             </Link>
             {role === "admin" ? (
-              <FormModal type="delete" table="teacher" id={item.teacherId} />
+              <FormModal type="delete" table="teacher" id={item.id} />
             ) : (
               <></>
             )}
           </div>
         </td>
       </tr>
-    ));
-  };
+    ))
+  ) : (
+    <></>
+  );
+};
+
+const ListTeachers = () => {
+  const [teachers, setTeachers] = useState();
+
+  useEffect(() => {
+    const fetchData = async () => {
+      const res = await makeRequest.get("/teachers");
+      setTeachers(res.data);
+    };
+
+    fetchData();
+  }, []);
+
+  console.log(teachers);
 
   return (
     <div className="flex flex-col gap-4 flex-1 p-4 m-2 rounded-xl bg-white">
@@ -111,7 +133,7 @@ const ListTeachers = () => {
         </div>
       </div>
       {/* LIST */}
-      <Table columns={columns} renderRows={renderRows} data={teachersData} />
+      <Table columns={columns} renderRows={renderRows} data={teachers} />
       {/* PAGINATION */}
       <Pagination />
     </div>
