@@ -101,7 +101,7 @@ const renderRows = (data) => {
 
 const ListTeachers = () => {
   const [teachers, setTeachers] = useState();
-  const [count, setCount] = useState();
+  const [total, setTotal] = useState();
   const [searchParams, setSearchParams] = useSearchParams();
   let page = searchParams.get("page") ? parseInt(searchParams.get("page")) : 1;
   let pageItems = searchParams.get("pageItems")
@@ -114,7 +114,7 @@ const ListTeachers = () => {
         `/teachers?page=${page}&pageItems=${pageItems}`
       );
       setTeachers(res.data.teachers);
-      setCount(res.data.totalCount);
+      setTotal(res.data.totalCount);
     };
 
     fetchData();
@@ -143,7 +143,7 @@ const ListTeachers = () => {
       {/* LIST */}
       <Table columns={columns} renderRows={renderRows} data={teachers} />
       {/* PAGINATION */}
-      <Pagination page={page} total={count} />
+      <Pagination page={page} total={total} />
     </div>
   );
 };

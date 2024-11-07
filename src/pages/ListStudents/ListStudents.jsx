@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import SearchList from "../../components/SearchList/SearchList";
 import {
   SortRounded,
@@ -7,9 +7,11 @@ import {
 } from "@mui/icons-material";
 import Pagination from "../../components/Pagination/Pagination";
 import Table from "../../components/Table/Table";
-import { Link } from "react-router-dom";
-import { role, studentsData } from "../../lib/data";
-import FormModal from '../../components/FormModal/FormModal'
+import { Link, useSearchParams } from "react-router-dom";
+import { role } from "../../lib/data";
+import FormModal from "../../components/FormModal/FormModal";
+import { makeRequest } from "../../axios";
+import { ITEMS_PER_PAGE } from "../../lib/settings";
 
 const columns = [
   {
@@ -42,9 +44,9 @@ const columns = [
   },
 ];
 
-const ListStudents = () => {
-  const renderRows = (data) => {
-    return data.map((item) => (
+const renderRows = (data) => {
+  return data ? (
+    data.map((item) => (
       <tr
         className="text-sm border-b-2 border-gray-100 even:bg-slate-100 hover:bg-webPurpleLight "
         key={item.id}
@@ -52,21 +54,21 @@ const ListStudents = () => {
         <td className="flex items-center gap-4 p-4">
           <img
             className="md:hidden lg:block w-8 h-8 rounded-full object-cover"
-            src={item.photo}
+            src={item.img ? item.img : "/assets/noAvatar.jpg"}
             alt="profilePic"
           />
           <div className="flex flex-col">
-            <h2 className="text-[12px] font-semibold">{item.name}</h2>
-            <span className="text-[8px] text-gray-500">{item.class}</span>
+            <h2 className="text-[12px] font-semibold">{`${item.firstName} ${item.lastName}`}</h2>
+            <span className="text-[8px] text-gray-500">{item.class.name}</span>
           </div>
         </td>
-        <td className="hidden lg:table-cell">{item.studentId}</td>
-        <td className="hidden lg:table-cell">{item.grade}</td>
+        <td className="hidden lg:table-cell">{item.id}</td>
+        <td className="hidden lg:table-cell">{item.grade.level}</td>
         <td className="hidden md:table-cell">{item.phone}</td>
         <td className="hidden lg:table-cell">{item.address}</td>
         <td>
           <div className="flex gap-4">
-            <Link to={`/list/students/${item.studentId}`}>
+            <Link to={`/list/students/${item.id}`}>
               <button className="flex w-8 h-8 rounded-full bg-webSky items-center justify-center">
                 <VisibilityOutlined
                   style={{ fontSize: 16, color: "whitesmoke" }}
@@ -74,15 +76,38 @@ const ListStudents = () => {
               </button>
             </Link>
             {role === "admin" ? (
-              <FormModal type='delete' table='student' />
+              <FormModal type="delete" table="student" />
             ) : (
               <></>
             )}
           </div>
         </td>
       </tr>
-    ));
-  };
+    ))
+  ) : (
+    <></>
+  );
+};
+
+const ListStudents = () => {
+  const [students, setStudents] = useState();
+  const [total, setTotal] = useState();
+  const [searchParams, setSearchParams] = useSearchParams();
+  let page = searchParams.get("page") ? parseInt(searchParams.get("page")) : 1;
+  let pageItems = searchParams.get("pageItems")
+    ? parseInt(searchParams.get("pageItems"))
+    : ITEMS_PER_PAGE;
+  useEffect(() => {
+    const fetchData = async () => {
+      const res = await makeRequest.get(
+        `/students?page=${page}&pageItems=${pageItems}`
+      );
+      setStudents(res.data.students);
+      setTotal(res.data.totalCount);
+    };
+
+    fetchData();
+  }, [page, pageItems]);
 
   return (
     <div className="flex flex-col gap-4 flex-1 p-4 m-2 rounded-xl bg-white">
@@ -100,14 +125,14 @@ const ListStudents = () => {
             <button className="flex items-center justify-center w-4 h-4 p-4 rounded-full bg-webYellow">
               <SortRounded fontSize="small" />
             </button>
-            <FormModal type='create' table='student' />
+            <FormModal type="create" table="student" />
           </div>
         </div>
       </div>
       {/* LIST */}
-      <Table columns={columns} renderRows={renderRows} data={studentsData} />
+      <Table columns={columns} renderRows={renderRows} data={students} />
       {/* PAGINATION */}
-      <Pagination />
+      <Pagination page={page} total={total} />
     </div>
   );
 };
