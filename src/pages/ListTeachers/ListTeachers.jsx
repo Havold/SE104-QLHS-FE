@@ -120,8 +120,6 @@ const ListTeachers = () => {
     fetchData();
   }, [page, pageItems]);
 
-  console.log(searchParams.get("page"));
-
   return (
     <div className="flex flex-col gap-4 flex-1 p-4 m-2 rounded-xl bg-white">
       {/* TOP */}
