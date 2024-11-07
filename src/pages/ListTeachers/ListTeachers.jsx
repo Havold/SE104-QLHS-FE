@@ -7,10 +7,11 @@ import {
 } from "@mui/icons-material";
 import Pagination from "../../components/Pagination/Pagination";
 import Table from "../../components/Table/Table";
-import { Link } from "react-router-dom";
+import { Link, useSearchParams } from "react-router-dom";
 import { role } from "../../lib/data";
 import FormModal from "../../components/FormModal/FormModal";
 import { makeRequest } from "../../axios";
+import { ITEMS_PER_PAGE } from "../../lib/settings";
 
 const columns = [
   {
@@ -100,17 +101,26 @@ const renderRows = (data) => {
 
 const ListTeachers = () => {
   const [teachers, setTeachers] = useState();
+  const [count, setCount] = useState();
+  const [searchParams, setSearchParams] = useSearchParams();
+  let page = searchParams.get("page") ? parseInt(searchParams.get("page")) : 1;
+  let pageItems = searchParams.get("pageItems")
+    ? parseInt(searchParams.get("pageItems"))
+    : ITEMS_PER_PAGE;
 
   useEffect(() => {
     const fetchData = async () => {
-      const res = await makeRequest.get("/teachers");
-      setTeachers(res.data);
+      const res = await makeRequest.get(
+        `/teachers?page=${page}&pageItems=${pageItems}`
+      );
+      setTeachers(res.data.teachers);
+      setCount(res.data.totalCount);
     };
 
     fetchData();
-  }, []);
+  }, [page, pageItems]);
 
-  console.log(teachers);
+  console.log(searchParams.get("page"));
 
   return (
     <div className="flex flex-col gap-4 flex-1 p-4 m-2 rounded-xl bg-white">
@@ -135,7 +145,7 @@ const ListTeachers = () => {
       {/* LIST */}
       <Table columns={columns} renderRows={renderRows} data={teachers} />
       {/* PAGINATION */}
-      <Pagination />
+      <Pagination page={page} total={count} />
     </div>
   );
 };
