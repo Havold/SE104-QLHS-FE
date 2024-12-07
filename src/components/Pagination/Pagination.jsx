@@ -29,6 +29,7 @@ const Pagination = ({ page, total }) => {
             const pageIndex = index + 1;
             return (
               <button
+                key={index}
                 onClick={() => changePage(pageIndex)}
                 className={`py-2 px-3 ${
                   pageIndex === page ? "bg-webSky" : ""

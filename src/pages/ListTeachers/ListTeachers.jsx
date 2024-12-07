@@ -107,18 +107,18 @@ const ListTeachers = () => {
   let pageItems = searchParams.get("pageItems")
     ? parseInt(searchParams.get("pageItems"))
     : ITEMS_PER_PAGE;
-
   useEffect(() => {
     const fetchData = async () => {
-      const res = await makeRequest.get(
-        `/teachers?page=${page}&pageItems=${pageItems}`
-      );
+      const queryString = new URLSearchParams(searchParams);
+      queryString.set("page", page);
+      queryString.set("pageItems", pageItems);
+      const res = await makeRequest.get(`/teachers?${queryString}`);
       setTeachers(res.data.teachers);
       setTotal(res.data.totalCount);
     };
 
     fetchData();
-  }, [page, pageItems]);
+  }, [searchParams]);
 
   return (
     <div className="flex flex-col gap-4 flex-1 p-4 m-2 rounded-xl bg-white">
