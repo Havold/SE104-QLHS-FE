@@ -18,7 +18,7 @@ const SearchList = () => {
     >
       <SearchRounded className="text-base text-[gray]" />
       <input
-        className="border-none text-[12px] bg-transparent focus:outline-none placeholder:text-[gray]"
+        className="w-full border-none text-[12px] bg-transparent focus:outline-none placeholder:text-[gray]"
         type="text"
         placeholder="Search..."
         name="search"
