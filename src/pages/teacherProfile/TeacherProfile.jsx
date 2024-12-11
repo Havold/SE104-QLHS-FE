@@ -11,15 +11,26 @@ import {
 } from "@mui/icons-material";
 import BigCalendar from "../../components/BigCalendar/BigCalendar";
 import Announcements from "../../components/Announcements/Announcements";
-import { Link } from "react-router-dom";
+import { Link, useLocation } from "react-router-dom";
 import PerformanceChart from "../../components/PerformanceChart/PerformanceChart";
 import FormModal from "../../components/FormModal/FormModal";
+import { useEffect, useState } from "react";
+import { makeRequest } from "../../axios";
 
 const TeacherProfile = () => {
+  const [teacher, setTeacher] = useState();
   const avatar =
     "https://i.pinimg.com/564x/97/bb/06/97bb067e30ff6b89f4fbb7b9141025ca.jpg";
+  const teacherId = useLocation().pathname.split("/")[3];
+  useEffect(() => {
+    const fetchData = async () => {
+      const res = await makeRequest.get(`/teachers/${teacherId}`);
+      setTeacher(res.data);
+    };
+    fetchData();
+  }, [teacherId]);
 
-  return (
+  return teacher ? (
     <div className="flex flex-col xl:flex-row flex-1 gap-3 p-4 m-2 rounded-xl">
       {/* LEFT */}
       <div className="flex flex-col gap-4 w-full xl:w-2/3">
@@ -33,30 +44,28 @@ const TeacherProfile = () => {
               alt="profilePic"
             />
             <div className="flex flex-col gap-2">
-              <div className="flex items-center gap-2">
-                <h2 className="text-[24px] font-semibold">Dean Guerrero</h2>
-                <FormModal table='teacher' type='edit'/>
+              <div className="flex flex-col sm:flex-row md:flex-col lg:flex-row items-center gap-2">
+                <h2 className="text-[24px] font-semibold">{`${teacher.lastName} ${teacher.firstName} `}</h2>
+                <FormModal table="teacher" type="edit" />
               </div>{" "}
-              <p className="text-[16px] text-gray-400">
-                Lorem ipsum dolor sit amet consectetur adipisicing elit.
-              </p>
+              <p className="text-[16px] text-gray-400">{teacher.address}</p>
               {/* Information item */}
               <div className="flex flex-wrap gap-1">
-                <div className="w-full sm:w-[48%] md:w-full lg:w-[48%] xl:w-full flex gap-1 items-center">
+                <div className="w-full sm:w-[50%] md:w-full lg:w-[50%] xl:w-full flex gap-1 items-center">
                   <StarRounded style={{ fontSize: 14 }} />
-                  <span className="text-[12px]">A+</span>
+                  <span className="text-[12px]">{teacher.rank}</span>
                 </div>
-                <div className="w-full sm:w-[48%] md:w-full lg:w-[48%] xl:w-full flex gap-1 items-center">
+                <div className="w-full sm:w-[50%] md:w-full lg:w-[50%] xl:w-full flex gap-1 items-center">
                   <CakeRounded style={{ fontSize: 14 }} />
-                  <span className="text-[12px]">January 2000</span>
+                  <span className="text-[12px]">{teacher.birth}</span>
                 </div>
-                <div className="w-full sm:w-[48%] md:w-full lg:w-[48%] xl:w-full flex gap-1 items-center">
+                <div className="w-full sm:w-[50%] md:w-full lg:w-[50%] xl:w-full flex gap-1 items-center">
                   <EmailRounded style={{ fontSize: 14 }} />
-                  <span className="text-[12px]">test@gmail.com</span>
+                  <span className="text-[12px]">{teacher.email}</span>
                 </div>
-                <div className="w-full sm:w-[48%] md:w-full lg:w-[48%] xl:w-full flex gap-1 items-center">
+                <div className="w-full sm:w-[50%] md:w-full lg:w-[50%] xl:w-full flex gap-1 items-center">
                   <LocalPhoneRounded style={{ fontSize: 14 }} />
-                  <span className="text-[12px]">0833123123</span>
+                  <span className="text-[12px]">{teacher.phone}</span>
                 </div>
               </div>
             </div>
@@ -111,7 +120,7 @@ const TeacherProfile = () => {
           <div className="flex flex-wrap gap-2">
             <Link
               className="text-[12px] font-light p-2 rounded-md bg-webSkyLight"
-              to={`/list/classes`}
+              to={`/list/teachers?teacherId=${teacher.id}`}
             >
               Teacher's Classes
             </Link>
@@ -148,6 +157,8 @@ const TeacherProfile = () => {
         <Announcements />
       </div>
     </div>
+  ) : (
+    <></>
   );
 };
 
