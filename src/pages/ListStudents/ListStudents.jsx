@@ -58,12 +58,16 @@ const renderRows = (data) => {
             alt="profilePic"
           />
           <div className="flex flex-col">
-            <h2 className="text-[12px] font-semibold">{`${item.firstName} ${item.lastName}`}</h2>
-            <span className="text-[8px] text-gray-500">{item.class.name}</span>
+            <h2 className="text-[12px] font-semibold">{`${item.fullName}`}</h2>
+            <span className="text-[8px] text-gray-500">
+              {item.studentClasses[0]?.classSchoolYear.class.name}
+            </span>
           </div>
         </td>
         <td className="hidden lg:table-cell">{item.id}</td>
-        <td className="hidden lg:table-cell">{item.grade.level}</td>
+        <td className="hidden lg:table-cell">
+          {item.studentClasses[0]?.classSchoolYear?.class?.grade?.level}
+        </td>
         <td className="hidden md:table-cell">{item.phone}</td>
         <td className="hidden lg:table-cell">{item.address}</td>
         <td>
@@ -97,17 +101,20 @@ const ListStudents = () => {
   let pageItems = searchParams.get("pageItems")
     ? parseInt(searchParams.get("pageItems"))
     : ITEMS_PER_PAGE;
+
   useEffect(() => {
     const fetchData = async () => {
-      const res = await makeRequest.get(
-        `/students?page=${page}&pageItems=${pageItems}`
-      );
+      const queryString = new URLSearchParams(searchParams);
+      queryString.set("page", page);
+      queryString.set("pageItems", pageItems);
+      const res = await makeRequest.get(`/students?${queryString}`);
+      console.log(res.data);
       setStudents(res.data.students);
       setTotal(res.data.totalCount);
     };
 
     fetchData();
-  }, [page, pageItems]);
+  }, [searchParams]);
 
   return (
     <div className="flex flex-col gap-4 flex-1 p-4 m-2 rounded-xl bg-white">

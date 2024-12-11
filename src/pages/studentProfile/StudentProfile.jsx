@@ -6,18 +6,29 @@ import {
   LocalLibraryRounded,
   LocalPhoneRounded,
   SchoolRounded,
-  StarRounded,
 } from "@mui/icons-material";
 import BigCalendar from "../../components/BigCalendar/BigCalendar";
 import Announcements from "../../components/Announcements/Announcements";
-import { Link } from "react-router-dom";
+import { Link, useLocation } from "react-router-dom";
 import PerformanceChart from "../../components/PerformanceChart/PerformanceChart";
 import FormModal from "../../components/FormModal/FormModal";
+import { useEffect, useState } from "react";
+import { makeRequest } from "../../axios";
+import moment from "moment";
 
 const StudentProfile = () => {
+  const [student, setStudent] = useState("");
   const avatar =
     "https://i.pinimg.com/564x/ca/e9/5f/cae95f1e436fed6592e922507a785f0b.jpg";
-
+  const studentId = useLocation().pathname.split("/")[3];
+  useEffect(() => {
+    const fetchData = async () => {
+      const res = await makeRequest.get(`students/${studentId}`);
+      setStudent(res.data);
+    };
+    fetchData();
+  }, [studentId]);
+  console.log(student);
   return (
     <div className="flex flex-col xl:flex-row flex-1 gap-3 p-4 m-2 rounded-xl">
       {/* LEFT */}
@@ -28,34 +39,32 @@ const StudentProfile = () => {
           <div className="flex flex-1 p-4 gap-4 items-center bg-webSky rounded-xl custom-box-shadow">
             <img
               className="w-[160px] h-[160px] rounded-full object-cover"
-              src={avatar}
+              src={student.img ? student.img : "/assets/noAvatar.jpg"}
               alt="profilePic"
             />
             <div className="flex flex-col gap-2">
               <div className="flex gap-2">
-                <h2 className="text-[24px] font-semibold">Mona Lisa</h2>
-                <FormModal type="edit" table="student" />
+                <h2 className="text-[24px] font-semibold">
+                  {student.fullName}
+                </h2>
+                <FormModal type="edit" table="student" data={student} />
               </div>
-              <p className="text-[16px] text-gray-400">
-                Lorem ipsum dolor sit amet consectetur adipisicing elit.
-              </p>
+              <p className="text-[16px] text-gray-400">{student.address}</p>
               {/* Information item */}
               <div className="flex flex-wrap gap-1">
                 <div className="w-full sm:w-[48%] md:w-full lg:w-[48%] xl:w-full flex gap-1 items-center">
-                  <StarRounded style={{ fontSize: 14 }} />
-                  <span className="text-[12px]">A+</span>
-                </div>
-                <div className="w-full sm:w-[48%] md:w-full lg:w-[48%] xl:w-full flex gap-1 items-center">
                   <CakeRounded style={{ fontSize: 14 }} />
-                  <span className="text-[12px]">January 2000</span>
+                  <span className="text-[12px]">
+                    {moment(student.birth).format("MMM Do YYYY")}
+                  </span>
                 </div>
                 <div className="w-full sm:w-[48%] md:w-full lg:w-[48%] xl:w-full flex gap-1 items-center">
                   <EmailRounded style={{ fontSize: 14 }} />
-                  <span className="text-[12px]">test@gmail.com</span>
+                  <span className="text-[12px]">{student.email}</span>
                 </div>
                 <div className="w-full sm:w-[48%] md:w-full lg:w-[48%] xl:w-full flex gap-1 items-center">
                   <LocalPhoneRounded style={{ fontSize: 14 }} />
-                  <span className="text-[12px]">0833123123</span>
+                  <span className="text-[12px]">{student.phone}</span>
                 </div>
               </div>
             </div>
@@ -75,7 +84,13 @@ const StudentProfile = () => {
             <div className="w-full sm:w-[48%] md:w-full lg:w-[48%] flex items-center gap-3 p-4 rounded-xl bg-white custom-box-shadow">
               <SchoolRounded style={{ fontSize: 28, color: "#CFCEFF" }} />
               <div className="flex flex-col">
-                <h3 className="text-[20px] font-medium">6th</h3>
+                <h3 className="text-[20px] font-medium">
+                  {student.studentClasses ? (
+                    student.studentClasses[0]?.classSchoolYear.class.grade.level
+                  ) : (
+                    <></>
+                  )}
+                </h3>
                 <span className="text-[14px] text-gray-400">Grade</span>
               </div>
             </div>
@@ -83,13 +98,19 @@ const StudentProfile = () => {
               <LocalLibraryRounded style={{ fontSize: 28, color: "#CFCEFF" }} />
               <div className="flex flex-col">
                 <h3 className="text-[20px] font-medium">18</h3>
-                <span className="text-[14px] text-gray-400">Lessons</span>
+                <span className="text-[14px] text-gray-400">Average Score</span>
               </div>
             </div>
             <div className="w-full sm:w-[48%] md:w-full lg:w-[48%] flex items-center gap-3 p-4 rounded-xl bg-white custom-box-shadow">
               <HouseRounded style={{ fontSize: 28, color: "#CFCEFF" }} />
               <div className="flex flex-col">
-                <h3 className="text-[20px] font-medium">6A</h3>
+                <h3 className="text-[20px] font-medium">
+                  {student.studentClasses ? (
+                    student.studentClasses[0]?.classSchoolYear.class.name
+                  ) : (
+                    <></>
+                  )}
+                </h3>
                 <span className="text-[14px] text-gray-400">Class</span>
               </div>
             </div>
@@ -112,30 +133,11 @@ const StudentProfile = () => {
               className="text-[12px] font-light p-2 rounded-md bg-webSkyLight"
               to={`/list/classes`}
             >
-              Student's Lessons
+              Student's Classes
             </Link>
             <Link
               className="text-[12px] font-light p-2 rounded-md bg-webPurpleLight"
-              to={`/list/classes`}
-            >
-              Student's Teachers
-            </Link>
-            <Link
-              className="text-[12px] font-light p-2 rounded-md bg-webYellowLight"
-              to={`/list/classes`}
-            >
-              Student's Exams
-            </Link>
-
-            <Link
-              className="text-[12px] font-light p-2 rounded-md bg-webPurpleLight"
-              to={`/list/classes`}
-            >
-              Student's Assignments
-            </Link>
-            <Link
-              className="text-[12px] font-light p-2 rounded-md bg-webSkyLight"
-              to={`/list/classes`}
+              to={`/list/results`}
             >
               Student's Results
             </Link>
