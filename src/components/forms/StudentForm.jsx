@@ -1,8 +1,11 @@
-import { CloudUploadOutlined } from "@mui/icons-material";
+import { CloudUploadOutlined, SubwayTwoTone } from "@mui/icons-material";
 import InputField from "../InputField/InputField";
 import { z } from "zod";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
+import { useLocation } from "react-router-dom";
+import { useEffect, useState } from "react";
+import { makeRequest } from "../../axios";
 
 const schema = z.object({
   username: z
@@ -13,15 +16,11 @@ const schema = z.object({
   password: z
     .string()
     .min(6, { message: "Password must be at least 6 characters long!" }),
-  firstName: z.string().min(1, { message: "First name is required!" }),
   lastName: z.string().min(1, { message: "Last name is required!" }),
   phone: z
     .number()
     .min(10, { message: "Phone number must be at least 10 numbers long!" }),
   address: z.string().min(1, { message: "Address is required!" }).optional(),
-  rank: z.enum(["A+", "A", "B", "C", "D", "E", "F"], {
-    message: "Rank is required!",
-  }),
   birthday: z.date(),
   sex: z.enum(["Male", "Female"], { message: "Sex is required!" }),
   img: z.instanceof(File, { message: "Image is required!" }),
@@ -34,9 +33,9 @@ export const StudentForm = ({ data, type = "create" }) => {
     formState: { errors },
     setError,
   } = useForm({ resolver: zodResolver(schema) });
-
   const onSubmit = handleSubmit((data) => console.log(data));
-
+  const [sex, setSex] = useState(data.sex);
+  console.log(data);
   return (
     <form className="flex flex-col gap-8" onSubmit={onSubmit}>
       <h1 className="text-[18px] font-semibold">
@@ -52,6 +51,7 @@ export const StudentForm = ({ data, type = "create" }) => {
             error={errors.username}
             label="Username"
             name="username"
+            value={data.username}
           />
           <InputField
             register={register}
@@ -59,6 +59,7 @@ export const StudentForm = ({ data, type = "create" }) => {
             label="Email"
             name="email"
             type="email"
+            value={data.email}
           />
           <InputField
             register={register}
@@ -66,6 +67,7 @@ export const StudentForm = ({ data, type = "create" }) => {
             label="Password"
             name="password"
             type="password"
+            value={data.password}
           />
         </div>
       </div>
@@ -74,35 +76,24 @@ export const StudentForm = ({ data, type = "create" }) => {
         <div className="flex flex-wrap justify-between items-center gap-4">
           <InputField
             register={register}
-            error={errors.firstName}
-            label="First Name"
-            name="firstName"
-          />
-          <InputField
-            register={register}
             error={errors.lastName}
-            label="Last Name"
-            name="lastName"
+            label="Full Name"
+            name="fullname"
+            value={data.fullName}
           />
           <InputField
             register={register}
             error={errors.phone}
             label="Phone"
             name="phone"
+            value={data.phone}
           />
           <InputField
             register={register}
             error={errors.address}
             label="Address"
             name="address"
-          />
-          <InputField
-            register={register}
-            error={errors.Rank}
-            label="Rank"
-            name="rank"
-            type="select"
-            options={["A+", "A", "B", "C", "D", "E", "F"]}
+            value={data.address}
           />
           <InputField
             register={register}
@@ -110,6 +101,7 @@ export const StudentForm = ({ data, type = "create" }) => {
             label="Date of Birth"
             name="birthday"
             type="date"
+            value={data.birth}
           />
           <InputField
             register={register}
@@ -118,6 +110,8 @@ export const StudentForm = ({ data, type = "create" }) => {
             name="sex"
             options={["Male", "Female"]}
             type="select"
+            value={sex}
+            onChange={setSex}
           />
           <div className="flex flex-col w-full md:w-1/4">
             <input
@@ -125,6 +119,7 @@ export const StudentForm = ({ data, type = "create" }) => {
               type="file"
               id="uploadProfilePic"
               {...register("img")}
+              value={data.img}
             />
             <label
               htmlFor="uploadProfilePic"

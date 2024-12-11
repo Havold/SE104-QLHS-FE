@@ -6,8 +6,16 @@ import {
 } from "@mui/icons-material";
 import React, { lazy, Suspense, useEffect, useState } from "react";
 
-const TeacherForm = lazy(() => import('../forms/TeacherForm').then(module => ({ default: module.TeacherForm })));
-const StudentForm = lazy(() => import('../forms/StudentForm').then(module => ({ default: module.StudentForm })));
+const TeacherForm = lazy(() =>
+  import("../forms/TeacherForm").then((module) => ({
+    default: module.TeacherForm,
+  }))
+);
+const StudentForm = lazy(() =>
+  import("../forms/StudentForm").then((module) => ({
+    default: module.StudentForm,
+  }))
+);
 
 const forms = {
   teacher: (data, type) => <TeacherForm data={data} type={type} />,
@@ -78,7 +86,9 @@ const FormModal = ({ table, type, id, data }) => {
               }}
               className="absolute top-4 right-4 cursor-pointer"
             />
-            <Suspense fallback={<div>Loading...</div>}><Form /></Suspense>
+            <Suspense fallback={<div>Loading...</div>}>
+              <Form />
+            </Suspense>
           </div>
         </div>
       ) : (

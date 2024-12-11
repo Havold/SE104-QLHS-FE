@@ -4,7 +4,9 @@ const InputField = ({
   label,
   name,
   options,
+  value,
   type = "text",
+  onChange,
 }) => {
   return (
     <div className="flex flex-col w-full md:w-1/4 gap-1">
@@ -13,7 +15,11 @@ const InputField = ({
       </label>
 
       {type === "select" ? (
-        <select className="text-[12px] p-2 h-[40px] border border-gray-400 outline-webSkyBold caret-webSkyBold transition-colors rounded-md">
+        <select
+          value={value}
+          onChange={(e) => onChange(e.target.value)}
+          className="text-[12px] p-2 h-[40px] border border-gray-400 outline-webSkyBold caret-webSkyBold transition-colors rounded-md"
+        >
           {options.map((option) => (
             <option value={option}>{option}</option>
           ))}
