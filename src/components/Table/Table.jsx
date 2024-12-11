@@ -6,7 +6,10 @@ const Table = ({ columns, renderRows, data }) => {
       <thead>
         <tr className="text-[14px] text-left text-gray-500">
           {columns.map((col) => (
-            <th className={"font-semibold " + col.className} key={col.accessor}>
+            <th
+              className={"font-semibold p-2 " + col.className}
+              key={col.accessor}
+            >
               {col.header}
             </th>
           ))}
