@@ -114,7 +114,7 @@ const ListStudents = () => {
     };
 
     fetchData();
-  }, [searchParams]);
+  }, [searchParams, page, pageItems]);
 
   return (
     <div className="flex flex-col gap-4 flex-1 p-4 m-2 rounded-xl bg-white">
