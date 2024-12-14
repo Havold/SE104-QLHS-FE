@@ -34,8 +34,10 @@ export const StudentForm = ({ data, type = "create" }) => {
     setError,
   } = useForm({ resolver: zodResolver(schema) });
   const onSubmit = handleSubmit((data) => console.log(data));
-  const [sex, setSex] = useState(data.sex);
-  console.log(data);
+  const btnColor =
+    type === "create"
+      ? "bg-webYellow hover:bg-webYellowLight"
+      : "bg-webSkyBold hover:bg-webSky";
   return (
     <form className="flex flex-col gap-8" onSubmit={onSubmit}>
       <h1 className="text-[18px] font-semibold">
@@ -51,7 +53,6 @@ export const StudentForm = ({ data, type = "create" }) => {
             error={errors.username}
             label="Username"
             name="username"
-            value={data.username}
           />
           <InputField
             register={register}
@@ -59,7 +60,6 @@ export const StudentForm = ({ data, type = "create" }) => {
             label="Email"
             name="email"
             type="email"
-            value={data.email}
           />
           <InputField
             register={register}
@@ -67,7 +67,6 @@ export const StudentForm = ({ data, type = "create" }) => {
             label="Password"
             name="password"
             type="password"
-            value={data.password}
           />
         </div>
       </div>
@@ -79,21 +78,18 @@ export const StudentForm = ({ data, type = "create" }) => {
             error={errors.lastName}
             label="Full Name"
             name="fullname"
-            value={data.fullName}
           />
           <InputField
             register={register}
             error={errors.phone}
             label="Phone"
             name="phone"
-            value={data.phone}
           />
           <InputField
             register={register}
             error={errors.address}
             label="Address"
             name="address"
-            value={data.address}
           />
           <InputField
             register={register}
@@ -101,7 +97,6 @@ export const StudentForm = ({ data, type = "create" }) => {
             label="Date of Birth"
             name="birthday"
             type="date"
-            value={data.birth}
           />
           <InputField
             register={register}
@@ -110,8 +105,6 @@ export const StudentForm = ({ data, type = "create" }) => {
             name="sex"
             options={["Male", "Female"]}
             type="select"
-            value={sex}
-            onChange={setSex}
           />
           <div className="flex flex-col w-full md:w-1/4">
             <input
@@ -119,7 +112,6 @@ export const StudentForm = ({ data, type = "create" }) => {
               type="file"
               id="uploadProfilePic"
               {...register("img")}
-              value={data.img}
             />
             <label
               htmlFor="uploadProfilePic"
@@ -136,7 +128,9 @@ export const StudentForm = ({ data, type = "create" }) => {
           </div>
         </div>
       </div>
-      <button className="text-[18px] w-full p-2 rounded-md bg-webSkyBold hover:bg-webSky transition-colors text-white">
+      <button
+        className={`text-[18px] w-full p-2 rounded-md ${btnColor} transition-colors text-white`}
+      >
         {type === "create" ? "Create" : "Update"}
       </button>
     </form>
