@@ -11,9 +11,7 @@ const SearchList = () => {
   );
   const handleSubmit = (e) => {
     e.preventDefault();
-    const params = new URLSearchParams(location.search);
-    params.set("search", inputSearch);
-    navigate(`${location.pathname}?${params}`, { replace: true });
+    navigate(`${location.pathname}?search=${inputSearch}`, { replace: true });
   };
 
   return (
