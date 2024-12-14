@@ -5,6 +5,9 @@ import {
   EditOutlined,
 } from "@mui/icons-material";
 import React, { lazy, Suspense, useEffect, useState } from "react";
+import SubjectForm from "../forms/SubjectForm";
+import ClassForm from "../forms/ClassForm";
+import DetailClassForm from "../forms/DetailClassForm";
 
 const TeacherForm = lazy(() =>
   import("../forms/TeacherForm").then((module) => ({
@@ -20,6 +23,9 @@ const StudentForm = lazy(() =>
 const forms = {
   teacher: (data, type) => <TeacherForm data={data} type={type} />,
   student: (data, type) => <StudentForm data={data} type={type} />,
+  subject: (data, type) => <SubjectForm data={data} type={type} />,
+  class: (data, type) => <ClassForm data={data} type={type} />,
+  detailClass: (data, type) => <DetailClassForm data={data} type={type} />,
 };
 
 const FormModal = ({ table, type, id, data }) => {
@@ -31,7 +37,7 @@ const FormModal = ({ table, type, id, data }) => {
         className="flex flex-col items-center justify-center gap-2"
       >
         <span>
-          All data will be lost. Are you sure want to delete this {table}
+          All data will be lost. Are you sure want to delete this {table}?
         </span>
         <button className="bg-red-500 text-white py-2 px-4 rounded-md hover:bg-red-800 transition-colors">
           Delete

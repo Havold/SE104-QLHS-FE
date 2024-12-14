@@ -67,6 +67,13 @@ const LeftBar = ({ className }) => {
           href: "/list/classes",
           visible: ["admin", "teacher"],
         },
+        {
+          id: 7,
+          icon: <LocalLibraryOutlined fontSize="small" />,
+          title: "Detail Classes",
+          href: "/list/detail-classes",
+          visible: ["admin", "teacher"],
+        },
         // {
         //   id: 7,
         //   icon: <LocalLibraryOutlined fontSize="small" />,

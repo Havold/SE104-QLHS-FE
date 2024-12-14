@@ -20,6 +20,7 @@ import ListEvents from "./pages/listEvents/ListEvents";
 import ListAnnouncements from "./pages/listAnnouncements/ListAnnouncements";
 import TeacherProfile from "./pages/teacherProfile/TeacherProfile";
 import StudentProfile from "./pages/studentProfile/StudentProfile";
+import ListDetailClasses from "./pages/listDetailClasses/ListDetailClasses";
 
 function App() {
   const ProtectedRoute = ({ children }) => {
@@ -96,6 +97,10 @@ function App() {
         {
           path: "/list/classes",
           element: <ListClasses />,
+        },
+        {
+          path: "/list/detail-classes",
+          element: <ListDetailClasses />,
         },
         {
           path: "/list/lessons",
