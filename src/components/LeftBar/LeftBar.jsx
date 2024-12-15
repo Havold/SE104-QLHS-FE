@@ -18,9 +18,14 @@ import {
   SubjectOutlined,
 } from "@mui/icons-material";
 import { role } from "../../lib/data";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
+import { makeRequest } from "../../axios";
+import { useContext } from "react";
+import { AuthContext } from "../../context/authContext";
 
 const LeftBar = ({ className }) => {
+  const { setHasAccessToken } = useContext(AuthContext);
+  const navigate = useNavigate();
   const menus = [
     {
       title: "MENU",
@@ -153,7 +158,11 @@ const LeftBar = ({ className }) => {
           id: 3,
           icon: <LogoutRounded className="text-xl" />,
           title: "Logout",
-          href: "/logout",
+          onClick: async () => {
+            await makeRequest.post("/auth/logout");
+            setHasAccessToken(false);
+            navigate("/login");
+          },
           visible: ["admin", "teacher", "parent", "student"],
         },
       ],
@@ -182,7 +191,7 @@ const LeftBar = ({ className }) => {
                 {menu.items.map((item) => {
                   if (item.visible.includes(role))
                     return (
-                      <Link key={item.id} to={item.href}>
+                      <Link onClick={item.onClick} key={item.id} to={item.href}>
                         <div className="flex gap-2 items-center p-2 text-[gray] font-normal cursor-pointer hover:bg-webSkyLight">
                           {item.icon}
                           <span className="hidden lg:block text-[12px]">
