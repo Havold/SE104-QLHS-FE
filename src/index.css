@@ -122,7 +122,7 @@
 
 @layer base {
     :root {
-
+        
     }
     
     * {
@@ -170,6 +170,12 @@
 }
 
 @layer utilities {
+
+    .custom-background-image-login {
+        background: linear-gradient(#294652a9, #2946523c),
+        url('/public/assets/school.jpg');
+        background-size: cover;
+    };
 
     .custom-scrollbar-transparent::-webkit-scrollbar {
         width: 4px;

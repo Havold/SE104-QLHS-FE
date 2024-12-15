@@ -1,4 +1,9 @@
-import { createBrowserRouter, RouterProvider, Outlet } from "react-router-dom";
+import {
+  createBrowserRouter,
+  RouterProvider,
+  Outlet,
+  Navigate,
+} from "react-router-dom";
 import Register from "./pages/register/Register";
 import Admin from "./pages/admin/Admin";
 import Teacher from "./pages/teacher/Teacher";
@@ -21,9 +26,16 @@ import ListAnnouncements from "./pages/listAnnouncements/ListAnnouncements";
 import TeacherProfile from "./pages/teacherProfile/TeacherProfile";
 import StudentProfile from "./pages/studentProfile/StudentProfile";
 import ListDetailClasses from "./pages/listDetailClasses/ListDetailClasses";
+import { useContext } from "react";
+import { AuthContext } from "./context/authContext";
 
 function App() {
+  const { hasAccessToken } = useContext(AuthContext);
+
   const ProtectedRoute = ({ children }) => {
+    if (!hasAccessToken) {
+      return <Navigate to="/login" />;
+    }
     return children;
   };
   const Layout = () => {
