@@ -1,19 +1,14 @@
-import React, { useEffect, useState } from "react";
+import React, { useContext, useEffect, useState } from "react";
 import SearchList from "../../components/SearchList/SearchList";
-import {
-  AddRounded,
-  DeleteOutline,
-  SortRounded,
-  TuneRounded,
-  VisibilityOutlined,
-} from "@mui/icons-material";
+import { SortRounded, TuneRounded } from "@mui/icons-material";
 import Pagination from "../../components/Pagination/Pagination";
 import Table from "../../components/Table/Table";
-import { Form, Link, useSearchParams } from "react-router-dom";
-import { role, classesData } from "../../lib/data";
+import { useNavigate, useSearchParams } from "react-router-dom";
+import { role } from "../../lib/data";
 import { makeRequest } from "../../axios";
 import { ITEMS_PER_PAGE } from "../../lib/settings";
 import FormModal from "../../components/FormModal/FormModal";
+import { AuthContext } from "../../context/authContext";
 
 const columns = [
   {
@@ -44,13 +39,6 @@ const renderRows = (data) => {
         <td className="hidden lg:table-cell">{item.grade.level}</td>
         <td>
           <div className="flex gap-4">
-            {/* <Link to={`/list/teachers/${item.teacherId}`}>
-              <button className="flex w-8 h-8 rounded-full bg-webSky items-center justify-center">
-                <VisibilityOutlined
-                  style={{ fontSize: 16, color: "whitesmoke" }}
-                />
-              </button>
-            </Link> */}
             {role === "admin" ? (
               <>
                 <FormModal table="class" type="edit" />
@@ -69,9 +57,11 @@ const renderRows = (data) => {
 };
 
 const ListClasses = () => {
+  const { currentUser } = useContext(AuthContext);
   const [classes, setClasses] = useState();
   const [total, setTotal] = useState();
   const [searchParams, setSearchParams] = useSearchParams();
+  const navigate = useNavigate();
   const page = searchParams.get("page")
     ? parseInt(searchParams.get("page"))
     : 1;
@@ -80,6 +70,13 @@ const ListClasses = () => {
     : ITEMS_PER_PAGE;
 
   useEffect(() => {
+    if (
+      !currentUser.role.authorities
+        .map((authority) => authority.name)
+        .includes("View")
+    ) {
+      navigate("/error");
+    }
     const fetchData = async () => {
       const queryString = new URLSearchParams(searchParams);
       queryString.set("page", page);

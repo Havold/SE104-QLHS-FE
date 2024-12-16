@@ -26,6 +26,7 @@ export const AuthContextProvider = ({ children }) => {
     });
     setHasAccessToken(true);
     setCurrentUser(res.data);
+    return res.data.role.name;
   };
 
   useEffect(() => {

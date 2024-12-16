@@ -28,10 +28,11 @@ import StudentProfile from "./pages/studentProfile/StudentProfile";
 import ListDetailClasses from "./pages/listDetailClasses/ListDetailClasses";
 import { useContext } from "react";
 import { AuthContext } from "./context/authContext";
+import Error from "./pages/error/Error";
 
 function App() {
-  const { hasAccessToken } = useContext(AuthContext);
-
+  const { hasAccessToken, currentUser } = useContext(AuthContext);
+  const role = currentUser?.role.name.toLowerCase();
   const ProtectedRoute = ({ children }) => {
     if (!hasAccessToken) {
       return <Navigate to="/login" />;
@@ -67,8 +68,8 @@ function App() {
       ),
       children: [
         {
-          path: "/admin",
-          element: <Admin />,
+          path: "/",
+          element: role === "admin" ? <Admin /> : <Student />,
         },
         {
           path: "/teacher",
@@ -82,6 +83,7 @@ function App() {
           path: "/student",
           element: <Student />,
         },
+        { path: "/error", element: <Error /> },
         {
           path: "/list/teachers",
           element: <ListTeachers />,

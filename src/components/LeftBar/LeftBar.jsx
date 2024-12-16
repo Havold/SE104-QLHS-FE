@@ -24,7 +24,7 @@ import { useContext } from "react";
 import { AuthContext } from "../../context/authContext";
 
 const LeftBar = ({ className }) => {
-  const { setHasAccessToken } = useContext(AuthContext);
+  const { setHasAccessToken, currentUser } = useContext(AuthContext);
   const navigate = useNavigate();
   const menus = [
     {
@@ -35,7 +35,8 @@ const LeftBar = ({ className }) => {
           icon: <HomeOutlined fontSize="small" />,
           title: "Home",
           href: "/",
-          visible: ["admin", "teacher", "parent", "student"],
+          // visible: ["admin", "teacher", "parent", "student"],
+          visible: true,
         },
         // {
         //   id: 2,
@@ -49,7 +50,9 @@ const LeftBar = ({ className }) => {
           icon: <PeopleAltOutlined fontSize="small" />,
           title: "Students",
           href: "/list/students",
-          visible: ["admin", "teacher"],
+          visible: currentUser.role.authorities
+            .map((authority) => authority.name)
+            .includes("View"),
         },
         // {
         //   id: 4,
@@ -63,21 +66,27 @@ const LeftBar = ({ className }) => {
           icon: <SubjectOutlined fontSize="small" />,
           title: "Subjects",
           href: "/list/subjects",
-          visible: ["admin", "teacher"],
+          visible: currentUser.role.authorities
+            .map((authority) => authority.name)
+            .includes("View"),
         },
         {
           id: 6,
           icon: <HouseOutlined fontSize="small" />,
           title: "Classes",
           href: "/list/classes",
-          visible: ["admin", "teacher"],
+          visible: currentUser.role.authorities
+            .map((authority) => authority.name)
+            .includes("View"),
         },
         {
           id: 7,
           icon: <LocalLibraryOutlined fontSize="small" />,
           title: "Detail Classes",
           href: "/list/detail-classes",
-          visible: ["admin", "teacher"],
+          visible: currentUser.role.authorities
+            .map((authority) => authority.name)
+            .includes("View"),
         },
         // {
         //   id: 7,
@@ -105,21 +114,23 @@ const LeftBar = ({ className }) => {
           icon: <FactCheckOutlined fontSize="small" />,
           title: "Results",
           href: "/list/results",
-          visible: ["admin", "teacher", "parent", "student"],
+          visible: true,
         },
         {
           id: 11,
           icon: <Diversity3Outlined fontSize="small" />,
           title: "Attendance",
           href: "/list/attendance",
-          visible: ["admin", "teacher", "parent", "student"],
+          visible: currentUser.role.authorities
+            .map((authority) => authority.name)
+            .includes("View"),
         },
         {
           id: 12,
           icon: <CalendarMonthOutlined fontSize="small" />,
           title: "Events",
           href: "/list/events",
-          visible: ["admin", "teacher", "parent", "student"],
+          visible: true,
         },
         // {
         //   id: 13,
@@ -133,7 +144,7 @@ const LeftBar = ({ className }) => {
           icon: <CampaignOutlined fontSize="small" />,
           title: "Announcements",
           href: "/list/announcements",
-          visible: ["admin", "teacher", "parent", "student"],
+          visible: true,
         },
       ],
     },
@@ -145,14 +156,14 @@ const LeftBar = ({ className }) => {
           icon: <AccountCircleOutlined fontSize="small" />,
           title: "Profile",
           href: "/profile",
-          visible: ["admin", "teacher", "parent", "student"],
+          visible: true,
         },
         {
           id: 2,
           icon: <SettingsSuggestOutlined fontSize="small" />,
           title: "Settings",
           href: "/settings",
-          visible: ["admin", "teacher", "parent", "student"],
+          visible: true,
         },
         {
           id: 3,
@@ -163,7 +174,7 @@ const LeftBar = ({ className }) => {
             setHasAccessToken(false);
             navigate("/login");
           },
-          visible: ["admin", "teacher", "parent", "student"],
+          visible: true,
         },
       ],
     },
@@ -189,7 +200,7 @@ const LeftBar = ({ className }) => {
               </h3>
               <div className="flex flex-col gap-2">
                 {menu.items.map((item) => {
-                  if (item.visible.includes(role))
+                  if (item.visible)
                     return (
                       <Link onClick={item.onClick} key={item.id} to={item.href}>
                         <div className="flex gap-2 items-center p-2 text-[gray] font-normal cursor-pointer hover:bg-webSkyLight">

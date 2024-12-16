@@ -23,19 +23,14 @@ const Login = () => {
     formState: { errors },
   } = useForm({ resolver: zodResolver(schema) });
   const navigate = useNavigate();
-  const { login, currentUser } = useContext(AuthContext);
+  const { login } = useContext(AuthContext);
   const [err, setErr] = useState();
 
   const onValid = async (data) => {
     setErr(null);
     try {
       await login(data);
-      const role = currentUser.role.name.toLowerCase();
-      if (role === "admin") {
-        navigate("/admin");
-      } else {
-        navigate("/student");
-      }
+      navigate("/");
     } catch (error) {
       if (error.response?.data) {
         setErr(error.response.data);
