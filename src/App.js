@@ -79,10 +79,6 @@ function App() {
           path: "/parent",
           element: <Parent />,
         },
-        {
-          path: "/student",
-          element: <Student />,
-        },
         { path: "/error", element: <Error /> },
         {
           path: "/list/teachers",
