@@ -29,6 +29,8 @@ import ListDetailClasses from "./pages/listDetailClasses/ListDetailClasses";
 import { useContext } from "react";
 import { AuthContext } from "./context/authContext";
 import Error from "./pages/error/Error";
+import { ToastContainer } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 
 function App() {
   const { hasAccessToken, currentUser } = useContext(AuthContext);
@@ -150,6 +152,11 @@ function App() {
   return (
     <div className="App">
       <RouterProvider router={router} />
+      <ToastContainer
+        position="bottom-right"
+        theme="dark"
+        style={{ fontSize: "14px" }}
+      />
     </div>
   );
 }

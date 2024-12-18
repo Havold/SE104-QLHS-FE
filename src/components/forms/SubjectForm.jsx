@@ -1,7 +1,10 @@
 import { zodResolver } from "@hookform/resolvers/zod";
+import { PrintSharp } from "@mui/icons-material";
 import React from "react";
 import { useForm } from "react-hook-form";
 import { z } from "zod";
+import { makeRequest } from "../../axios";
+import { toast } from "react-toastify";
 
 // Tạo schema
 const schema = z.object({
@@ -18,7 +21,21 @@ const SubjectForm = ({ data, type = "create" }) => {
     type === "create"
       ? "bg-webYellow hover:bg-webYellowLight"
       : "bg-webSkyBold hover:bg-webSky";
-  const onSubmit = handleSubmit((data) => console.log(data));
+
+  const onValid = async (data) => {
+    try {
+      await makeRequest.post("/subjects", { name: data.name });
+      toast("New subject has been added!", { type: "success" });
+      window.location.reload();
+    } catch (error) {
+      if (error) {
+        toast(error.response.data, {
+          type: "error",
+        });
+      }
+    }
+  };
+  const onSubmit = handleSubmit(onValid);
 
   return (
     <form
