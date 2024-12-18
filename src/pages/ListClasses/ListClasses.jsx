@@ -28,10 +28,10 @@ const columns = [
 
 const renderRows = (data) => {
   return data ? (
-    data.map((item) => (
+    data.map((item, index) => (
       <tr
         className="text-sm border-b-2 border-gray-100 even:bg-slate-100 hover:bg-webPurpleLight "
-        key={item.id}
+        key={index}
       >
         <td className="flex items-center p-4">
           <h2 className="text-[12px] font-semibold">{item.name}</h2>
