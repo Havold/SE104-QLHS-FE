@@ -4,10 +4,13 @@ import {
   DeleteOutline,
   EditOutlined,
 } from "@mui/icons-material";
-import React, { lazy, Suspense, useEffect, useState } from "react";
+import React, { lazy, Suspense, useCallback, useEffect, useState } from "react";
 import SubjectForm from "../forms/SubjectForm";
 import ClassForm from "../forms/ClassForm";
 import DetailClassForm from "../forms/DetailClassForm";
+import { useMutation, useQueryClient } from "@tanstack/react-query";
+import { makeRequest } from "../../axios";
+import { toast } from "react-toastify";
 
 const TeacherForm = lazy(() =>
   import("../forms/TeacherForm").then((module) => ({
@@ -21,9 +24,15 @@ const StudentForm = lazy(() =>
 );
 
 const forms = {
-  teacher: (data, type) => <TeacherForm data={data} type={type} />,
-  student: (data, type) => <StudentForm data={data} type={type} />,
-  subject: (data, type) => <SubjectForm data={data} type={type} />,
+  teacher: (data, type, setOpenForm) => (
+    <TeacherForm setOpenForm={setOpenForm} data={data} type={type} />
+  ),
+  student: (data, type, setOpenForm) => (
+    <StudentForm setOpenForm={setOpenForm} data={data} type={type} />
+  ),
+  subject: (data, type, setOpenForm) => (
+    <SubjectForm setOpenForm={setOpenForm} data={data} type={type} />
+  ),
   class: (data, type) => <ClassForm data={data} type={type} />,
   detailClass: (data, type) => <DetailClassForm data={data} type={type} />,
 };
@@ -31,9 +40,30 @@ const forms = {
 const FormModal = ({ table, type, id, data }) => {
   const [openForm, setOpenForm] = useState(false);
   const Form = () => {
+    const queryClient = useQueryClient();
+    const mutation = useMutation({
+      mutationFn: ({ id, table }) => {
+        return makeRequest.delete(`/${table}s/${id}`).then((res) => res.data);
+      },
+      onSuccess: (data, { table }) => {
+        queryClient.invalidateQueries({ queryKey: [`${table}s`] });
+        toast(data, { type: "success" });
+      },
+    });
+
+    const handleDelete = useCallback(
+      (id, table) => {
+        mutation.mutate({ id, table });
+      },
+      [mutation]
+    );
+
     return type === "delete" ? (
       <form
-        action=""
+        onSubmit={(e) => {
+          e.preventDefault();
+          handleDelete(id, table);
+        }}
         className="flex flex-col items-center justify-center gap-2"
       >
         <span>
@@ -44,7 +74,7 @@ const FormModal = ({ table, type, id, data }) => {
         </button>
       </form>
     ) : (
-      forms[table](data, type)
+      forms[table](data, type, setOpenForm)
     );
   };
   useEffect(() => {

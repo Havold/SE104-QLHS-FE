@@ -14,17 +14,13 @@ import { role, subjectsData } from "../../lib/data";
 import FormModal from "../../components/FormModal/FormModal";
 import { makeRequest } from "../../axios";
 import { ITEMS_PER_PAGE } from "../../lib/settings";
+import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
 
 const columns = [
   {
     header: "Subject Name",
     accessor: "studentsName",
   },
-  // {
-  //   header: 'Teachers',
-  //   accessor: 'teachers',
-  //   className: 'hidden md:table-cell'
-  // },
   {
     header: "Actions",
     accessor: "actions",
@@ -41,12 +37,11 @@ const renderRows = (data) => {
         <td className="flex items-center p-4">
           <h2 className="text-[12px] font-semibold">{item.name}</h2>
         </td>
-        {/* <td className="hidden md:table-cell">{item.teachers.join(", ")}</td> */}
         <td>
           <div className="flex gap-4">
-            <FormModal table="subject" type="edit" />
+            <FormModal table="subject" type="edit" data={item} />
             {role === "admin" ? (
-              <FormModal table="subject" type="delete" />
+              <FormModal table="subject" type="delete" id={item.id} />
             ) : (
               <></>
             )}
@@ -60,26 +55,24 @@ const renderRows = (data) => {
 };
 
 const ListSubjects = () => {
-  const [subjects, setSubjects] = useState();
-  const [total, setTotal] = useState();
   const [searchParams, setSearchParams] = useSearchParams();
   let page = searchParams.get("page") ? parseInt(searchParams.get("page")) : 1;
   let pageItems = searchParams.get("pageItems")
     ? parseInt(searchParams.get("pageItems"))
     : ITEMS_PER_PAGE;
-  useEffect(() => {
-    const fetchData = async () => {
+
+  const { isPending, error, data } = useQuery({
+    queryKey: ["subjects"],
+    queryFn: () => {
       const queryString = new URLSearchParams(searchParams);
       queryString.set("page", page);
       queryString.set("pageItems", pageItems);
-      const res = await makeRequest.get(`/subjects?${queryString}`);
-      setSubjects(res.data.subjects);
-      setTotal(res.data.totalCount);
-    };
-    fetchData();
-  }, [searchParams, page, pageItems]);
+      return makeRequest.get(`/subjects?${queryString}`).then((res) => {
+        return res.data;
+      });
+    },
+  });
 
-  console.log(total);
   return (
     <div className="flex flex-col gap-4 flex-1 p-4 m-2 rounded-xl bg-white">
       {/* TOP */}
@@ -101,9 +94,21 @@ const ListSubjects = () => {
         </div>
       </div>
       {/* LIST */}
-      <Table columns={columns} renderRows={renderRows} data={subjects} />
+      {error ? (
+        "Something went wrong!"
+      ) : isPending ? (
+        "Loading..."
+      ) : (
+        <Table columns={columns} renderRows={renderRows} data={data.subjects} />
+      )}
       {/* PAGINATION */}
-      <Pagination page={page} total={total} />
+      {error ? (
+        "Something went wrong!"
+      ) : isPending ? (
+        <></>
+      ) : (
+        <Pagination page={data.currentPage} total={data.totalCount} />
+      )}
     </div>
   );
 };

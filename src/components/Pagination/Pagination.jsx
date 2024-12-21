@@ -1,16 +1,26 @@
 import React from "react";
 import { ITEMS_PER_PAGE } from "../../lib/settings";
 import { useLocation, useNavigate } from "react-router-dom";
+import { useMutation, useQueryClient } from "@tanstack/react-query";
 
 const Pagination = ({ page, total }) => {
   const navigate = useNavigate();
   const location = useLocation();
+  const queryClient = useQueryClient();
   const params = new URLSearchParams(location.search);
   const canNext = total - ITEMS_PER_PAGE * page > 0;
   const canPrev = page > 1;
+
+  const mutation = useMutation({
+    mutationFn: () => {},
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ["subjects"] });
+    },
+  });
   const changePage = (number) => {
     params.set("page", number);
     navigate(`${location.pathname}?${params}`);
+    mutation.mutate();
   };
 
   return (

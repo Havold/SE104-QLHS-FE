@@ -31,6 +31,9 @@ import { AuthContext } from "./context/authContext";
 import Error from "./pages/error/Error";
 import { ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
+import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
+
+const queryClient = new QueryClient();
 
 function App() {
   const { hasAccessToken, currentUser } = useContext(AuthContext);
@@ -151,12 +154,14 @@ function App() {
   ]);
   return (
     <div className="App">
-      <RouterProvider router={router} />
-      <ToastContainer
-        position="bottom-right"
-        theme="dark"
-        style={{ fontSize: "14px" }}
-      />
+      <QueryClientProvider client={queryClient}>
+        <RouterProvider router={router} />
+        <ToastContainer
+          position="bottom-right"
+          theme="dark"
+          style={{ fontSize: "14px" }}
+        />
+      </QueryClientProvider>
     </div>
   );
 }

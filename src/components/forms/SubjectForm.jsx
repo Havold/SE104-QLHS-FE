@@ -5,13 +5,15 @@ import { useForm } from "react-hook-form";
 import { z } from "zod";
 import { makeRequest } from "../../axios";
 import { toast } from "react-toastify";
+import { useMutation, useQueryClient } from "@tanstack/react-query";
 
 // Tạo schema
 const schema = z.object({
   name: z.string().min(1, { message: "Name is required!" }),
 });
 
-const SubjectForm = ({ data, type = "create" }) => {
+const SubjectForm = ({ data, type = "create", setOpenForm }) => {
+  const queryClient = useQueryClient();
   const {
     register,
     handleSubmit,
@@ -22,11 +24,33 @@ const SubjectForm = ({ data, type = "create" }) => {
       ? "bg-webYellow hover:bg-webYellowLight"
       : "bg-webSkyBold hover:bg-webSky";
 
+  const mutation = useMutation({
+    mutationFn: ({ newSubject, type }) => {
+      if (type === "create")
+        return makeRequest
+          .post("/subjects", { name: newSubject })
+          .then((res) => res.data);
+      else
+        return makeRequest
+          .put(`/subjects/${data.id}`, { name: newSubject })
+          .then((res) => res.data);
+    },
+    onSuccess: (data) => {
+      setOpenForm(false);
+      queryClient.invalidateQueries({ queryKey: ["subjects"] });
+      toast(data, { type: "success" });
+    },
+    onError: (error) => {
+      toast(error.response.data, {
+        type: "error",
+      });
+    },
+  });
+
   const onValid = async (data) => {
     try {
-      await makeRequest.post("/subjects", { name: data.name });
-      toast("New subject has been added!", { type: "success" });
-      window.location.reload();
+      const newSubject = data.name;
+      mutation.mutate({ newSubject, type });
     } catch (error) {
       if (error) {
         toast(error.response.data, {
@@ -56,6 +80,7 @@ const SubjectForm = ({ data, type = "create" }) => {
           key="name"
           className="text-[14px] p-2 h-[40px] border border-gray-400 outline-webSkyBold caret-webSkyBold transition-colors rounded-md"
           id="name"
+          defaultValue={data?.name}
           {...register("name")}
         />
         {errors.name?.message ? (
