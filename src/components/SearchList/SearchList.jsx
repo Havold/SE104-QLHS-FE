@@ -1,4 +1,5 @@
 import { SearchRounded } from "@mui/icons-material";
+import { useMutation, useQueryClient } from "@tanstack/react-query";
 import React, { useState } from "react";
 import { useLocation, useNavigate, useSearchParams } from "react-router-dom";
 
@@ -9,9 +10,19 @@ const SearchList = () => {
   const [inputSearch, setInputSearch] = useState(
     searchParams.get("search") ? searchParams.get("search") : ""
   );
+  const queryClient = useQueryClient();
+
+  const mutation = useMutation({
+    mutationFn: (inputSearch) => {
+      navigate(`${location.pathname}?search=${inputSearch}`, { replace: true });
+    },
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ["subjects"] });
+    },
+  });
   const handleSubmit = (e) => {
     e.preventDefault();
-    navigate(`${location.pathname}?search=${inputSearch}`, { replace: true });
+    mutation.mutate(inputSearch);
   };
 
   return (
