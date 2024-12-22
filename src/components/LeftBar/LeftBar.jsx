@@ -11,13 +11,13 @@ import {
   HouseOutlined,
   LocalLibraryOutlined,
   LogoutRounded,
+  Numbers,
   PeopleAltOutlined,
   ReviewsOutlined,
   SchoolOutlined,
   SettingsSuggestOutlined,
   SubjectOutlined,
 } from "@mui/icons-material";
-import { role } from "../../lib/data";
 import { Link, useNavigate } from "react-router-dom";
 import { makeRequest } from "../../axios";
 import { useContext } from "react";
@@ -82,6 +82,15 @@ const LeftBar = ({ className }) => {
         },
         {
           id: 7,
+          icon: <Numbers fontSize="small" />,
+          title: "Grades",
+          href: "/list/grades",
+          visible: currentUser.role.authorities
+            .map((authority) => authority.name)
+            .includes("View"),
+        },
+        {
+          id: 8,
           icon: <LocalLibraryOutlined fontSize="small" />,
           title: "Detail Classes",
           href: "/list/detail-classes",

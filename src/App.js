@@ -32,6 +32,7 @@ import Error from "./pages/error/Error";
 import { ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
+import ListGrades from "./pages/listGrades/ListGrades";
 
 const queryClient = new QueryClient();
 
@@ -112,6 +113,10 @@ function App() {
         {
           path: "/list/classes",
           element: <ListClasses />,
+        },
+        {
+          path: "/list/grades",
+          element: <ListGrades />,
         },
         {
           path: "/list/detail-classes",
