@@ -16,7 +16,7 @@ const InputField = ({
       {type === "select" ? (
         <select
           className="text-[12px] p-2 h-[40px] border border-gray-400 outline-webSkyBold caret-webSkyBold transition-colors rounded-md"
-          defaultValue={options[0]}
+          defaultValue={defaultValue}
           {...register(name)}
         >
           {options.map((option, index) => (

@@ -12,6 +12,7 @@ import { role } from "../../lib/data";
 import FormModal from "../../components/FormModal/FormModal";
 import { makeRequest } from "../../axios";
 import { ITEMS_PER_PAGE } from "../../lib/settings";
+import { useQuery } from "@tanstack/react-query";
 
 const columns = [
   {
@@ -54,7 +55,11 @@ const renderRows = (data) => {
         <td className="flex items-center gap-4 p-4">
           <img
             className="md:hidden lg:block w-8 h-8 rounded-full object-cover"
-            src={item.img ? item.img : "/assets/noAvatar.jpg"}
+            src={
+              item.img
+                ? `${process.env.REACT_APP_API_URL}${item.img}`
+                : "/assets/noAvatar.jpg"
+            }
             alt="profilePic"
           />
           <div className="flex flex-col">
@@ -94,27 +99,27 @@ const renderRows = (data) => {
 };
 
 const ListStudents = () => {
-  const [students, setStudents] = useState();
-  const [total, setTotal] = useState();
   const [searchParams, setSearchParams] = useSearchParams();
   let page = searchParams.get("page") ? parseInt(searchParams.get("page")) : 1;
   let pageItems = searchParams.get("pageItems")
     ? parseInt(searchParams.get("pageItems"))
     : ITEMS_PER_PAGE;
 
-  useEffect(() => {
-    const fetchData = async () => {
+  console.log(process.env.REACT_APP_API_URL);
+
+  const { isPending, error, data } = useQuery({
+    queryKey: ["students"],
+    queryFn: () => {
       const queryString = new URLSearchParams(searchParams);
       queryString.set("page", page);
       queryString.set("pageItems", pageItems);
-      const res = await makeRequest.get(`/students?${queryString}`);
-      console.log(res.data);
-      setStudents(res.data.students);
-      setTotal(res.data.totalCount);
-    };
+      return makeRequest.get(`/students?${queryString}`).then((res) => {
+        return res.data;
+      });
+    },
+  });
 
-    fetchData();
-  }, [searchParams, page, pageItems]);
+  console.log(data);
 
   return (
     <div className="flex flex-col gap-4 flex-1 p-4 m-2 rounded-xl bg-white">
@@ -137,9 +142,21 @@ const ListStudents = () => {
         </div>
       </div>
       {/* LIST */}
-      <Table columns={columns} renderRows={renderRows} data={students} />
+      {error ? (
+        "Something went wrong!"
+      ) : isPending ? (
+        "Loading..."
+      ) : (
+        <Table columns={columns} renderRows={renderRows} data={data.students} />
+      )}
       {/* PAGINATION */}
-      <Pagination page={page} total={total} />
+      {error ? (
+        "Something went wrong!"
+      ) : isPending ? (
+        <></>
+      ) : (
+        <Pagination page={data.currentPage} total={data.totalCount} />
+      )}
     </div>
   );
 };

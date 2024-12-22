@@ -1,10 +1,12 @@
 import {
+  BoyRounded,
   BusinessCenterRounded,
   CakeRounded,
   EmailRounded,
   HouseRounded,
   LocalLibraryRounded,
   LocalPhoneRounded,
+  LockClockRounded,
   SchoolRounded,
 } from "@mui/icons-material";
 import BigCalendar from "../../components/BigCalendar/BigCalendar";
@@ -18,8 +20,6 @@ import moment from "moment";
 
 const StudentProfile = () => {
   const [student, setStudent] = useState("");
-  const avatar =
-    "https://i.pinimg.com/564x/ca/e9/5f/cae95f1e436fed6592e922507a785f0b.jpg";
   const studentId = useLocation().pathname.split("/")[3];
   useEffect(() => {
     const fetchData = async () => {
@@ -39,7 +39,11 @@ const StudentProfile = () => {
           <div className="flex flex-1 p-4 gap-4 items-center bg-webSky rounded-xl custom-box-shadow">
             <img
               className="w-[160px] h-[160px] rounded-full object-cover"
-              src={student.img ? student.img : "/assets/noAvatar.jpg"}
+              src={
+                student.img
+                  ? `${process.env.REACT_APP_API_URL}${student.img}`
+                  : "/assets/noAvatar.jpg"
+              }
               alt="profilePic"
             />
             <div className="flex flex-col gap-2">
@@ -52,6 +56,10 @@ const StudentProfile = () => {
               <p className="text-[16px] text-gray-400">{student.address}</p>
               {/* Information item */}
               <div className="flex flex-wrap gap-1">
+                <div className="w-full sm:w-[48%] md:w-full lg:w-[48%] xl:w-full flex gap-1 items-center">
+                  <LockClockRounded style={{ fontSize: 14 }} />
+                  <span className="text-[12px]">{student?.role?.name}</span>
+                </div>
                 <div className="w-full sm:w-[48%] md:w-full lg:w-[48%] xl:w-full flex gap-1 items-center">
                   <CakeRounded style={{ fontSize: 14 }} />
                   <span className="text-[12px]">
