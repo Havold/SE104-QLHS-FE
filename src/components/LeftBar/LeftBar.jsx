@@ -165,7 +165,7 @@ const LeftBar = ({ className }) => {
           id: 1,
           icon: <AccountCircleOutlined fontSize="small" />,
           title: "Profile",
-          href: "/profile",
+          href: `/list/students/${currentUser.id}`,
           visible: true,
         },
         {
