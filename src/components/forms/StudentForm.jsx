@@ -38,7 +38,10 @@ const schema = z.object({
 });
 
 export const StudentForm = ({ data, type = "create", setOpenForm }) => {
-  const [profilePic, setProfilePic] = useState();
+  const [changeImg, setChangImg] = useState(false);
+  const [profilePic, setProfilePic] = useState(
+    data?.img ? { preview: `${data.img}` } : { preview: null }
+  );
   const btnColor =
     type === "create"
       ? "bg-webYellow hover:bg-webYellowLight"
@@ -47,6 +50,7 @@ export const StudentForm = ({ data, type = "create", setOpenForm }) => {
   const queryClient = useQueryClient();
 
   const handleChangeImg = (e) => {
+    setChangImg(true);
     const file = e.target.files[0];
     if (file) {
       file.preview = URL.createObjectURL(file);
@@ -73,11 +77,15 @@ export const StudentForm = ({ data, type = "create", setOpenForm }) => {
 
   const mutation = useMutation({
     mutationFn: ({ newStudent, type }) => {
+      console.log(newStudent);
       if (type === "create") {
         return makeRequest
           .post("/students/", newStudent)
           .then((res) => res.data);
-      }
+      } else
+        return makeRequest
+          .put(`/students/${data.id}`, newStudent)
+          .then((res) => res.data);
     },
     onSuccess: (data) => {
       setOpenForm(false);
@@ -92,10 +100,10 @@ export const StudentForm = ({ data, type = "create", setOpenForm }) => {
   });
 
   const onValid = async (data) => {
-    let imgUrl = "";
-    if (profilePic) {
+    let imgUrl = null;
+    if (profilePic && changeImg) {
       imgUrl = await upload();
-    }
+    } else imgUrl = profilePic?.preview;
     const newStudent = { ...data, img: imgUrl };
     mutation.mutate({ newStudent, type });
   };
@@ -216,12 +224,16 @@ export const StudentForm = ({ data, type = "create", setOpenForm }) => {
                     if (uploadProfilePicRef.current) {
                       uploadProfilePicRef.current.value = "";
                     }
-                    setProfilePic(null);
+                    setProfilePic({ preview: null });
                   }}
                 />
                 <label htmlFor="uploadProfilePic">
                   <img
-                    src={profilePic.preview}
+                    src={
+                      profilePic && changeImg === false
+                        ? `${process.env.REACT_APP_API_URL}${profilePic.preview}`
+                        : profilePic.preview
+                    }
                     alt="ProfilePic"
                     className="w-[80px] h-[80px] object-cover rounded-full cursor-pointer"
                   />
