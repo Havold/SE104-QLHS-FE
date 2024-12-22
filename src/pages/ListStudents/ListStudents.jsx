@@ -85,7 +85,7 @@ const renderRows = (data) => {
               </button>
             </Link>
             {role === "admin" ? (
-              <FormModal type="delete" table="student" />
+              <FormModal type="delete" table="student" id={item.id} />
             ) : (
               <></>
             )}
