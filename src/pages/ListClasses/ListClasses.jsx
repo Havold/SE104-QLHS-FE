@@ -58,11 +58,7 @@ const renderRows = (data) => {
 };
 
 const ListClasses = () => {
-  const { currentUser } = useContext(AuthContext);
-  const [classes, setClasses] = useState();
-  const [total, setTotal] = useState();
   const [searchParams, setSearchParams] = useSearchParams();
-  const navigate = useNavigate();
   const page = searchParams.get("page")
     ? parseInt(searchParams.get("page"))
     : 1;
