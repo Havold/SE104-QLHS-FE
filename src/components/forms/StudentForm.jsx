@@ -89,7 +89,7 @@ export const StudentForm = ({ data, type = "create", setOpenForm }) => {
     },
     onSuccess: (data) => {
       setOpenForm(false);
-      queryClient.invalidateQueries({ queryKey: ["students"] });
+      queryClient.invalidateQueries({ queryKey: ["profile"] });
       toast(data, { type: "success" });
     },
     onError: (err) => {

@@ -17,113 +17,131 @@ import FormModal from "../../components/FormModal/FormModal";
 import { useEffect, useState } from "react";
 import { makeRequest } from "../../axios";
 import moment from "moment";
+import { useQuery } from "@tanstack/react-query";
 
 const StudentProfile = () => {
   const [student, setStudent] = useState("");
   const studentId = useLocation().pathname.split("/")[3];
-  useEffect(() => {
-    const fetchData = async () => {
-      const res = await makeRequest.get(`students/${studentId}`);
-      setStudent(res.data);
-    };
-    fetchData();
-  }, [studentId]);
+  const { isPending, error, data } = useQuery({
+    queryKey: ["profile"],
+    queryFn: () => {
+      return makeRequest.get(`/students/${studentId}`).then((res) => {
+        return res.data;
+      });
+    },
+  });
+  // useEffect(() => {
+  //   const fetchData = async () => {
+  //     const res = await makeRequest.get(`students/${studentId}`);
+  //     setStudent(res.data);
+  //   };
+  //   fetchData();
+  // }, [studentId]);
   console.log(student);
   return (
     <div className="flex flex-col xl:flex-row flex-1 gap-3 p-4 m-2 rounded-xl">
       {/* LEFT */}
       <div className="flex flex-col gap-4 w-full xl:w-2/3">
         {/* TOP */}
-        <div className="flex flex-col gap-2 md:flex-row">
-          {/* USER CARD */}
-          <div className="flex flex-1 p-4 gap-4 items-center bg-webSky rounded-xl custom-box-shadow">
-            <img
-              className="w-[160px] h-[160px] rounded-full object-cover"
-              src={
-                student.img
-                  ? `${process.env.REACT_APP_API_URL}${student.img}`
-                  : "/assets/noAvatar.jpg"
-              }
-              alt="profilePic"
-            />
-            <div className="flex flex-col gap-2">
-              <div className="flex gap-2">
-                <h2 className="text-[24px] font-semibold">
-                  {student.fullName}
-                </h2>
-                <FormModal type="edit" table="student" data={student} />
-              </div>
-              <p className="text-[16px] text-gray-400">{student.address}</p>
-              {/* Information item */}
-              <div className="flex flex-wrap gap-1">
-                <div className="w-full sm:w-[48%] md:w-full lg:w-[48%] xl:w-full flex gap-1 items-center">
-                  <LockClockRounded style={{ fontSize: 14 }} />
-                  <span className="text-[12px]">{student?.role?.name}</span>
+        {error ? (
+          "Something went wrong!"
+        ) : isPending ? (
+          "Loading... "
+        ) : (
+          <div className="flex flex-col gap-2 md:flex-row">
+            {/* USER CARD */}
+            <div className="flex flex-1 p-4 gap-4 items-center bg-webSky rounded-xl custom-box-shadow">
+              <img
+                className="w-[160px] h-[160px] rounded-full object-cover"
+                src={
+                  data.img
+                    ? `${process.env.REACT_APP_API_URL}${data.img}`
+                    : "/assets/noAvatar.jpg"
+                }
+                alt="profilePic"
+              />
+              <div className="flex flex-col gap-2">
+                <div className="flex gap-2">
+                  <h2 className="text-[24px] font-semibold">{data.fullName}</h2>
+                  <FormModal type="edit" table="student" data={data} />
                 </div>
-                <div className="w-full sm:w-[48%] md:w-full lg:w-[48%] xl:w-full flex gap-1 items-center">
-                  <CakeRounded style={{ fontSize: 14 }} />
-                  <span className="text-[12px]">
-                    {moment(student.birth).format("MMM Do YYYY")}
+                <p className="text-[16px] text-gray-400">{data.address}</p>
+                {/* Information item */}
+                <div className="flex flex-wrap gap-1">
+                  <div className="w-full sm:w-[48%] md:w-full lg:w-[48%] xl:w-full flex gap-1 items-center">
+                    <LockClockRounded style={{ fontSize: 14 }} />
+                    <span className="text-[12px]">{data?.role?.name}</span>
+                  </div>
+                  <div className="w-full sm:w-[48%] md:w-full lg:w-[48%] xl:w-full flex gap-1 items-center">
+                    <CakeRounded style={{ fontSize: 14 }} />
+                    <span className="text-[12px]">
+                      {moment(data.birth).format("MMM Do YYYY")}
+                    </span>
+                  </div>
+                  <div className="w-full sm:w-[48%] md:w-full lg:w-[48%] xl:w-full flex gap-1 items-center">
+                    <EmailRounded style={{ fontSize: 14 }} />
+                    <span className="text-[12px]">{data.email}</span>
+                  </div>
+                  <div className="w-full sm:w-[48%] md:w-full lg:w-[48%] xl:w-full flex gap-1 items-center">
+                    <LocalPhoneRounded style={{ fontSize: 14 }} />
+                    <span className="text-[12px]">{data.phone}</span>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            {/* ITEM CARD */}
+            <div className="flex-1 flex justify-center gap-2 flex-wrap">
+              <div className="w-full sm:w-[48%] md:w-full lg:w-[48%] flex items-center gap-3 p-4 rounded-xl bg-white custom-box-shadow">
+                <BusinessCenterRounded
+                  style={{ fontSize: 28, color: "#CFCEFF" }}
+                />
+                <div className="flex flex-col">
+                  <h3 className="text-[20px] font-medium">90%</h3>
+                  <span className="text-[14px] text-gray-400">Attendance</span>
+                </div>
+              </div>
+              <div className="w-full sm:w-[48%] md:w-full lg:w-[48%] flex items-center gap-3 p-4 rounded-xl bg-white custom-box-shadow">
+                <SchoolRounded style={{ fontSize: 28, color: "#CFCEFF" }} />
+                <div className="flex flex-col">
+                  <h3 className="text-[20px] font-medium">
+                    {data.studentClasses ? (
+                      data.studentClasses[0]?.classSchoolYear.class.grade.level
+                    ) : (
+                      <></>
+                    )}
+                  </h3>
+                  <span className="text-[14px] text-gray-400">Grade</span>
+                </div>
+              </div>
+              <div className="w-full sm:w-[48%] md:w-full lg:w-[48%] flex items-center gap-3 p-4 rounded-xl bg-white custom-box-shadow">
+                <LocalLibraryRounded
+                  style={{ fontSize: 28, color: "#CFCEFF" }}
+                />
+                <div className="flex flex-col">
+                  <h3 className="text-[20px] font-medium">18</h3>
+                  <span className="text-[14px] text-gray-400">
+                    Average Score
                   </span>
                 </div>
-                <div className="w-full sm:w-[48%] md:w-full lg:w-[48%] xl:w-full flex gap-1 items-center">
-                  <EmailRounded style={{ fontSize: 14 }} />
-                  <span className="text-[12px]">{student.email}</span>
-                </div>
-                <div className="w-full sm:w-[48%] md:w-full lg:w-[48%] xl:w-full flex gap-1 items-center">
-                  <LocalPhoneRounded style={{ fontSize: 14 }} />
-                  <span className="text-[12px]">{student.phone}</span>
+              </div>
+              <div className="w-full sm:w-[48%] md:w-full lg:w-[48%] flex items-center gap-3 p-4 rounded-xl bg-white custom-box-shadow">
+                <HouseRounded style={{ fontSize: 28, color: "#CFCEFF" }} />
+                <div className="flex flex-col">
+                  <h3 className="text-[20px] font-medium">
+                    {data.studentClasses ? (
+                      data.studentClasses[0]?.classSchoolYear.class.name
+                    ) : (
+                      <></>
+                    )}
+                  </h3>
+                  <span className="text-[14px] text-gray-400">Class</span>
                 </div>
               </div>
             </div>
           </div>
+        )}
 
-          {/* ITEM CARD */}
-          <div className="flex-1 flex justify-center gap-2 flex-wrap">
-            <div className="w-full sm:w-[48%] md:w-full lg:w-[48%] flex items-center gap-3 p-4 rounded-xl bg-white custom-box-shadow">
-              <BusinessCenterRounded
-                style={{ fontSize: 28, color: "#CFCEFF" }}
-              />
-              <div className="flex flex-col">
-                <h3 className="text-[20px] font-medium">90%</h3>
-                <span className="text-[14px] text-gray-400">Attendance</span>
-              </div>
-            </div>
-            <div className="w-full sm:w-[48%] md:w-full lg:w-[48%] flex items-center gap-3 p-4 rounded-xl bg-white custom-box-shadow">
-              <SchoolRounded style={{ fontSize: 28, color: "#CFCEFF" }} />
-              <div className="flex flex-col">
-                <h3 className="text-[20px] font-medium">
-                  {student.studentClasses ? (
-                    student.studentClasses[0]?.classSchoolYear.class.grade.level
-                  ) : (
-                    <></>
-                  )}
-                </h3>
-                <span className="text-[14px] text-gray-400">Grade</span>
-              </div>
-            </div>
-            <div className="w-full sm:w-[48%] md:w-full lg:w-[48%] flex items-center gap-3 p-4 rounded-xl bg-white custom-box-shadow">
-              <LocalLibraryRounded style={{ fontSize: 28, color: "#CFCEFF" }} />
-              <div className="flex flex-col">
-                <h3 className="text-[20px] font-medium">18</h3>
-                <span className="text-[14px] text-gray-400">Average Score</span>
-              </div>
-            </div>
-            <div className="w-full sm:w-[48%] md:w-full lg:w-[48%] flex items-center gap-3 p-4 rounded-xl bg-white custom-box-shadow">
-              <HouseRounded style={{ fontSize: 28, color: "#CFCEFF" }} />
-              <div className="flex flex-col">
-                <h3 className="text-[20px] font-medium">
-                  {student.studentClasses ? (
-                    student.studentClasses[0]?.classSchoolYear.class.name
-                  ) : (
-                    <></>
-                  )}
-                </h3>
-                <span className="text-[14px] text-gray-400">Class</span>
-              </div>
-            </div>
-          </div>
-        </div>
         {/* BOTTOM */}
         <div className="flex flex-col bg-white rounded-xl p-4 custom-box-shadow">
           <h1 className="text-[16px] font-semibold">Student's Schedule</h1>
