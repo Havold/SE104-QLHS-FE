@@ -5,6 +5,7 @@ import { z } from "zod";
 import { makeRequest } from "../../axios";
 import { AuthContext } from "../../context/authContext";
 import { useNavigate } from "react-router-dom";
+import { toast } from "react-toastify";
 
 const schema = z.object({
   username: z
@@ -31,6 +32,7 @@ const Login = () => {
     try {
       await login(data);
       navigate("/");
+      toast("Login successfully!", { type: "success" });
     } catch (error) {
       if (error.response?.data) {
         setErr(error.response.data);

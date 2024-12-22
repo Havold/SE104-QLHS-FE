@@ -6,6 +6,7 @@ import { useMutation, useQueryClient } from "@tanstack/react-query";
 const Pagination = ({ page, total }) => {
   const navigate = useNavigate();
   const location = useLocation();
+  const table = location.pathname.split("/")[2];
   const queryClient = useQueryClient();
   const params = new URLSearchParams(location.search);
   const canNext = total - ITEMS_PER_PAGE * page > 0;
@@ -14,7 +15,7 @@ const Pagination = ({ page, total }) => {
   const mutation = useMutation({
     mutationFn: () => {},
     onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: ["subjects"] });
+      queryClient.invalidateQueries({ queryKey: [`${table}`] });
     },
   });
   const changePage = (number) => {

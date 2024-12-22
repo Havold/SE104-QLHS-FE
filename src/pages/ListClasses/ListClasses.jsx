@@ -9,6 +9,7 @@ import { makeRequest } from "../../axios";
 import { ITEMS_PER_PAGE } from "../../lib/settings";
 import FormModal from "../../components/FormModal/FormModal";
 import { AuthContext } from "../../context/authContext";
+import { useQuery } from "@tanstack/react-query";
 
 const columns = [
   {
@@ -31,7 +32,7 @@ const renderRows = (data) => {
     data.map((item, index) => (
       <tr
         className="text-sm border-b-2 border-gray-100 even:bg-slate-100 hover:bg-webPurpleLight "
-        key={index}
+        key={item.id}
       >
         <td className="flex items-center p-4">
           <h2 className="text-[12px] font-semibold">{item.name}</h2>
@@ -42,7 +43,7 @@ const renderRows = (data) => {
             {role === "admin" ? (
               <>
                 <FormModal table="class" type="edit" />
-                <FormModal table="class" type="delete" />
+                <FormModal table="class" type="delete" id={item.id} />
               </>
             ) : (
               <></>
@@ -69,26 +70,18 @@ const ListClasses = () => {
     ? parseInt(searchParams.get("pageItems"))
     : ITEMS_PER_PAGE;
 
-  useEffect(() => {
-    if (
-      !currentUser.role.authorities
-        .map((authority) => authority.name)
-        .includes("View")
-    ) {
-      navigate("/error");
-    }
-    const fetchData = async () => {
+  const { isPending, error, data } = useQuery({
+    queryKey: ["classes"],
+    queryFn: () => {
       const queryString = new URLSearchParams(searchParams);
       queryString.set("page", page);
       queryString.set("pageItems", pageItems);
-      const res = await makeRequest.get(`/classes?${queryString}`);
-      setClasses(res.data.classes);
-      setTotal(res.data.totalCount);
-    };
-    fetchData();
-  }, [searchParams, page, pageItems]);
+      return makeRequest.get(`/classes?${queryString}`).then((res) => {
+        return res.data;
+      });
+    },
+  });
 
-  console.log(classes);
   return (
     <div className="flex flex-col gap-4 flex-1 p-4 m-2 rounded-xl bg-white">
       {/* TOP */}
@@ -110,9 +103,21 @@ const ListClasses = () => {
         </div>
       </div>
       {/* LIST */}
-      <Table columns={columns} renderRows={renderRows} data={classes} />
+      {error ? (
+        "Something went wrong!"
+      ) : isPending ? (
+        "Loading..."
+      ) : (
+        <Table columns={columns} renderRows={renderRows} data={data.classes} />
+      )}
       {/* PAGINATION */}
-      <Pagination page={page} total={total} />
+      {error ? (
+        "Something went wrong!"
+      ) : isPending ? (
+        <></>
+      ) : (
+        <Pagination page={data.currentPage} total={data.totalCount} />
+      )}
     </div>
   );
 };

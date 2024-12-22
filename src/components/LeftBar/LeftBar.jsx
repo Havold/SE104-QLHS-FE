@@ -22,6 +22,7 @@ import { Link, useNavigate } from "react-router-dom";
 import { makeRequest } from "../../axios";
 import { useContext } from "react";
 import { AuthContext } from "../../context/authContext";
+import { toast } from "react-toastify";
 
 const LeftBar = ({ className }) => {
   const { setHasAccessToken, currentUser } = useContext(AuthContext);
@@ -172,6 +173,7 @@ const LeftBar = ({ className }) => {
           onClick: async () => {
             await makeRequest.post("/auth/logout");
             setHasAccessToken(false);
+            toast("Logout successfully!", { type: "success" });
             navigate("/login");
           },
           visible: true,

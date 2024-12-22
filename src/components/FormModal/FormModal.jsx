@@ -33,8 +33,12 @@ const forms = {
   subject: (data, type, setOpenForm) => (
     <SubjectForm setOpenForm={setOpenForm} data={data} type={type} />
   ),
-  class: (data, type) => <ClassForm data={data} type={type} />,
-  detailClass: (data, type) => <DetailClassForm data={data} type={type} />,
+  class: (data, type, setOpenForm) => (
+    <ClassForm setOpenForm={setOpenForm} data={data} type={type} />
+  ),
+  detailClass: (data, type, setOpenForm) => (
+    <DetailClassForm setOpenForm={setOpenForm} data={data} type={type} />
+  ),
 };
 
 const FormModal = ({ table, type, id, data }) => {
@@ -43,9 +47,15 @@ const FormModal = ({ table, type, id, data }) => {
     const queryClient = useQueryClient();
     const mutation = useMutation({
       mutationFn: ({ id, table }) => {
+        if (table === "class") {
+          table = "classe";
+        }
         return makeRequest.delete(`/${table}s/${id}`).then((res) => res.data);
       },
       onSuccess: (data, { table }) => {
+        if (table === "class") {
+          table = "classe";
+        }
         queryClient.invalidateQueries({ queryKey: [`${table}s`] });
         toast(data, { type: "success" });
       },
