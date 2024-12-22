@@ -19,10 +19,9 @@ const ClassForm = ({ data, type = "create", setOpenForm }) => {
   } = useForm({
     resolver: zodResolver(schema),
   });
-  // const [selectedGrade, setSelectedGrade] = useState(data.grade.id ? data.grade.)
 
   const [grades, setGrades] = useState();
-  const [selectedGrade, setSelectedGrade] = useState(data.grade.id);
+  const [selectedGrade, setSelectedGrade] = useState(data?.grade?.id);
   const btnColor =
     type === "create"
       ? "bg-webYellow hover:bg-webYellowLight"
@@ -64,7 +63,7 @@ const ClassForm = ({ data, type = "create", setOpenForm }) => {
   useEffect(() => {
     const fetchGrades = async () => {
       const res = await makeRequest.get("/grades");
-      setGrades(res.data.grades);
+      setGrades(res?.data?.grades);
     };
     fetchGrades();
   }, []);
@@ -84,7 +83,7 @@ const ClassForm = ({ data, type = "create", setOpenForm }) => {
           error={errors.name}
           label="Class name"
           name="name"
-          defaultValue={data.name.slice(2, data.name.length)}
+          defaultValue={data?.name.slice(2, data.name.length)}
         />
         <div className="flex flex-col w-full md:w-1/4 gap-1">
           <label
