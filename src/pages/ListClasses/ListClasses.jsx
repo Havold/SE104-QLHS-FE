@@ -42,7 +42,7 @@ const renderRows = (data) => {
           <div className="flex gap-4">
             {role === "admin" ? (
               <>
-                <FormModal table="class" type="edit" />
+                <FormModal table="class" type="edit" data={item} />
                 <FormModal table="class" type="delete" id={item.id} />
               </>
             ) : (

@@ -5,6 +5,7 @@ const InputField = ({
   name,
   options,
   type = "text",
+  defaultValue,
 }) => {
   return (
     <div className="flex flex-col w-full md:w-1/4 gap-1">
@@ -31,6 +32,7 @@ const InputField = ({
             className="text-[14px] p-2 h-[40px] border border-gray-400 outline-webSkyBold caret-webSkyBold transition-colors rounded-md"
             type={type}
             id={name}
+            defaultValue={defaultValue ? defaultValue : null}
             {...register(name)}
           />
           {error?.message ? (

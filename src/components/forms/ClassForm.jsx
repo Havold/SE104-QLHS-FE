@@ -9,7 +9,6 @@ import { toast } from "react-toastify";
 
 const schema = z.object({
   name: z.string().min(1, { message: "Name is required!" }),
-  grade: z.string(),
 });
 
 const ClassForm = ({ data, type = "create", setOpenForm }) => {
@@ -17,17 +16,27 @@ const ClassForm = ({ data, type = "create", setOpenForm }) => {
     register,
     handleSubmit,
     formState: { errors },
-  } = useForm({ resolver: zodResolver(schema) });
+  } = useForm({
+    resolver: zodResolver(schema),
+  });
+  // const [selectedGrade, setSelectedGrade] = useState(data.grade.id ? data.grade.)
+
   const [grades, setGrades] = useState();
+  const [selectedGrade, setSelectedGrade] = useState(data.grade.id);
   const btnColor =
     type === "create"
       ? "bg-webYellow hover:bg-webYellowLight"
       : "bg-webSkyBold hover:bg-webSky";
   const queryClient = useQueryClient();
   const mutation = useMutation({
-    mutationFn: (data) => {
-      console.log(data);
-      return makeRequest.post("/classes", data).then((res) => res.data);
+    mutationFn: ({ newClass, type }) => {
+      console.log(newClass);
+      if (type === "create")
+        return makeRequest.post("/classes", newClass).then((res) => res.data);
+      else
+        return makeRequest
+          .put(`/classes/${data.id}`, newClass)
+          .then((res) => res.data);
     },
     onSuccess: (data) => {
       setOpenForm(false);
@@ -40,9 +49,16 @@ const ClassForm = ({ data, type = "create", setOpenForm }) => {
       });
     },
   });
-  const onValid = (data) => {
-    mutation.mutate(data);
+  const onValid = async (data) => {
+    console.log(data);
+    const newClass = { ...data, grade: selectedGrade };
+    mutation.mutate({ newClass, type });
   };
+
+  const handleChangeSelection = (e) => {
+    setSelectedGrade(e.target.value);
+  };
+
   const onSubmit = handleSubmit(onValid);
 
   useEffect(() => {
@@ -68,6 +84,7 @@ const ClassForm = ({ data, type = "create", setOpenForm }) => {
           error={errors.name}
           label="Class name"
           name="name"
+          defaultValue={data.name.slice(2, data.name.length)}
         />
         <div className="flex flex-col w-full md:w-1/4 gap-1">
           <label
@@ -79,15 +96,19 @@ const ClassForm = ({ data, type = "create", setOpenForm }) => {
           <select
             className="text-[12px] p-2 h-[40px] border border-gray-400 outline-webSkyBold caret-webSkyBold transition-colors rounded-md"
             id="grade"
-            {...register("grade")}
+            onChange={handleChangeSelection}
+            value={selectedGrade}
+            // {...register("grade")}
           >
-            {grades
-              ? grades.map((grade, index) => (
-                  <option key={index} value={grade.id}>
-                    {grade.level}
-                  </option>
-                ))
-              : null}
+            {!grades ? (
+              <option value="">Loading...</option>
+            ) : (
+              grades.map((grade, index) => (
+                <option key={index} value={grade.id}>
+                  {grade.level}
+                </option>
+              ))
+            )}
           </select>
         </div>
       </div>
