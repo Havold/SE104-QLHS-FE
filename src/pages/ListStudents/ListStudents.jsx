@@ -25,11 +25,6 @@ const columns = [
     className: "hidden lg:table-cell",
   },
   {
-    header: "Grade",
-    accessor: "subjects",
-    className: "hidden lg:table-cell",
-  },
-  {
     header: "Phone",
     accessor: "phone",
     className: "hidden md:table-cell",
@@ -65,14 +60,15 @@ const renderRows = (data) => {
           <div className="flex flex-col">
             <h2 className="text-[12px] font-semibold">{`${item.fullName}`}</h2>
             <span className="text-[8px] text-gray-500">
-              {item.studentClasses[0]?.classSchoolYear.class.name}
+              {item.studentClasses[0]?.classSchoolYear.class.name}{" "}
+              {/* Sẽ cần phải bổ sung các lớp qua từng năm họcg*/}
             </span>
           </div>
         </td>
         <td className="hidden lg:table-cell">{item.id}</td>
-        <td className="hidden lg:table-cell">
+        {/* <td className="hidden lg:table-cell">
           {item.studentClasses[0]?.classSchoolYear?.class?.grade?.level}
-        </td>
+        </td> */}
         <td className="hidden md:table-cell">{item.phone}</td>
         <td className="hidden lg:table-cell">{item.address}</td>
         <td>

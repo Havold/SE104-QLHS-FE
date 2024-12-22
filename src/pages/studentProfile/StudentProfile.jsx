@@ -30,13 +30,7 @@ const StudentProfile = () => {
       });
     },
   });
-  // useEffect(() => {
-  //   const fetchData = async () => {
-  //     const res = await makeRequest.get(`students/${studentId}`);
-  //     setStudent(res.data);
-  //   };
-  //   fetchData();
-  // }, [studentId]);
+
   console.log(student);
   return (
     <div className="flex flex-col xl:flex-row flex-1 gap-3 p-4 m-2 rounded-xl">
