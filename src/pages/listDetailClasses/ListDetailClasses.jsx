@@ -10,10 +10,11 @@ import {
 import Pagination from "../../components/Pagination/Pagination";
 import Table from "../../components/Table/Table";
 import { Link, useSearchParams } from "react-router-dom";
-import { role, classesData } from "../../lib/data";
+import { role } from "../../lib/data";
 import { makeRequest } from "../../axios";
 import { ITEMS_PER_PAGE } from "../../lib/settings";
 import FormModal from "../../components/FormModal/FormModal";
+import { useQuery } from "@tanstack/react-query";
 
 const columns = [
   {
@@ -56,7 +57,9 @@ const renderRows = (data) => {
         <td className="hidden lg:table-cell">{item.gradeLevel}</td>
         <td>
           <div className="flex gap-4">
-            <Link to={`/list/teachers/${item.teacherId}`}>
+            <Link
+              to={`/list/detail-classes/${item.id}?classId=${item.classId}&schoolYearId=${item.schoolYearId}`}
+            >
               <button className="flex w-8 h-8 rounded-full bg-webSky items-center justify-center">
                 <VisibilityOutlined
                   style={{ fontSize: 16, color: "whitesmoke" }}
@@ -64,7 +67,7 @@ const renderRows = (data) => {
               </button>
             </Link>
             {role === "admin" ? (
-              <FormModal table="detailClass" type="delete" />
+              <FormModal table="detail-class" type="delete" id={item.id} />
             ) : (
               <></>
             )}
@@ -78,8 +81,6 @@ const renderRows = (data) => {
 };
 
 const ListDetailClasses = () => {
-  const [classes, setClasses] = useState();
-  const [total, setTotal] = useState();
   const [searchParams, setSearchParams] = useSearchParams();
   const page = searchParams.get("page")
     ? parseInt(searchParams.get("page"))
@@ -88,25 +89,24 @@ const ListDetailClasses = () => {
     ? parseInt(searchParams.get("pageItems"))
     : ITEMS_PER_PAGE;
 
-  useEffect(() => {
-    const fetchData = async () => {
+  const { isPending, error, data } = useQuery({
+    queryKey: ["detail-classes", "overview"],
+    queryFn: () => {
       const queryString = new URLSearchParams(searchParams);
       queryString.set("page", page);
       queryString.set("pageItems", pageItems);
-      const res = await makeRequest.get(`/detail-classes?${queryString}`);
-      setClasses(res.data.classes);
-      setTotal(res.data.totalCount);
-    };
-    fetchData();
-  }, [searchParams, page, pageItems]);
+      return makeRequest.get(`/detail-classes?${queryString}`).then((res) => {
+        return res.data;
+      });
+    },
+  });
 
-  console.log(classes);
   return (
     <div className="flex flex-col gap-4 flex-1 p-4 m-2 rounded-xl bg-white">
       {/* TOP */}
       <div className="flex flex-col lg:flex-row justify-between">
         <h1 className="hidden lg:block text-[18px] font-semibold">
-          All Classes
+          All Classes Through The School Years
         </h1>
         <div className="flex flex-col lg:flex-row gap-4">
           <SearchList />
@@ -122,9 +122,21 @@ const ListDetailClasses = () => {
         </div>
       </div>
       {/* LIST */}
-      <Table columns={columns} renderRows={renderRows} data={classes} />
+      {error ? (
+        "Something went wrong!"
+      ) : isPending ? (
+        "Loading..."
+      ) : (
+        <Table columns={columns} renderRows={renderRows} data={data.classes} />
+      )}
       {/* PAGINATION */}
-      <Pagination page={page} total={total} />
+      {error ? (
+        "Something went wrong!"
+      ) : isPending ? (
+        <></>
+      ) : (
+        <Pagination page={data.currentPage} total={data.totalCount} />
+      )}
     </div>
   );
 };

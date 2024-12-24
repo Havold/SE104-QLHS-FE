@@ -54,11 +54,19 @@ const FormModal = ({ table, type, id, data }) => {
         if (table === "class") {
           table = "classe";
         }
+
+        if (table === "detail-class") {
+          table = "detail-classe";
+        }
+
         return makeRequest.delete(`/${table}s/${id}`).then((res) => res.data);
       },
       onSuccess: (data, { table }) => {
         if (table === "class") {
           table = "classe";
+        }
+        if (table === "detail-class") {
+          table = "detail-classe";
         }
         queryClient.invalidateQueries({ queryKey: [`${table}s`] });
         toast(data, { type: "success" });
@@ -114,7 +122,9 @@ const FormModal = ({ table, type, id, data }) => {
       <AddRounded fontSize="small" />
     ) : type === "delete" ? (
       <DeleteOutline style={{ fontSize: 16, color: "whitesmoke" }} />
-    ) : table === "teacher" || table === "student" ? (
+    ) : table === "teacher" ||
+      table === "student" ||
+      table === "detail-class" ? (
       <EditOutlined style={{ fontSize: 20, color: "black" }} />
     ) : (
       <EditOutlined style={{ fontSize: 16, color: "whitesmoke" }} />

@@ -21,7 +21,7 @@ const ClassForm = ({ data, type = "create", setOpenForm }) => {
   });
 
   const [grades, setGrades] = useState();
-  const [selectedGrade, setSelectedGrade] = useState(data?.grade?.id);
+  const [selectedGrade, setSelectedGrade] = useState(data?.grade?.id || 1);
   const btnColor =
     type === "create"
       ? "bg-webYellow hover:bg-webYellowLight"
