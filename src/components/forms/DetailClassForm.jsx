@@ -17,13 +17,14 @@ const DetailClassForm = ({ data, type = "create", setOpenForm }) => {
   } = useForm({
     resolver: zodResolver(schema),
   });
+  console.log(data);
 
   const [schoolYears, setSchoolYears] = useState();
   const [classes, setClasses] = useState();
   const [selectedSchoolYear, setSelectedSchoolYear] = useState(
-    data?.schoolYear?.id || 1
+    data?.schoolYearId || 1
   );
-  const [selectedClass, setSelectedClass] = useState(data?.class?.id || 1);
+  const [selectedClass, setSelectedClass] = useState(data?.classId || 1);
   const btnColor =
     type === "create"
       ? "bg-webYellow hover:bg-webYellowLight"
@@ -43,7 +44,7 @@ const DetailClassForm = ({ data, type = "create", setOpenForm }) => {
     onSuccess: (data) => {
       setOpenForm(false);
       queryClient.invalidateQueries({
-        queryKey: ["detail-classes", "overview"],
+        queryKey: ["detail-classes"],
       });
       toast(data, { type: "success" });
     },
@@ -91,7 +92,7 @@ const DetailClassForm = ({ data, type = "create", setOpenForm }) => {
       className="h-full flex flex-col justify-center gap-4"
       onSubmit={onSubmit}
     >
-      <h1 className="text-[18px] font-semibold ">
+      <h1 className="text-[18px] font-semibold text-black ">
         {type === "create"
           ? "Add a new class to a school year"
           : "Update this class"}
@@ -106,7 +107,7 @@ const DetailClassForm = ({ data, type = "create", setOpenForm }) => {
             Class Name
           </label>
           <select
-            className="text-[12px] p-2 h-[40px] border border-gray-400 outline-webSkyBold caret-webSkyBold transition-colors rounded-md"
+            className="text-[12px] text-black p-2 h-[40px] border border-gray-400 outline-webSkyBold caret-webSkyBold transition-colors rounded-md"
             id="className"
             onChange={handleChangeClassNameSelection}
             value={selectedClass}
@@ -130,7 +131,7 @@ const DetailClassForm = ({ data, type = "create", setOpenForm }) => {
             School Year
           </label>
           <select
-            className="text-[12px] p-2 h-[40px] border border-gray-400 outline-webSkyBold caret-webSkyBold transition-colors rounded-md"
+            className="text-[12px] text-black p-2 h-[40px] border border-gray-400 outline-webSkyBold caret-webSkyBold transition-colors rounded-md"
             id="schoolYear"
             onChange={handleChangeSchoolYearSelection}
             value={selectedSchoolYear}

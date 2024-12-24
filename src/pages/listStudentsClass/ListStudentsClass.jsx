@@ -155,7 +155,7 @@ const ListStudentsClass = () => {
                 : classIsPending
                 ? "Loading..."
                 : classData.name}
-              <FormModal type="edit" table="detail-class" />
+              <FormModal type="edit" table="detailClass" data={classData} />
             </span>
           </div>
         </div>

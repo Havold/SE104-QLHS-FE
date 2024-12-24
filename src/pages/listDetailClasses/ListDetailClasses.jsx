@@ -90,7 +90,7 @@ const ListDetailClasses = () => {
     : ITEMS_PER_PAGE;
 
   const { isPending, error, data } = useQuery({
-    queryKey: ["detail-classes", "overview"],
+    queryKey: ["detail-classes"],
     queryFn: () => {
       const queryString = new URLSearchParams(searchParams);
       queryString.set("page", page);
