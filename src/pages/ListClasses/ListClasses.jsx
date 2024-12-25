@@ -86,7 +86,7 @@ const ListClasses = () => {
           All Classes
         </h1>
         <div className="flex flex-col lg:flex-row gap-4">
-          <SearchList />
+          <SearchList table="classes" />
           <div className="flex gap-4 items-center">
             <button className="flex items-center justify-center w-4 h-4 p-4 rounded-full bg-webYellow">
               <TuneRounded style={{ fontSize: 16 }} />

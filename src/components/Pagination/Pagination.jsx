@@ -3,7 +3,7 @@ import { ITEMS_PER_PAGE } from "../../lib/settings";
 import { useLocation, useNavigate } from "react-router-dom";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 
-const Pagination = ({ page, total }) => {
+const Pagination = ({ page, total, type = "table" }) => {
   const navigate = useNavigate();
   const location = useLocation();
   const table = location.pathname.split("/")[2];
@@ -15,11 +15,19 @@ const Pagination = ({ page, total }) => {
   const mutation = useMutation({
     mutationFn: () => {},
     onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: [`${table}`] });
+      if (type === "table") {
+        queryClient.invalidateQueries({ queryKey: [`${table}`] });
+      } else {
+        queryClient.invalidateQueries({ queryKey: [`${table}, ${type}`] });
+      }
     },
   });
   const changePage = (number) => {
-    params.set("page", number);
+    if (type === "table") {
+      params.set("page", number);
+    } else {
+      params.set("subPage", number);
+    }
     navigate(`${location.pathname}?${params}`);
     mutation.mutate();
   };

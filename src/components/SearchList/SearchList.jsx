@@ -2,11 +2,15 @@ import { SearchRounded } from "@mui/icons-material";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import React, { useState } from "react";
 import { useLocation, useNavigate, useSearchParams } from "react-router-dom";
+import { ITEMS_PER_PAGE } from "../../lib/settings";
 
-const SearchList = () => {
+const SearchList = ({ table, type = "table" }) => {
   const location = useLocation();
   const navigate = useNavigate();
   const [searchParams, setSearchParams] = useSearchParams();
+  let pageItems = searchParams.get("pageItems")
+    ? parseInt(searchParams.get("pageItems"))
+    : ITEMS_PER_PAGE;
   const [inputSearch, setInputSearch] = useState(
     searchParams.get("search") ? searchParams.get("search") : ""
   );
@@ -14,10 +18,17 @@ const SearchList = () => {
 
   const mutation = useMutation({
     mutationFn: (inputSearch) => {
-      navigate(`${location.pathname}?search=${inputSearch}`, { replace: true });
+      // navigate(`${location.pathname}?search=${inputSearch}`, { replace: true });
+      searchParams.set("search", inputSearch);
+      const queryString = new URLSearchParams(searchParams);
+      queryString.set("page", 1);
+      queryString.set("pageItems", pageItems);
+      navigate(`${location.pathname}?${queryString}`, { replace: true });
     },
     onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: ["subjects"] });
+      if (type === "table")
+        queryClient.invalidateQueries({ queryKey: [table] });
+      else queryClient.invalidateQueries({ queryKey: [table, type] });
     },
   });
   const handleSubmit = (e) => {

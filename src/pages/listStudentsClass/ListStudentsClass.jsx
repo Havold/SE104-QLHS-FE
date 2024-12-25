@@ -223,7 +223,7 @@ const ListStudentsClass = () => {
             <button className="flex items-center justify-center w-4 h-4 p-4 rounded-full bg-webYellow">
               <SortRounded fontSize="small" />
             </button>
-            <FormModal type="create" table="student" />
+            <FormModal type="create" table="listStudent" />
           </div>
         </div>
       </div>
