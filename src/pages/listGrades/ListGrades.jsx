@@ -36,7 +36,7 @@ const renderRows = (data) => {
         <td className="flex items-center p-4">
           <h2 className="text-[12px] font-semibold">{item.level}</h2>
         </td>
-        <td className="hidden lg:table-cell">{null}</td>
+        <td className="hidden lg:table-cell">{item.totalClasses}</td>
         <td>
           <div className="flex gap-4">
             {role === "admin" ? (
@@ -85,7 +85,7 @@ const ListGrades = () => {
           All Grades
         </h1>
         <div className="flex flex-col lg:flex-row gap-4">
-          <SearchList />
+          <SearchList table="grades" />
           <div className="flex gap-4 items-center">
             <button className="flex items-center justify-center w-4 h-4 p-4 rounded-full bg-webYellow">
               <TuneRounded style={{ fontSize: 16 }} />
