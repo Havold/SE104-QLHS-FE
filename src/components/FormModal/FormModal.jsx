@@ -12,6 +12,7 @@ import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { makeRequest } from "../../axios";
 import { toast } from "react-toastify";
 import GradeForm from "../forms/GradeForm";
+import ListStudentForm from "../forms/ListStudentForm";
 
 const TeacherForm = lazy(() =>
   import("../forms/TeacherForm").then((module) => ({
@@ -42,6 +43,9 @@ const forms = {
   ),
   detailClass: (data, type, setOpenForm) => (
     <DetailClassForm setOpenForm={setOpenForm} data={data} type={type} />
+  ),
+  listStudent: (data, type, setOpenForm) => (
+    <ListStudentForm setOpenForm={setOpenForm} data={data} type={type} />
   ),
 };
 
