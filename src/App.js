@@ -20,7 +20,7 @@ import ListClasses from "./pages/listClasses/ListClasses";
 import ListLessons from "./pages/listLessons/ListLessons";
 import ListExams from "./pages/listExams/ListExams";
 import ListAssignments from "./pages/listAssignments/ListAssignments";
-import ListResults from "./pages/listResults/ListResults";
+import ListScoreBoard from "./pages/listScoreBoards/ListScoreBoards";
 import ListEvents from "./pages/listEvents/ListEvents";
 import ListAnnouncements from "./pages/listAnnouncements/ListAnnouncements";
 import TeacherProfile from "./pages/teacherProfile/TeacherProfile";
@@ -35,6 +35,7 @@ import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import ListGrades from "./pages/listGrades/ListGrades";
 import ListStudentsClass from "./pages/listStudentsClass/ListStudentsClass";
 import ListSchoolYears from "./pages/listSchoolYears/ListSchoolYears";
+import DetailScoreBoard from "./pages/detailScoreBoard/DetailScoreBoard";
 
 const queryClient = new QueryClient();
 
@@ -145,12 +146,16 @@ function App() {
           element: <ListAssignments />,
         },
         {
-          path: "/list/results",
-          element: <ListResults />,
+          path: "/list/score-boards",
+          element: <ListScoreBoard />,
+        },
+        {
+          path: "/list/score-boards/:id",
+          element: <DetailScoreBoard />,
         },
         {
           path: "/list/attendance",
-          element: <ListResults />,
+          element: <ListScoreBoard />,
         },
         {
           path: "/list/events",
@@ -158,7 +163,7 @@ function App() {
         },
         {
           path: "/list/messages",
-          element: <ListResults />,
+          element: <ListScoreBoard />,
         },
         {
           path: "/list/announcements",

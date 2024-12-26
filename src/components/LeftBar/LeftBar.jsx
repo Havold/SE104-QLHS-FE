@@ -133,8 +133,8 @@ const LeftBar = ({ className }) => {
         {
           id: 10,
           icon: <FactCheckOutlined fontSize="small" />,
-          title: "Results",
-          href: "/list/results",
+          title: "Score boards",
+          href: "/list/score-boards",
           visible: true,
         },
         {
