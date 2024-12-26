@@ -8,6 +8,7 @@ import {
   FactCheckOutlined,
   HomeOutlined,
   HomeWorkOutlined,
+  HourglassBottomOutlined,
   HouseOutlined,
   LocalLibraryOutlined,
   LogoutRounded,
@@ -89,11 +90,21 @@ const LeftBar = ({ className }) => {
             .map((authority) => authority.name)
             .includes("View"),
         },
+
         {
           id: 8,
           icon: <LocalLibraryOutlined fontSize="small" />,
           title: "Detail Classes",
           href: "/list/detail-classes",
+          visible: currentUser.role.authorities
+            .map((authority) => authority.name)
+            .includes("View"),
+        },
+        {
+          id: 9,
+          icon: <HourglassBottomOutlined fontSize="small" />,
+          title: "School Years",
+          href: "/list/school-years",
           visible: currentUser.role.authorities
             .map((authority) => authority.name)
             .includes("View"),

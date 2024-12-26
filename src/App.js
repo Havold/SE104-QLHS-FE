@@ -34,6 +34,7 @@ import "react-toastify/dist/ReactToastify.css";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import ListGrades from "./pages/listGrades/ListGrades";
 import ListStudentsClass from "./pages/listStudentsClass/ListStudentsClass";
+import ListSchoolYears from "./pages/listSchoolYears/ListSchoolYears";
 
 const queryClient = new QueryClient();
 
@@ -114,6 +115,10 @@ function App() {
         {
           path: "/list/classes",
           element: <ListClasses />,
+        },
+        {
+          path: "/list/school-years",
+          element: <ListSchoolYears />,
         },
         {
           path: "/list/grades",
