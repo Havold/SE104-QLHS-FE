@@ -6,6 +6,7 @@ import InputField from "../InputField/InputField";
 import { makeRequest } from "../../axios";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { toast } from "react-toastify";
+import SelectDropDown from "../SelectDropDown/SelectDropDown";
 
 const schema = z.object({});
 
@@ -64,29 +65,22 @@ const DetailClassForm = ({ data, type = "create", setOpenForm }) => {
     mutation.mutate({ newClass, type });
   };
 
-  const handleChangeSchoolYearSelection = (e) => {
-    setSelectedSchoolYear(e.target.value);
-  };
-
-  const handleChangeClassNameSelection = (e) => {
-    setSelectedClass(e.target.value);
-  };
-
   const onSubmit = handleSubmit(onValid);
 
   useEffect(() => {
     const fetchSchoolYears = async () => {
-      const res = await makeRequest.get("/school-years");
+      const res = await makeRequest.get("/school-years?type=all");
       setSchoolYears(res?.data?.schoolYears);
     };
     const fetchClasses = async () => {
-      const res = await makeRequest.get("/classes");
+      const res = await makeRequest.get("/classes?type=all");
       setClasses(res?.data?.classes);
     };
     fetchSchoolYears();
     fetchClasses();
   }, []);
 
+  console.log(schoolYears);
   return (
     <form
       className="h-full flex flex-col justify-center gap-4"
@@ -106,22 +100,11 @@ const DetailClassForm = ({ data, type = "create", setOpenForm }) => {
           >
             Class Name
           </label>
-          <select
-            className="text-[12px] text-black p-2 h-[40px] border border-gray-400 outline-webSkyBold caret-webSkyBold transition-colors rounded-md"
-            id="className"
-            onChange={handleChangeClassNameSelection}
-            value={selectedClass}
-          >
-            {!classes ? (
-              <option value="">Loading...</option>
-            ) : (
-              classes.map((cs, index) => (
-                <option key={index} value={cs.id}>
-                  {cs.name}
-                </option>
-              ))
-            )}
-          </select>
+          <SelectDropDown
+            options={classes ? classes : []}
+            selectedOption={selectedClass}
+            onChange={setSelectedClass}
+          />
         </div>
         <div className="flex flex-col w-full md:w-1/4 gap-1">
           <label
@@ -130,7 +113,7 @@ const DetailClassForm = ({ data, type = "create", setOpenForm }) => {
           >
             School Year
           </label>
-          <select
+          {/* <select
             className="text-[12px] text-black p-2 h-[40px] border border-gray-400 outline-webSkyBold caret-webSkyBold transition-colors rounded-md"
             id="schoolYear"
             onChange={handleChangeSchoolYearSelection}
@@ -146,7 +129,13 @@ const DetailClassForm = ({ data, type = "create", setOpenForm }) => {
                 </option>
               ))
             )}
-          </select>
+          </select> */}
+          <SelectDropDown
+            options={schoolYears}
+            selectedOption={selectedSchoolYear}
+            onChange={setSelectedSchoolYear}
+            displayKey="value"
+          />
         </div>
       </div>
       <button

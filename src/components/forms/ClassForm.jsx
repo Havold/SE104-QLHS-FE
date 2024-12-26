@@ -6,6 +6,7 @@ import InputField from "../InputField/InputField";
 import { makeRequest } from "../../axios";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { toast } from "react-toastify";
+import SelectDropDown from "../SelectDropDown/SelectDropDown";
 
 const schema = z.object({
   name: z.string().min(1, { message: "Name is required!" }),
@@ -62,7 +63,7 @@ const ClassForm = ({ data, type = "create", setOpenForm }) => {
 
   useEffect(() => {
     const fetchGrades = async () => {
-      const res = await makeRequest.get("/grades");
+      const res = await makeRequest.get("/grades?type=all");
       setGrades(res?.data?.grades);
     };
     fetchGrades();
@@ -92,7 +93,7 @@ const ClassForm = ({ data, type = "create", setOpenForm }) => {
           >
             Grade
           </label>
-          <select
+          {/* <select
             className="text-[12px] p-2 h-[40px] border border-gray-400 outline-webSkyBold caret-webSkyBold transition-colors rounded-md"
             id="grade"
             onChange={handleChangeSelection}
@@ -108,7 +109,13 @@ const ClassForm = ({ data, type = "create", setOpenForm }) => {
                 </option>
               ))
             )}
-          </select>
+          </select> */}
+          <SelectDropDown
+            options={grades}
+            selectedOption={selectedGrade}
+            onChange={setSelectedGrade}
+            displayKey="level"
+          />
         </div>
       </div>
       <button
