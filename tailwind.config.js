@@ -10,16 +10,15 @@ module.exports = {
   theme: {
     extend: {
       colors: {
-        webSky: '#C3EBFA',
-        webSkyBold: '#75cef0',
-        webSkyLight: '#edf9fd',
-        webPurple: '#CFCEFF',
-        webPurpleLight: '#F1F0FF',
-        webYellow: '#FAE27C',
-        webYellowLight: '#FEFCE8',
-      }
-    }
-
+        webSky: "#C3EBFA",
+        webSkyBold: "#75cef0",
+        webSkyLight: "#edf9fd",
+        webPurple: "#CFCEFF",
+        webPurpleLight: "#F1F0FF",
+        webYellow: "#FAE27C",
+        webYellowLight: "#fae37c93",
+      },
+    },
   },
   plugins: [],
 };
