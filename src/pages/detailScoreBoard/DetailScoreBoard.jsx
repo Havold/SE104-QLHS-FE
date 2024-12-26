@@ -73,7 +73,13 @@ const renderRows = (data) => {
         <td className="hidden lg:table-cell">{item.student.id}</td>
 
         <td className="hidden md:table-cell">{item.student.phone}</td>
-        <td className="hidden md:table-cell">{item.score}</td>
+        <td className="table-cell">
+          <input
+            className="w-8 h-8 text-center text-[12px] rounded-md border-2 outline-webSkyBold border-gray-500"
+            defaultValue={item.score}
+            type="text"
+          />
+        </td>
         <td>
           <div className="flex gap-4">
             <Link to={`/list/students/${item.id}`}>
@@ -218,7 +224,7 @@ const DetailScoreBoard = () => {
             <button className="flex items-center justify-center w-4 h-4 p-4 rounded-full bg-webYellow">
               <SortRounded fontSize="small" />
             </button>
-            <FormModal type="create" table="listStudent" />
+            <FormModal type="create" table="detailScoreBoard" />
           </div>
         </div>
       </div>

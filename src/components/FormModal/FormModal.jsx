@@ -14,6 +14,7 @@ import { toast } from "react-toastify";
 import GradeForm from "../forms/GradeForm";
 import ListStudentForm from "../forms/ListStudentForm";
 import SchoolYearForm from "../forms/SchoolYearForm";
+import SelectStudentsForm from "../forms/SelectStudentsForm";
 
 const TeacherForm = lazy(() =>
   import("../forms/TeacherForm").then((module) => ({
@@ -50,6 +51,9 @@ const forms = {
   ),
   schoolYear: (data, type, setOpenForm) => (
     <SchoolYearForm setOpenForm={setOpenForm} data={data} type={type} />
+  ),
+  detailScoreBoard: (data, type, setOpenForm) => (
+    <SelectStudentsForm setOpenForm={setOpenForm} data={data} type={type} />
   ),
 };
 
