@@ -63,6 +63,9 @@ const FormModal = ({ table, type, id, data }) => {
           table = "detail-classe";
         }
 
+        if (type === "remove") {
+          return makeRequest.delete(`/${table}/${id}`).then((res) => res.data);
+        }
         return makeRequest.delete(`/${table}s/${id}`).then((res) => res.data);
       },
       onSuccess: (data, { table }) => {
@@ -72,8 +75,16 @@ const FormModal = ({ table, type, id, data }) => {
         if (table === "detail-class") {
           table = "detail-classe";
         }
-        queryClient.invalidateQueries({ queryKey: [`${table}s`] });
+        if (type === "remove") {
+          queryClient.invalidateQueries({ queryKey: [`${table}`] });
+          queryClient.invalidateQueries({
+            queryKey: ["detail-classes", "class"],
+          });
+        } else queryClient.invalidateQueries({ queryKey: [`${table}s`] });
         toast(data, { type: "success" });
+      },
+      onError: (error) => {
+        toast(error.response.data);
       },
     });
 
@@ -84,7 +95,7 @@ const FormModal = ({ table, type, id, data }) => {
       [mutation]
     );
 
-    return type === "delete" ? (
+    return type === "delete" || type === "remove" ? (
       <form
         onSubmit={(e) => {
           e.preventDefault();
@@ -118,13 +129,13 @@ const FormModal = ({ table, type, id, data }) => {
   const bg =
     type === "create"
       ? "bg-webYellow"
-      : type === "delete"
+      : type === "delete" || type === "remove"
       ? "bg-webPurple"
       : "bg-webSky";
   const icon =
     type === "create" ? (
       <AddRounded fontSize="small" />
-    ) : type === "delete" ? (
+    ) : type === "delete" || type === "remove" ? (
       <DeleteOutline style={{ fontSize: 16, color: "whitesmoke" }} />
     ) : table === "teacher" ||
       table === "student" ||
@@ -143,7 +154,7 @@ const FormModal = ({ table, type, id, data }) => {
       </button>
       {openForm ? (
         <div className="w-screen h-screen bg-black bg-opacity-50 fixed top-0 left-0 z-50 flex items-center justify-center">
-          <div className="p-8 h-[90%] md:h-fit w-[90%] sm:w-[80%] md:w-[70%] lg:w-[60%] xl:w-[50%] bg-white rounded-xl relative overflow-auto">
+          <div className="p-8 h-[90%] overflow-auto md:h-fit md:overflow-visible w-[90%] sm:w-[80%] md:w-[70%] lg:w-[60%] xl:w-[50%] bg-white rounded-xl relative">
             <CloseRounded
               onClick={() => {
                 setOpenForm(false);

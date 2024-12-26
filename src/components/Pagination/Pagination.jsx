@@ -3,10 +3,10 @@ import { ITEMS_PER_PAGE } from "../../lib/settings";
 import { useLocation, useNavigate } from "react-router-dom";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 
-const Pagination = ({ page, total, type = "table" }) => {
+const Pagination = ({ page, total, type = "table", tableType }) => {
   const navigate = useNavigate();
   const location = useLocation();
-  const table = location.pathname.split("/")[2];
+  const table = !tableType ? location.pathname.split("/")[2] : tableType;
   const queryClient = useQueryClient();
   const params = new URLSearchParams(location.search);
   const canNext = total - ITEMS_PER_PAGE * page > 0;

@@ -56,29 +56,29 @@ const renderRows = (data) => {
     data.map((item) => (
       <tr
         className="text-sm border-b-2 border-gray-100 even:bg-slate-100 hover:bg-webPurpleLight "
-        key={item.id}
+        key={item.student.id}
       >
         <td className="flex items-center gap-4 p-4">
           <img
             className="md:hidden lg:block w-8 h-8 rounded-full object-cover"
             src={
-              item.img
-                ? `${process.env.REACT_APP_API_URL}${item.img}`
+              item.student.img
+                ? `${process.env.REACT_APP_API_URL}${item.student.img}`
                 : "/assets/noAvatar.jpg"
             }
             alt="profilePic"
           />
           <div className="flex flex-col">
-            <h2 className="text-[12px] font-semibold">{`${item.fullName}`}</h2>
-            <span className="text-[8px] text-gray-500">
+            <h2 className="text-[12px] font-semibold">{`${item.student.fullName}`}</h2>
+            {/* <span className="text-[8px] text-gray-500">
               {item.studentClasses[0]?.classSchoolYear.class.name}
-            </span>
+            </span> */}
           </div>
         </td>
-        <td className="hidden lg:table-cell">{item.id}</td>
+        <td className="hidden lg:table-cell">{item.student.id}</td>
 
-        <td className="hidden md:table-cell">{item.phone}</td>
-        <td className="hidden lg:table-cell">{item.address}</td>
+        <td className="hidden md:table-cell">{item.student.phone}</td>
+        <td className="hidden lg:table-cell">{item.student.address}</td>
         <td>
           <div className="flex gap-4">
             <Link to={`/list/students/${item.id}`}>
@@ -89,7 +89,7 @@ const renderRows = (data) => {
               </button>
             </Link>
             {role === "admin" ? (
-              <FormModal type="delete" table="student" id={item.id} />
+              <FormModal type="remove" table="students-class" id={item.id} />
             ) : (
               <></>
             )}
@@ -128,14 +128,16 @@ const ListStudentsClass = () => {
   });
 
   const { isPending, error, data } = useQuery({
-    queryKey: ["detail-classes"],
+    queryKey: ["students-class"],
     queryFn: () => {
       const queryString = new URLSearchParams(searchParams);
       queryString.set("page", page);
       queryString.set("pageItems", pageItems);
-      return makeRequest.get(`/students?${queryString}`).then((res) => {
-        return res.data;
-      });
+      return makeRequest
+        .get(`/students-class/${classSchoolYearId}?${queryString}`)
+        .then((res) => {
+          return res.data;
+        });
     },
   });
 
@@ -215,7 +217,7 @@ const ListStudentsClass = () => {
           All Students
         </h1>
         <div className="flex flex-col lg:flex-row gap-4">
-          <SearchList />
+          {/* <SearchList /> */}
           <div className="flex gap-4 items-center">
             <button className="flex items-center justify-center w-4 h-4 p-4 rounded-full bg-webYellow">
               <TuneRounded style={{ fontSize: 16 }} />
@@ -241,7 +243,11 @@ const ListStudentsClass = () => {
       ) : isPending ? (
         <></>
       ) : (
-        <Pagination page={data.currentPage} total={data.totalCount} />
+        <Pagination
+          tableType="students-class"
+          page={data.currentPage}
+          total={data.totalCount}
+        />
       )}
     </div>
   );
