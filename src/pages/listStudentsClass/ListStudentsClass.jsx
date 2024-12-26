@@ -14,14 +14,9 @@ import { makeRequest } from "../../axios";
 import { ITEMS_PER_PAGE } from "../../lib/settings";
 import { useQuery } from "@tanstack/react-query";
 import {
-  BoyRounded,
   BusinessCenterRounded,
-  CakeRounded,
-  EmailRounded,
   HouseRounded,
   LocalLibraryRounded,
-  LocalPhoneRounded,
-  LockClockRounded,
   SchoolRounded,
 } from "@mui/icons-material";
 
@@ -104,8 +99,6 @@ const renderRows = (data) => {
 
 const ListStudentsClass = () => {
   const [searchParams, setSearchParams] = useSearchParams();
-  const [schoolYearId, setSchoolYearId] = useState();
-  const [classId, setClassId] = useState();
   let page = searchParams.get("page") ? parseInt(searchParams.get("page")) : 1;
   let pageItems = searchParams.get("pageItems")
     ? parseInt(searchParams.get("pageItems"))
