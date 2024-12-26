@@ -13,6 +13,7 @@ import { makeRequest } from "../../axios";
 import { toast } from "react-toastify";
 import GradeForm from "../forms/GradeForm";
 import ListStudentForm from "../forms/ListStudentForm";
+import SchoolYearForm from "../forms/SchoolYearForm";
 
 const TeacherForm = lazy(() =>
   import("../forms/TeacherForm").then((module) => ({
@@ -46,6 +47,9 @@ const forms = {
   ),
   listStudent: (data, type, setOpenForm) => (
     <ListStudentForm setOpenForm={setOpenForm} data={data} type={type} />
+  ),
+  schoolYear: (data, type, setOpenForm) => (
+    <SchoolYearForm setOpenForm={setOpenForm} data={data} type={type} />
   ),
 };
 

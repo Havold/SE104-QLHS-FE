@@ -39,7 +39,7 @@ const renderRows = (data) => {
         </td>
         <td>
           <div className="flex gap-4">
-            <FormModal table="school-year" type="edit" data={item} />
+            <FormModal table="schoolYear" type="edit" data={item} />
             {role === "admin" ? (
               <FormModal table="school-year" type="delete" id={item.id} />
             ) : (
@@ -89,7 +89,7 @@ const ListSchoolYears = () => {
             <button className="flex items-center justify-center w-4 h-4 p-4 rounded-full bg-webYellow">
               <SortRounded fontSize="small" />
             </button>
-            <FormModal table="school-year" type="create" />
+            <FormModal table="schoolYear" type="create" />
           </div>
         </div>
       </div>
