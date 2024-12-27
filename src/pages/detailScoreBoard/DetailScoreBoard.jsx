@@ -8,45 +8,78 @@ import {
 import Pagination from "../../components/Pagination/Pagination";
 import Table from "../../components/Table/Table";
 import { Link, useLocation, useSearchParams } from "react-router-dom";
-import { role } from "../../lib/data";
+import { role, studentsData } from "../../lib/data";
 import FormModal from "../../components/FormModal/FormModal";
 import { makeRequest } from "../../axios";
 import { ITEMS_PER_PAGE } from "../../lib/settings";
-import { useQuery } from "@tanstack/react-query";
+import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import {
   BusinessCenterRounded,
   HouseRounded,
   LocalLibraryRounded,
   SchoolRounded,
 } from "@mui/icons-material";
+import { z } from "zod";
+import { toast } from "react-toastify";
+import { useForm } from "react-hook-form";
+import { zodResolver } from "@hookform/resolvers/zod";
+
+const schema = z.object({
+  score: z.coerce
+    .number()
+    .min(0, { message: "Score must be at least 0!" })
+    .max(10, { message: "Score must not exceed 10!" }),
+});
 
 const columns = [
   {
     header: "Info",
     accessor: "info",
+    className: "text-center",
   },
   {
     header: "Student ID",
     accessor: "studentId",
-    className: "hidden lg:table-cell",
+    className: "hidden lg:table-cell text-center",
   },
   {
     header: "Phone",
     accessor: "phone",
-    className: "hidden md:table-cell",
+    className: "hidden md:table-cell text-center",
   },
   {
     header: "Score",
     accessor: "score",
-    className: "table-cell",
+    className: "table-cell text-center",
   },
   {
     header: "Actions",
     accessor: "actions",
+    className: "text-center",
   },
 ];
 
 const DetailScoreBoard = () => {
+  const [errors, setErrors] = useState({});
+  const [scores, setScores] = useState({});
+  const handleScoreChange = (studentId, newScore) => {
+    setScores((prevScores) => ({
+      ...prevScores,
+      [studentId]: newScore,
+    }));
+
+    // Kiểm tra tính hợp lệ của điểm số
+    try {
+      schema.parse({ score: parseFloat(newScore) }); // parse lại để kiểm tra
+      setErrors((prevErrors) => ({ ...prevErrors, [studentId]: null })); // Nếu hợp lệ, xóa lỗi
+    } catch (error) {
+      setErrors((prevErrors) => ({
+        ...prevErrors,
+        [studentId]: error.errors[0].message, // Lưu thông báo lỗi
+      }));
+    }
+  };
+
   const renderRows = (data) => {
     return data ? (
       data.map((item) => (
@@ -71,18 +104,32 @@ const DetailScoreBoard = () => {
               </span> */}
             </div>
           </td>
-          <td className="hidden lg:table-cell">{item.student.id}</td>
+          <td className="hidden lg:table-cell text-center">
+            {item.student.id}
+          </td>
 
-          <td className="hidden md:table-cell">{item.student.phone}</td>
+          <td className="hidden md:table-cell text-center">
+            {item.student.phone}
+          </td>
           <td className="table-cell">
-            <input
-              className="w-8 h-8 text-center text-[12px] rounded-md border-2 outline-webSkyBold border-gray-500"
-              defaultValue={item.score}
-              type="text"
-            />
+            <div className="flex flex-col items-center">
+              <input
+                className="w-8 h-8 text-center text-[12px] rounded-md border-2 outline-webSkyBold border-gray-500"
+                defaultValue={item.score || 0}
+                type="text"
+                onChange={(e) =>
+                  handleScoreChange(item.student.id, e.target.value)
+                }
+              />
+              {errors[item.student.id] && (
+                <span className="text-[10px] text-red-600">
+                  {errors[item.student.id]}
+                </span>
+              )}
+            </div>
           </td>
           <td>
-            <div className="flex gap-4">
+            <div className="flex gap-4 items-center justify-center">
               <Link to={`/list/students/${item.id}`}>
                 <button className="flex w-8 h-8 rounded-full bg-webSky items-center justify-center">
                   <VisibilityOutlined
@@ -124,19 +171,34 @@ const DetailScoreBoard = () => {
     },
   });
 
-  //   const { isPending, error, data } = useQuery({
-  //     queryKey: ["students-class"],
-  //     queryFn: () => {
-  //       const queryString = new URLSearchParams(searchParams);
-  //       queryString.set("page", page);
-  //       queryString.set("pageItems", pageItems);
-  //       return makeRequest
-  //         .get(`/students-class/${classSchoolYearId}?${queryString}`)
-  //         .then((res) => {
-  //           return res.data;
-  //         });
-  //     },
-  //   });
+  const queryClient = useQueryClient();
+
+  const mutation = useMutation({
+    mutationFn: (updatedScores) => {
+      return makeRequest
+        .put(`/score-boards/${scoreBoardId}/scores`, {
+          updatedScores,
+        })
+        .then((res) => res.data);
+    },
+    onSuccess: (data) => {
+      queryClient.invalidateQueries({ queryKey: ["score-board"] });
+      toast(data, { type: "success" });
+    },
+    onError: (error) => {
+      if (error) {
+        toast(error.response.data, { type: "error" });
+      }
+    },
+  });
+  const saveScores = async () => {
+    const updatedScores = Object.entries(scores).map(([studentId, score]) => ({
+      studentId,
+      score: parseFloat(score), // Đảm bảo dữ liệu là số
+    }));
+
+    mutation.mutate(updatedScores);
+  };
 
   return (
     <div className="flex flex-col gap-4 flex-1 p-4 m-2 rounded-xl bg-white">
@@ -256,6 +318,14 @@ const DetailScoreBoard = () => {
           total={data.totalCount}
         />
       )}
+      <div className="flex items-center justify-end">
+        <button
+          onClick={saveScores}
+          className="w-full md:w-[100px] text-[20px] p-1 bg-webSkyBold text-white rounded-md hover:bg-webSky transition-colors"
+        >
+          Save
+        </button>
+      </div>
     </div>
   );
 };

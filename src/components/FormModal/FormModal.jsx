@@ -117,7 +117,9 @@ const FormModal = ({ table, type, id, data }) => {
         className="flex flex-col items-center justify-center gap-2"
       >
         <span>
-          All data will be lost. Are you sure want to delete this {table}?
+          {type === "remove"
+            ? "All data will be lost. Are you sure want to remove this?"
+            : `All data will be lost. Are you sure want to delete this ${table}?`}
         </span>
         <button className="bg-red-500 text-white py-2 px-4 rounded-md hover:bg-red-800 transition-colors">
           Delete
