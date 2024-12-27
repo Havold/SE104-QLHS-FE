@@ -152,7 +152,8 @@ const FormModal = ({ table, type, id, data }) => {
       <DeleteOutline style={{ fontSize: 16, color: "whitesmoke" }} />
     ) : table === "teacher" ||
       table === "student" ||
-      table === "detailClass" ? (
+      table === "detailClass" ||
+      table === "scoreBoard" ? (
       <EditOutlined style={{ fontSize: 20, color: "black" }} />
     ) : (
       <EditOutlined style={{ fontSize: 16, color: "whitesmoke" }} />

@@ -27,12 +27,12 @@ const ScoreBoardForm = ({ data, type = "create", setOpenForm }) => {
   const [selectedSchoolYear, setSelectedSchoolYear] = useState(
     data?.schoolYearId || 1
   );
-  const [selectedSubject, setSelectedSubject] = useState(
-    data?.schoolYearId || 1
+  const [selectedSubject, setSelectedSubject] = useState(data?.subjectId || 1);
+  const [selectedSemester, setSelectedSemester] = useState(
+    data?.semesterId || 1
   );
-  const [selectedSemester, setSelectedSemester] = useState(data?.classId || 1);
   const [selectedTypeOfExam, setSelectedTypeOfExam] = useState(
-    data?.classId || 1
+    data?.typeOfExamId || 1
   );
 
   const btnColor =
@@ -56,6 +56,9 @@ const ScoreBoardForm = ({ data, type = "create", setOpenForm }) => {
       queryClient.invalidateQueries({
         queryKey: ["score-boards"],
       });
+      queryClient.invalidateQueries({
+        queryKey: ["score-board"],
+      });
       toast(data, { type: "success" });
     },
     onError: (error) => {
@@ -73,7 +76,6 @@ const ScoreBoardForm = ({ data, type = "create", setOpenForm }) => {
       typeOfExamId: selectedTypeOfExam,
     };
 
-    console.log(newScoreBoard);
     mutation.mutate({ newScoreBoard, type });
   };
 

@@ -154,7 +154,7 @@ const DetailScoreBoard = () => {
                 : isPending
                 ? "Loading..."
                 : data.subject.name}
-              <FormModal type="edit" table="detailClass" data={data} />
+              <FormModal type="edit" table="scoreBoard" data={data} />
             </span>
           </div>
         </div>
