@@ -36,6 +36,8 @@ import ListGrades from "./pages/listGrades/ListGrades";
 import ListStudentsClass from "./pages/listStudentsClass/ListStudentsClass";
 import ListSchoolYears from "./pages/listSchoolYears/ListSchoolYears";
 import DetailScoreBoard from "./pages/detailScoreBoard/DetailScoreBoard";
+import ListSubjectReports from "./pages/listSubjectReports/ListSubjectReports";
+import ListSemesterReports from "./pages/listSemesterReports/ListSemesterReports";
 
 const queryClient = new QueryClient();
 
@@ -152,6 +154,14 @@ function App() {
         {
           path: "/list/score-boards/:id",
           element: <DetailScoreBoard />,
+        },
+        {
+          path: "/list/subject-reports",
+          element: <ListSubjectReports />,
+        },
+        {
+          path: "/list/semester-reports",
+          element: <ListSemesterReports />,
         },
         {
           path: "/list/attendance",
