@@ -31,6 +31,12 @@ const columns = [
     className: "hidden lg:table-cell",
   },
   {
+    header: "Sex",
+    accessor: "sex",
+    className: "hidden lg:table-cell",
+  },
+
+  {
     header: "Phone",
     accessor: "phone",
     className: "hidden md:table-cell",
@@ -71,7 +77,7 @@ const renderRows = (data) => {
           </div>
         </td>
         <td className="hidden lg:table-cell">{item.student.id}</td>
-
+        <td className="hidden lg:table-cell">{item.student.sex}</td>
         <td className="hidden md:table-cell">{item.student.phone}</td>
         <td className="hidden lg:table-cell">{item.student.address}</td>
         <td>

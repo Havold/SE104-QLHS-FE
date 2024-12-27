@@ -27,7 +27,11 @@ const columns = [
     accessor: "schoolYear",
     className: "hidden md:table-cell",
   },
-
+  {
+    header: "Class",
+    accessor: "class",
+    className: "hidden md:table-cell",
+  },
   {
     header: "Semester",
     accessor: "student",
@@ -58,6 +62,7 @@ const renderRows = (data) => {
         <h2 className="text-[12px] font-semibold">{item.subject.name}</h2>
       </td>
       <td className="hidden md:table-cell">{item.schoolYear.value}</td>
+      <td className="hidden md:table-cell">{item.class.name}</td>
       <td className="hidden md:table-cell">{item.semester.name}</td>
       <td className="hidden lg:table-cell">{item.typeOfExam.name}</td>
       {/* <td className="hidden lg:table-cell">{item.date}</td> */}
@@ -109,7 +114,7 @@ const ListScoreBoards = () => {
       {/* TOP */}
       <div className="flex flex-col lg:flex-row justify-between">
         <h1 className="hidden lg:block text-[18px] font-semibold">
-          All Results
+          All Score Boards
         </h1>
         <div className="flex flex-col lg:flex-row gap-4">
           <SearchList />

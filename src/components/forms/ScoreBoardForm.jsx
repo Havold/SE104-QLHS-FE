@@ -23,10 +23,14 @@ const ScoreBoardForm = ({ data, type = "create", setOpenForm }) => {
   const [schoolYears, setSchoolYears] = useState();
   const [subjects, setSubjects] = useState();
   const [semesters, setSemesters] = useState();
+  const [classes, setClasses] = useState();
   const [typesOfExam, setTypesOfExam] = useState();
   const [selectedSchoolYear, setSelectedSchoolYear] = useState(
     data?.schoolYearId || 1
   );
+
+  const [selectedClass, setSelectedClass] = useState(data?.classId || 0);
+
   const [selectedSubject, setSelectedSubject] = useState(data?.subjectId || 1);
   const [selectedSemester, setSelectedSemester] = useState(
     data?.semesterId || 1
@@ -74,6 +78,7 @@ const ScoreBoardForm = ({ data, type = "create", setOpenForm }) => {
       schoolYearId: selectedSchoolYear,
       semesterId: selectedSemester,
       typeOfExamId: selectedTypeOfExam,
+      classId: selectedClass,
     };
 
     mutation.mutate({ newScoreBoard, type });
@@ -86,6 +91,7 @@ const ScoreBoardForm = ({ data, type = "create", setOpenForm }) => {
       const res = await makeRequest.get("/school-years?type=all");
       setSchoolYears(res?.data?.schoolYears);
     };
+
     const fetchSubjects = async () => {
       const res = await makeRequest.get("/subjects?type=all");
       setSubjects(res?.data?.subjects);
@@ -103,6 +109,16 @@ const ScoreBoardForm = ({ data, type = "create", setOpenForm }) => {
     fetchSemesters();
     fetchTypesOfExam();
   }, []);
+
+  useEffect(() => {
+    const fetchClasses = async () => {
+      const res = await makeRequest.get(
+        `/classes?type=all&schoolYearId=${selectedSchoolYear}`
+      );
+      setClasses(res?.data?.classes);
+    };
+    fetchClasses();
+  }, [selectedSchoolYear]);
 
   return (
     <form
@@ -139,6 +155,20 @@ const ScoreBoardForm = ({ data, type = "create", setOpenForm }) => {
             selectedOption={selectedSchoolYear}
             onChange={setSelectedSchoolYear}
             displayKey="value"
+          />
+        </div>
+        <div className="flex flex-col w-full md:w-1/4 gap-1">
+          <label
+            className="capitalize text-[12px] text-gray-500"
+            htmlFor={"schoolYear"}
+          >
+            Class
+          </label>
+          <SelectDropDown
+            options={classes}
+            selectedOption={selectedClass}
+            onChange={setSelectedClass}
+            displayKey="name"
           />
         </div>
         <div className="flex flex-col w-full md:w-1/4 gap-1">
