@@ -15,6 +15,7 @@ import GradeForm from "../forms/GradeForm";
 import ListStudentForm from "../forms/ListStudentForm";
 import SchoolYearForm from "../forms/SchoolYearForm";
 import SelectStudentsForm from "../forms/SelectStudentsForm";
+import ScoreBoardForm from "../forms/ScoreBoardForm";
 
 const TeacherForm = lazy(() =>
   import("../forms/TeacherForm").then((module) => ({
@@ -52,6 +53,9 @@ const forms = {
   schoolYear: (data, type, setOpenForm) => (
     <SchoolYearForm setOpenForm={setOpenForm} data={data} type={type} />
   ),
+  scoreBoard: (data, type, setOpenForm) => (
+    <ScoreBoardForm setOpenForm={setOpenForm} data={data} type={type} />
+  ),
   detailScoreBoard: (data, type, setOpenForm) => (
     <SelectStudentsForm setOpenForm={setOpenForm} data={data} type={type} />
   ),
@@ -84,6 +88,7 @@ const FormModal = ({ table, type, id, data }) => {
           table = "detail-classe";
         }
         if (type === "remove") {
+          if (table.includes("detail-score-boards")) table = "score-board";
           queryClient.invalidateQueries({ queryKey: [`${table}`] });
           queryClient.invalidateQueries({
             queryKey: ["detail-classes", "class"],
