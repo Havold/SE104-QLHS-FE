@@ -1,70 +1,136 @@
-# Getting Started with Create React App
+# 📘 School Management System Web Application
 
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+The School Management System is a web application designed to streamline the management of school operations and provide a platform for students and administrators to access and manage school data efficiently. The application caters to two user roles: Students and Admins, ensuring secure access and role-specific functionalities.
 
-## Available Scripts
+## 🌟 Features
+- Role-based Access:
+  - **Students**: Can view their academic results but cannot edit them.
+  - **Admins**: Have full control over school data, including student records, classes, grades, and more.
 
-In the project directory, you can run:
+### 👨‍🎓 Student Role
+-**View Results:** Students can access detailed reports of their academic performance, including semester grades and subject-wise marks.
 
-### `npm start`
+### 🔧 Admin Role
+1. Student Management.
+  - Add, edit, and delete student records.
+  - Assign students to classes and grades.
+2. Academic Year Management.
+  - Define academic years and manage associated records.
+3. Subject Management.
+  - Create and edit subjects offered by the school.
+4. Class & Grade Management.
+  - Organize students into classes and grades for different academic years.
+5. Grade Entry.
+  - Enter and update subject scores for students.
+6. Report Management.
+  - Generate subject-specific reports for each semester.
+  - Generate overall semester performance reports for students.
+7. Edit rules
 
-Runs the app in the development mode.\
-Open [http://localhost:3000](http://localhost:3000) to view it in your browser.
+## 💻 Technologies Used
+### ✔️ Front-end
+- **ReactJS**: Front-end framework for building user interfaces.
+- **React Router**: For managing navigation between pages.
+- **@tanstack/react-query**: For managing server state and data fetching.
+- **SCSS**: For styling the application.
 
-The page will reload when you make changes.\
-You may also see any lint errors in the console.
+### ✔️ Back-end
+- **Node.js:** To build scalable server-side logic.
+- **Express:** A web framework for Node.js for building APIs.
+- **JWT (JSON Web Token):** For secure authentication.
+- **PostgreSQL**: A powerful relational database for storing user, subject, grade, and report data.
+- **Prisma**: A modern ORM for managing database models and queries seamlessly.
 
-### `npm test`
+## 🛠️ System Requirements
 
-Launches the test runner in the interactive watch mode.\
-See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
+Before running the application, ensure you have the following installed:
+- Node.js 20.17.0 __(Recommend)__
+- PostgreSQL installed.
+- Git installed.
 
-### `npm run build`
+## 🚀 Getting Started
+### ✔️ Backend Setup
+1. Clone the backend repository:
+    ```
+    git clone https://github.com/Havold/SE104-QLHS-BE.git
+    cd SE104-QLHS-BE
+    ```
 
-Builds the app for production to the `build` folder.\
-It correctly bundles React in production mode and optimizes the build for the best performance.
+2. Install the dependencies:
+    ```
+    npm install
+    ```
 
-The build is minified and the filenames include the hashes.\
-Your app is ready to be deployed!
+3. Set up your `.env` file with the following environment variables:
+    ```
+    PORT = 8080
+    DATABASE_URL="postgresql://<username>:<password>@localhost:5432/QLHS"
+    JWT_SECRET = your_jwt_secret
+    
+    DESTINATION_DIR = "uploads/"
+    ```
+4. Set up Prisma:
+  - Initialize the Prisma schema
+    ```
+    npx prisma init
+    ```
+  - Generate Prisma client
+    ```
+    npx prisma generate
+    ```
+  - Migrate the database schema:
+    ```
+    npx prisma migrate dev --name init
+    ```
 
-See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
+5. Run the backend server:
+    ```
+    npm start
+    ```
+    
+⚠️ **Note:** These are just the basic settings. For more details on creating a database, please check out my BE project: https://github.com/Havold/SE104-QLHS-BE
+### ✔️ Frontend Setup
+1. Clone the frontend repository:
+  ```
+    git clone https://github.com/Havold/SE104-QLHS-FE.git
+    cd SE104-QLHS-FE
+  ```
+2. Install dependencies:
+   ```
+   npm install
+   ```
+4. Run the frontend development server:
+    ```
+    npm start
+    ```
+## ⚡ Usage
+1. Open your browser and navigate to:
+    ```
+    http://localhost:3000
+    ```
+2. Login
+   - As a **Student**, view your academic results.
+   - As an **Admin**, manage school records and generate reports. (Account's admin defautl is admin and password: 123123)
+3. Explore the features to manage academic data efficiently.
 
-### `npm run eject`
+## 🖼️ Screenshots
+__1. Login Page__
+![Login Page](./public/images/login_page.jpg)
 
-**Note: this is a one-way operation. Once you `eject`, you can't go back!**
+__2. Home Page (Light Mode)__
+![Home Page Light Mode](./public/images/home_page.jpg)
 
-If you aren't satisfied with the build tool and configuration choices, you can `eject` at any time. This command will remove the single build dependency from your project.
+__3. Home Page (Dark Mode)__
+![Home Page Dark Mode](./public/images/home_page_dark.jpg)
 
-Instead, it will copy all the configuration files and the transitive dependencies (webpack, Babel, ESLint, etc) right into your project so you have full control over them. All of the commands except `eject` will still work, but they will point to the copied scripts so you can tweak them. At this point you're on your own.
+__4. User Profile (Light Mode)__
+![Home Page Dark Mode](./public/images/user_profile.jpg)
 
-You don't have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn't feel obligated to use this feature. However we understand that this tool wouldn't be useful if you couldn't customize it when you are ready for it.
+__5. User Profile (Dark Mode)__
+![Home Page Dark Mode](./public/images/user_profile_dark.jpg)
 
-## Learn More
-
-You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
-
-To learn React, check out the [React documentation](https://reactjs.org/).
-
-### Code Splitting
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/code-splitting](https://facebook.github.io/create-react-app/docs/code-splitting)
-
-### Analyzing the Bundle Size
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size](https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size)
-
-### Making a Progressive Web App
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app](https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app)
-
-### Advanced Configuration
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/advanced-configuration](https://facebook.github.io/create-react-app/docs/advanced-configuration)
-
-### Deployment
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/deployment](https://facebook.github.io/create-react-app/docs/deployment)
-
-### `npm run build` fails to minify
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify](https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify)
+## ⚠️ Important Notice
+- This project uses PostgreSQL and Prisma for database operations. Ensure the database is properly set up and accessible via the configured DATABASE_URL.
+- The backend setup requires Prisma migrations. Refer to the prisma/schema.prisma file for the database schema details.
+- This project needs a Back-end, I suggest you check out my BE project here: https://github.com/Havold/SE104-QLHS-BE
+----------------------------------------------------------------------------------------
