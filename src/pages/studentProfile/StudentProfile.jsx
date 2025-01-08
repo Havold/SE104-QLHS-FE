@@ -18,6 +18,74 @@ import { useEffect, useState } from "react";
 import { makeRequest } from "../../axios";
 import moment from "moment";
 import { useQuery } from "@tanstack/react-query";
+import Table from "../../components/Table/Table";
+
+const columns = [
+  {
+    header: "School Year",
+    accessor: "schoolYear",
+    className: "text-center",
+  },
+  {
+    header: "Class",
+    accessor: "Class",
+    className: "text-center",
+  },
+  {
+    header: "Average Semester 1",
+    accessor: "avg1",
+    className: "text-center",
+  },
+  {
+    header: "Average Semester 2",
+    accessor: "avg2",
+    className: "text-center",
+  },
+];
+
+const studentClassData = [
+  // {
+  //   id: 1,
+  //   schoolYear: 2021,
+  //   class: "10A1",
+  //   avgI: 9.2,
+  //   avgII: 8.0,
+  // },
+  // {
+  //   id: 2,
+  //   schoolYear: 2022,
+  //   class: "11B1",
+  //   avgI: 7.2,
+  //   avgII: 8.5,
+  // },
+  // {
+  //   id: 3,
+  //   schoolYear: 2023,
+  //   class: "12C1",
+  //   avgI: 9.5,
+  //   avgII: 8.5,
+  // },
+];
+
+const renderRows = (data) => {
+  return data ? (
+    data.map((item, index) => (
+      <tr
+        className="text-sm border-b-2 border-gray-100 even:bg-slate-100 hover:bg-webPurpleLight "
+        key={item.id}
+      >
+        <td className="flex items-center justify-center p-4">
+          <h2 className="text-[12px] font-semibold">{item.schoolYear}</h2>
+        </td>
+        <td className="table-cell text-center">{item.class}</td>
+        <td className="table-cell text-center">{item.avgI}</td>
+        <td className="table-cell text-center">{item.avgII}</td>
+      </tr>
+    ))
+  ) : (
+    <>No data yet!</>
+  );
+};
 
 const StudentProfile = () => {
   const [student, setStudent] = useState("");
@@ -85,7 +153,7 @@ const StudentProfile = () => {
             </div>
 
             {/* ITEM CARD */}
-            <div className="flex-1 flex justify-center gap-2 flex-wrap">
+            {/* <div className="flex-1 flex justify-center gap-2 flex-wrap">
               <div className="w-full sm:w-[48%] md:w-full lg:w-[48%] flex items-center gap-3 p-4 rounded-xl bg-white custom-box-shadow">
                 <BusinessCenterRounded
                   style={{ fontSize: 28, color: "#CFCEFF" }}
@@ -132,11 +200,20 @@ const StudentProfile = () => {
                   <span className="text-[14px] text-gray-400">Class</span>
                 </div>
               </div>
-            </div>
+            </div> */}
           </div>
         )}
 
         {/* BOTTOM */}
+
+        <div className="flex flex-col bg-white rounded-xl p-4 custom-box-shadow">
+          <h1 className="text-[16px] font-semibold">Classes Through Years</h1>
+          <Table
+            columns={columns}
+            renderRows={renderRows}
+            data={studentClassData}
+          />
+        </div>
         <div className="flex flex-col bg-white rounded-xl p-4 custom-box-shadow">
           <h1 className="text-[16px] font-semibold">Student's Schedule</h1>
           <BigCalendar />
