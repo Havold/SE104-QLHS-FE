@@ -3,6 +3,7 @@ import {
   CloseRounded,
   DeleteOutline,
   EditOutlined,
+  TuneRounded,
 } from "@mui/icons-material";
 import React, { lazy, Suspense, useCallback, useEffect, useState } from "react";
 import SubjectForm from "../forms/SubjectForm";
@@ -16,6 +17,9 @@ import ListStudentForm from "../forms/ListStudentForm";
 import SchoolYearForm from "../forms/SchoolYearForm";
 import SelectStudentsForm from "../forms/SelectStudentsForm";
 import ScoreBoardForm from "../forms/ScoreBoardForm";
+import SubjectReportForm from "../forms/SubjectReportForm";
+import RuleForm from "../forms/RuleForm";
+import SemesterReportForm from "../forms/SemesterReportForm";
 
 const TeacherForm = lazy(() =>
   import("../forms/TeacherForm").then((module) => ({
@@ -58,6 +62,15 @@ const forms = {
   ),
   detailScoreBoard: (data, type, setOpenForm) => (
     <SelectStudentsForm setOpenForm={setOpenForm} data={data} type={type} />
+  ),
+  subjectReport: (data, type, setOpenForm) => (
+    <SubjectReportForm setOpenForm={setOpenForm} data={data} type={type} />
+  ),
+  semesterReport: (data, type, setOpenForm) => (
+    <SemesterReportForm setOpenForm={setOpenForm} data={data} type={type} />
+  ),
+  rule: (data, type, setOpenForm) => (
+    <RuleForm setOpenForm={setOpenForm} data={data} type={type} />
   ),
 };
 
@@ -142,7 +155,7 @@ const FormModal = ({ table, type, id, data }) => {
   }, [openForm]);
   const size = type === "create" ? "w-9 h-9" : "w-8 h-8";
   const bg =
-    type === "create"
+    type === "create" || type === "filter"
       ? "bg-webYellow"
       : type === "delete" || type === "remove"
       ? "bg-webPurple"
@@ -152,6 +165,8 @@ const FormModal = ({ table, type, id, data }) => {
       <AddRounded fontSize="small" />
     ) : type === "delete" || type === "remove" ? (
       <DeleteOutline style={{ fontSize: 16, color: "whitesmoke" }} />
+    ) : type === "filter" ? (
+      <TuneRounded fontSize="small" />
     ) : table === "teacher" ||
       table === "student" ||
       table === "detailClass" ||

@@ -38,6 +38,7 @@ import ListSchoolYears from "./pages/listSchoolYears/ListSchoolYears";
 import DetailScoreBoard from "./pages/detailScoreBoard/DetailScoreBoard";
 import ListSubjectReports from "./pages/listSubjectReports/ListSubjectReports";
 import ListSemesterReports from "./pages/listSemesterReports/ListSemesterReports";
+import ListRules from "./pages/listRules/ListRules";
 
 const queryClient = new QueryClient();
 
@@ -94,6 +95,10 @@ function App() {
         {
           path: "/list/teachers",
           element: <ListTeachers />,
+        },
+        {
+          path: "/list/rules",
+          element: <ListRules />,
         },
         {
           path: "/list/teachers/:id",

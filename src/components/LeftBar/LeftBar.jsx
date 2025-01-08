@@ -6,6 +6,7 @@ import {
   Diversity3Outlined,
   EscalatorWarningOutlined,
   FactCheckOutlined,
+  FormatListNumberedOutlined,
   HistoryEduOutlined,
   HomeOutlined,
   HomeWorkOutlined,
@@ -144,30 +145,41 @@ const LeftBar = ({ className }) => {
           icon: <HistoryEduOutlined fontSize="small" />,
           title: "Subject Reports",
           href: "/list/subject-reports",
-          visible: true,
+          visible: currentUser.role.authorities
+            .map((authority) => authority.name)
+            .includes("View"),
         },
         {
           id: 12,
           icon: <ReceiptLongOutlined fontSize="small" />,
           title: "Semester Reports",
           href: "/list/semester-reports",
-          visible: true,
+          visible: currentUser.role.authorities
+            .map((authority) => authority.name)
+            .includes("View"),
+        },
+        {
+          id: 20,
+          icon: <FormatListNumberedOutlined fontSize="small" />,
+          title: "Rules",
+          href: "/list/rules",
+          visible: currentUser.role.authorities
+            .map((authority) => authority.name)
+            .includes("View"),
         },
         {
           id: 13,
           icon: <Diversity3Outlined fontSize="small" />,
           title: "Attendance",
           href: "/list/attendance",
-          visible: currentUser.role.authorities
-            .map((authority) => authority.name)
-            .includes("View"),
+          visible: false,
         },
         {
           id: 14,
           icon: <CalendarMonthOutlined fontSize="small" />,
           title: "Events",
           href: "/list/events",
-          visible: true,
+          visible: false,
         },
         // {
         //   id: 13,
@@ -181,7 +193,7 @@ const LeftBar = ({ className }) => {
           icon: <CampaignOutlined fontSize="small" />,
           title: "Announcements",
           href: "/list/announcements",
-          visible: true,
+          visible: false,
         },
       ],
     },
@@ -200,7 +212,7 @@ const LeftBar = ({ className }) => {
           icon: <SettingsSuggestOutlined fontSize="small" />,
           title: "Settings",
           href: "/settings",
-          visible: true,
+          visible: false,
         },
         {
           id: 3,

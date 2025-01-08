@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useContext, useEffect, useState } from "react";
 import SearchList from "../../components/SearchList/SearchList";
 import {
   SortRounded,
@@ -23,6 +23,7 @@ import { z } from "zod";
 import { toast } from "react-toastify";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
+import { AuthContext } from "../../context/authContext";
 
 const schema = z.object({
   score: z.coerce
@@ -52,14 +53,15 @@ const columns = [
     accessor: "score",
     className: "table-cell text-center",
   },
-  {
-    header: "Actions",
-    accessor: "actions",
-    className: "text-center",
-  },
+  // {
+  //   header: "Actions",
+  //   accessor: "actions",
+  //   className: "text-center",
+  // },
 ];
 
 const DetailScoreBoard = () => {
+  const { hasAccessToken, currentUser } = useContext(AuthContext);
   const [errors, setErrors] = useState({});
   const [scores, setScores] = useState({});
   const handleScoreChange = (studentId, newScore) => {
@@ -113,14 +115,36 @@ const DetailScoreBoard = () => {
           </td>
           <td className="table-cell">
             <div className="flex flex-col items-center">
-              <input
-                className="w-8 h-8 text-center text-[12px] rounded-md border-2 outline-webSkyBold border-gray-500"
-                defaultValue={item.score || 0}
-                type="text"
-                onChange={(e) =>
-                  handleScoreChange(item.student.id, e.target.value)
-                }
-              />
+              {currentUser.role.authorities
+                .map((authority) => authority.name)
+                .includes("Edit") ? (
+                <input
+                  className="w-8 h-8 text-center text-[12px] rounded-md border-2 outline-webSkyBold border-gray-500"
+                  value={
+                    scores[item.student.id] !== undefined
+                      ? scores[item.student.id]
+                      : item.score
+                  }
+                  type="text"
+                  onChange={(e) =>
+                    handleScoreChange(item.student.id, e.target.value)
+                  }
+                />
+              ) : (
+                <input
+                  className="w-8 h-8 text-center text-[12px] rounded-md border-2  outline-webSkyBold border-gray-500"
+                  disabled
+                  value={
+                    scores[item.student.id] !== undefined
+                      ? scores[item.student.id]
+                      : item.score
+                  }
+                  type="text"
+                  onChange={(e) =>
+                    handleScoreChange(item.student.id, e.target.value)
+                  }
+                />
+              )}
               {errors[item.student.id] && (
                 <span className="text-[10px] text-red-600">
                   {errors[item.student.id]}
@@ -128,16 +152,11 @@ const DetailScoreBoard = () => {
               )}
             </div>
           </td>
-          <td>
+          {/* <td>
             <div className="flex gap-4 items-center justify-center">
-              <Link to={`/list/students/${item.id}`}>
-                <button className="flex w-8 h-8 rounded-full bg-webSky items-center justify-center">
-                  <VisibilityOutlined
-                    style={{ fontSize: 16, color: "whitesmoke" }}
-                  />
-                </button>
-              </Link>
-              {role === "admin" ? (
+              {currentUser.role.authorities
+                .map((authority) => authority.name)
+                .includes("Delete") ? (
                 <FormModal
                   type="remove"
                   table={`detail-score-boards/${scoreBoardId}/students`}
@@ -147,14 +166,13 @@ const DetailScoreBoard = () => {
                 <></>
               )}
             </div>
-          </td>
+          </td> */}
         </tr>
       ))
     ) : (
       <></>
     );
   };
-
   const [searchParams, setSearchParams] = useSearchParams();
   let page = searchParams.get("page") ? parseInt(searchParams.get("page")) : 1;
   let pageItems = searchParams.get("pageItems")
@@ -200,6 +218,7 @@ const DetailScoreBoard = () => {
     mutation.mutate(updatedScores);
   };
 
+  console.log(data);
   return (
     <div className="flex flex-col gap-4 flex-1 p-4 m-2 rounded-xl bg-white">
       {/* TOP */}
@@ -216,7 +235,13 @@ const DetailScoreBoard = () => {
                 : isPending
                 ? "Loading..."
                 : data.subject.name}
-              <FormModal type="edit" table="scoreBoard" data={data} />
+              {currentUser.role.authorities
+                .map((authority) => authority.name)
+                .includes("Edit") ? (
+                <FormModal type="edit" table="scoreBoard" data={data} />
+              ) : (
+                <></>
+              )}
             </span>
           </div>
         </div>
@@ -283,7 +308,7 @@ const DetailScoreBoard = () => {
         </h1>
         <div className="flex flex-col lg:flex-row gap-4">
           {/* <SearchList /> */}
-          <div className="flex gap-4 items-center">
+          {/* <div className="flex gap-4 items-center">
             <button className="flex items-center justify-center w-4 h-4 p-4 rounded-full bg-webYellow">
               <TuneRounded style={{ fontSize: 16 }} />
             </button>
@@ -291,7 +316,7 @@ const DetailScoreBoard = () => {
               <SortRounded fontSize="small" />
             </button>
             <FormModal type="create" table="detailScoreBoard" />
-          </div>
+          </div> */}
         </div>
       </div>
       {/* LIST */}
@@ -319,12 +344,18 @@ const DetailScoreBoard = () => {
         />
       )}
       <div className="flex items-center justify-end">
-        <button
-          onClick={saveScores}
-          className="w-full md:w-[100px] text-[20px] p-1 bg-webSkyBold text-white rounded-md hover:bg-webSky transition-colors"
-        >
-          Save
-        </button>
+        {currentUser.role.authorities
+          .map((authority) => authority.name)
+          .includes("Edit") ? (
+          <button
+            onClick={saveScores}
+            className="w-full md:w-[100px] text-[20px] p-1 bg-webSkyBold text-white rounded-md hover:bg-webSky transition-colors"
+          >
+            Save
+          </button>
+        ) : (
+          <></>
+        )}
       </div>
     </div>
   );

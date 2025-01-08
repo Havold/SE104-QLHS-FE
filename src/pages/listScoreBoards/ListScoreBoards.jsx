@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useContext } from "react";
 import SearchList from "../../components/SearchList/SearchList";
 import {
   AddRounded,
@@ -16,6 +16,7 @@ import { useQuery } from "@tanstack/react-query";
 import { ITEMS_PER_PAGE } from "../../lib/settings";
 import { makeRequest } from "../../axios";
 import FormModal from "../../components/FormModal/FormModal";
+import { AuthContext } from "../../context/authContext";
 
 const columns = [
   {
@@ -52,41 +53,43 @@ const columns = [
   },
 ];
 
-const renderRows = (data) => {
-  return data.map((item) => (
-    <tr
-      className="text-sm border-b-2 border-gray-100 even:bg-slate-100 hover:bg-webPurpleLight "
-      key={item.id}
-    >
-      <td className="flex items-center p-4">
-        <h2 className="text-[12px] font-semibold">{item.subject.name}</h2>
-      </td>
-      <td className="hidden md:table-cell">{item.schoolYear.value}</td>
-      <td className="hidden md:table-cell">{item.class.name}</td>
-      <td className="hidden md:table-cell">{item.semester.name}</td>
-      <td className="hidden lg:table-cell">{item.typeOfExam.name}</td>
-      {/* <td className="hidden lg:table-cell">{item.date}</td> */}
-      <td>
-        <div className="flex gap-4">
-          <Link to={`/list/score-boards/${item.id}`}>
-            <button className="flex w-8 h-8 rounded-full bg-webSky items-center justify-center">
-              <VisibilityOutlined
-                style={{ fontSize: 16, color: "whitesmoke" }}
-              />
-            </button>
-          </Link>
-          {role === "admin" ? (
-            <FormModal table="score-board" type="delete" id={item.id} />
-          ) : (
-            <></>
-          )}
-        </div>
-      </td>
-    </tr>
-  ));
-};
-
 const ListScoreBoards = () => {
+  const { hasAccessToken, currentUser } = useContext(AuthContext);
+  const renderRows = (data) => {
+    return data.map((item) => (
+      <tr
+        className="text-sm border-b-2 border-gray-100 even:bg-slate-100 hover:bg-webPurpleLight "
+        key={item.id}
+      >
+        <td className="flex items-center p-4">
+          <h2 className="text-[12px] font-semibold">{item.subject.name}</h2>
+        </td>
+        <td className="hidden md:table-cell">{item.schoolYear.value}</td>
+        <td className="hidden md:table-cell">{item.class.name}</td>
+        <td className="hidden md:table-cell">{item.semester.name}</td>
+        <td className="hidden lg:table-cell">{item.typeOfExam.name}</td>
+        {/* <td className="hidden lg:table-cell">{item.date}</td> */}
+        <td>
+          <div className="flex gap-4">
+            <Link to={`/list/score-boards/${item.id}`}>
+              <button className="flex w-8 h-8 rounded-full bg-webSky items-center justify-center">
+                <VisibilityOutlined
+                  style={{ fontSize: 16, color: "whitesmoke" }}
+                />
+              </button>
+            </Link>
+            {currentUser.role.authorities
+              .map((authority) => authority.name)
+              .includes("Delete") ? (
+              <FormModal table="score-board" type="delete" id={item.id} />
+            ) : (
+              <></>
+            )}
+          </div>
+        </td>
+      </tr>
+    ));
+  };
   const [searchParams, setSearchParams] = useSearchParams();
   const page = searchParams.get("page")
     ? parseInt(searchParams.get("page"))
@@ -125,7 +128,13 @@ const ListScoreBoards = () => {
             <button className="flex items-center justify-center w-4 h-4 p-4 rounded-full bg-webYellow">
               <SortRounded fontSize="small" />
             </button>
-            <FormModal table="scoreBoard" type="create" />
+            {currentUser.role.authorities
+              .map((authority) => authority.name)
+              .includes("Delete") ? (
+              <FormModal table="scoreBoard" type="create" />
+            ) : (
+              <></>
+            )}
           </div>
         </div>
       </div>
