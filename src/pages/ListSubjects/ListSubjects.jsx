@@ -4,12 +4,18 @@ import {
   AddRounded,
   DeleteOutline,
   EditOutlined,
+  ReplayRounded,
   SortRounded,
   TuneRounded,
 } from "@mui/icons-material";
 import Pagination from "../../components/Pagination/Pagination";
 import Table from "../../components/Table/Table";
-import { Link, useSearchParams } from "react-router-dom";
+import {
+  Link,
+  useLocation,
+  useNavigate,
+  useSearchParams,
+} from "react-router-dom";
 import { role, subjectsData } from "../../lib/data";
 import FormModal from "../../components/FormModal/FormModal";
 import { makeRequest } from "../../axios";
@@ -56,6 +62,9 @@ const renderRows = (data) => {
 
 const ListSubjects = () => {
   const [searchParams, setSearchParams] = useSearchParams();
+  const location = useLocation();
+  const navigate = useNavigate();
+  const queryClient = useQueryClient();
   let page = searchParams.get("page") ? parseInt(searchParams.get("page")) : 1;
   let pageItems = searchParams.get("pageItems")
     ? parseInt(searchParams.get("pageItems"))
@@ -73,6 +82,15 @@ const ListSubjects = () => {
     },
   });
 
+  const mutation = useMutation({
+    mutationFn: () => {
+      return navigate(location.pathname);
+    },
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ["subjects"] });
+    },
+  });
+
   return (
     <div className="flex flex-col gap-4 flex-1 p-4 m-2 rounded-xl bg-white">
       {/* TOP */}
@@ -83,11 +101,13 @@ const ListSubjects = () => {
         <div className="flex flex-col lg:flex-row gap-4">
           <SearchList table="subjects" />
           <div className="flex gap-4 items-center">
-            <button className="flex items-center justify-center w-4 h-4 p-4 rounded-full bg-webYellow">
-              <TuneRounded style={{ fontSize: 16 }} />
-            </button>
-            <button className="flex items-center justify-center w-4 h-4 p-4 rounded-full bg-webYellow">
-              <SortRounded fontSize="small" />
+            <button
+              onClick={(e) => {
+                mutation.mutate();
+              }}
+              className="flex items-center justify-center w-4 h-4 p-4 rounded-full bg-webYellow"
+            >
+              <ReplayRounded fontSize="small" />
             </button>
             <FormModal table="subject" type="create" />
           </div>
