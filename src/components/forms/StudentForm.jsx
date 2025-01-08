@@ -90,6 +90,7 @@ export const StudentForm = ({ data, type = "create", setOpenForm }) => {
     onSuccess: (data) => {
       setOpenForm(false);
       queryClient.invalidateQueries({ queryKey: ["profile"] });
+      queryClient.invalidateQueries({ queryKey: ["students"] });
       toast(data, { type: "success" });
     },
     onError: (err) => {
@@ -121,7 +122,11 @@ export const StudentForm = ({ data, type = "create", setOpenForm }) => {
   return (
     <form className="flex flex-col gap-8" onSubmit={onSubmit}>
       <h1 className="text-[18px] font-semibold">
-        {type === "create" ? "Create a new student" : "Update a student"}
+        {type === "create"
+          ? "Create a new student"
+          : type === "filter"
+          ? "Filter students"
+          : "Update a student"}
       </h1>
       <div className="flex flex-col gap-4">
         <span className="text-[14px] text-gray-400">
@@ -143,14 +148,18 @@ export const StudentForm = ({ data, type = "create", setOpenForm }) => {
             type="email"
             defaultValue={data?.email}
           />
-          <InputField
-            register={register}
-            error={errors.password}
-            label="Password"
-            name="password"
-            type="password"
-            defaultValue={data?.password}
-          />
+          {type === "filter" ? (
+            <></>
+          ) : (
+            <InputField
+              register={register}
+              error={errors.password}
+              label="Password"
+              name="password"
+              type="password"
+              defaultValue={data?.password}
+            />
+          )}
         </div>
       </div>
       <div className="flex flex-col gap-4">
@@ -177,78 +186,84 @@ export const StudentForm = ({ data, type = "create", setOpenForm }) => {
             name="address"
             defaultValue={data?.address}
           />
-          <InputField
-            register={register}
-            error={errors.birthday}
-            label="Date of Birth"
-            name="birthday"
-            type="date"
-            defaultValue={
-              data?.birth ? moment(data?.birth).format("YYYY-MM-DD") : null
-            }
-          />
-          <InputField
-            register={register}
-            error={errors.sex}
-            label="Sex"
-            name="sex"
-            options={["Male", "Female"]}
-            type="select"
-            defaultValue={data?.sex}
-          />
-          <div className="flex flex-col w-full md:w-1/4">
-            <input
-              ref={uploadProfilePicRef}
-              className="hidden"
-              type="file"
-              id="uploadProfilePic"
-              onChange={(e) => handleChangeImg(e)}
-            />
-            {profilePic?.preview == null ? (
-              <label
-                htmlFor="uploadProfilePic"
-                className="flex items-center gap-4 text-[12px] text-gray-500 cursor-pointer"
-              >
-                <CloudUploadOutlined />
-                <span>Upload a photo</span>
-              </label>
-            ) : (
-              <></>
-            )}
-            {profilePic?.preview ? (
-              <div className="relative w-fit h-fit justify-self-center">
-                <CloseRounded
-                  fontSize="medium"
-                  className="absolute top-0 right-0 cursor-pointer p-1 bg-webPurple text-white rounded-xl"
-                  onClick={() => {
-                    if (uploadProfilePicRef.current) {
-                      uploadProfilePicRef.current.value = "";
-                    }
-                    setProfilePic({ preview: null });
-                  }}
+          {type === "filter" ? (
+            <></>
+          ) : (
+            <>
+              <InputField
+                register={register}
+                error={errors.birthday}
+                label="Date of Birth"
+                name="birthday"
+                type="date"
+                defaultValue={
+                  data?.birth ? moment(data?.birth).format("YYYY-MM-DD") : null
+                }
+              />
+              <InputField
+                register={register}
+                error={errors.sex}
+                label="Sex"
+                name="sex"
+                options={["Male", "Female"]}
+                type="select"
+                defaultValue={data?.sex}
+              />
+              <div className="flex flex-col w-full md:w-1/4">
+                <input
+                  ref={uploadProfilePicRef}
+                  className="hidden"
+                  type="file"
+                  id="uploadProfilePic"
+                  onChange={(e) => handleChangeImg(e)}
                 />
-                <label htmlFor="uploadProfilePic">
-                  <img
-                    src={
-                      profilePic && changeImg === false
-                        ? `${process.env.REACT_APP_API_URL}${profilePic.preview}`
-                        : profilePic.preview
-                    }
-                    alt="ProfilePic"
-                    className="w-[80px] h-[80px] object-cover rounded-full cursor-pointer"
-                  />
-                </label>
+                {profilePic?.preview == null ? (
+                  <label
+                    htmlFor="uploadProfilePic"
+                    className="flex items-center gap-4 text-[12px] text-gray-500 cursor-pointer"
+                  >
+                    <CloudUploadOutlined />
+                    <span>Upload a photo</span>
+                  </label>
+                ) : (
+                  <></>
+                )}
+                {profilePic?.preview ? (
+                  <div className="relative w-fit h-fit justify-self-center">
+                    <CloseRounded
+                      fontSize="medium"
+                      className="absolute top-0 right-0 cursor-pointer p-1 bg-webPurple text-white rounded-xl"
+                      onClick={() => {
+                        if (uploadProfilePicRef.current) {
+                          uploadProfilePicRef.current.value = "";
+                        }
+                        setProfilePic({ preview: null });
+                      }}
+                    />
+                    <label htmlFor="uploadProfilePic">
+                      <img
+                        src={
+                          profilePic && changeImg === false
+                            ? `${process.env.REACT_APP_API_URL}${profilePic.preview}`
+                            : profilePic.preview
+                        }
+                        alt="ProfilePic"
+                        className="w-[80px] h-[80px] object-cover rounded-full cursor-pointer"
+                      />
+                    </label>
+                  </div>
+                ) : (
+                  <></>
+                )}
               </div>
-            ) : (
-              <></>
-            )}
-          </div>
+            </>
+          )}
         </div>
       </div>
       <button
         className={`text-[18px] w-full p-2 rounded-md ${btnColor} transition-colors text-white`}
       >
-        {type === "create" ? "Create" : "Update"}
+        {type === "create" ? "Create" : type === "filter" ? "Filter" : "Update"}
       </button>
     </form>
   );
