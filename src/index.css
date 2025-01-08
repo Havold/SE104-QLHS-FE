@@ -2,208 +2,196 @@
 @tailwind components;
 @tailwind utilities;
 
-
 .react-calendar {
-    font-family: "Poppins", sans-serif !important;
-    font-size: 12px !important;
-    border: none !important;
-    width: 100%;
+  font-family: "Poppins", sans-serif !important;
+  font-size: 12px !important;
+  border: none !important;
+  width: 100%;
 }
 
 .react-calendar__tile--active {
-    background-color: #C3EBFA !important;
-    color: black;
+  background-color: #c3ebfa !important;
+  color: black;
 }
 
 .react-calendar__navigation__label__labelText {
-    font-weight: bold;
-    font-size: 14px;
+  font-weight: bold;
+  font-size: 14px;
 }
 
 /* CSS BIG CALENDAR */
 .rbc-calendar {
-    font-size: 12px;
+  font-size: 12px;
 }
 
 .rbc-calendar .rbc-btn-group:first-child {
-    display: none;
+  display: none;
 }
-
-
 
 .rbc-calendar .rbc-btn-group button {
-    font-size: 12px;
-    padding: 4px 8px;
-    border: none;
-    font-weight: 400;
-    color: #696685;
-    background-color: #F2EFFD;
+  font-size: 12px;
+  padding: 4px 8px;
+  border: none;
+  font-weight: 400;
+  color: #696685;
+  background-color: #f2effd;
 }
 
-
-
 .rbc-calendar .rbc-btn-group button.rbc-active {
-    background-color: #DDDCFE;
-    box-shadow: none;
+  background-color: #dddcfe;
+  box-shadow: none;
 }
 
 .rbc-calendar .rbc-toolbar .rbc-toolbar-label {
-    text-align: end;
-    font-weight: 500;
+  text-align: end;
+  font-weight: 500;
 }
 
 .rbc-header {
-    padding: 8px 0;
+  padding: 8px 0;
 }
 
 .rbc-calendar .rbc-timeslot-group {
-    min-height: 60px;
+  min-height: 60px;
 }
 
 .rbc-calendar .rbc-events-container .rbc-event {
-    border: none;
-    width: 99%;
-    padding: 10px;
-    margin: 4px;
+  border: none;
+  width: 99%;
+  padding: 10px;
+  margin: 4px;
 }
 
 .rbc-event:nth-child(1) {
-    background-color: #C3EBFA;
+  background-color: #c3ebfa;
 }
 
 .rbc-event:nth-child(2) {
-    background-color: #CFCEFF;
+  background-color: #cfceff;
 }
 
 .rbc-event:nth-child(3) {
-    background-color: #FAE27C;
+  background-color: #fae27c;
 }
 
 .rbc-event:nth-child(4) {
-    background-color: #C3EBFA;
+  background-color: #c3ebfa;
 }
 
 .rbc-event:nth-child(5) {
-    background-color: #CFCEFF;
+  background-color: #cfceff;
 }
 
 .rbc-event:nth-child(6) {
-    background-color: #FAE27C;
+  background-color: #fae27c;
 }
 
 .rbc-event:nth-child(7) {
-    background-color: #C3EBFA;
+  background-color: #c3ebfa;
 }
 
 .rbc-event:nth-child(8) {
-    background-color: #CFCEFF;
+  background-color: #cfceff;
 }
 
 .rbc-event:nth-child(9) {
-    background-color: #FAE27C;
+  background-color: #fae27c;
 }
 
-
 .rbc-calendar .rbc-events-container .rbc-event .rbc-event-label {
-    font-size: 8px;
-    color: gray;
-    font-weight: 300;
+  font-size: 8px;
+  color: #808080;
+  font-weight: 300;
 }
 
 .rbc-calendar .rbc-events-container .rbc-event .rbc-event-content {
-    font-size: 10px;
-    color: black;
+  font-size: 10px;
+  color: black;
 }
 
 .rbc-allday-cell {
-    display: none;
+  display: none;
 }
 
-
 @layer base {
-    :root {
-        
-    }
-    
-    * {
-        margin: 0;
-        padding: 0;
-        box-sizing: border-box;
-    
-        &::-webkit-scrollbar {
-            width: 6px;
-        }
-    
-        &::-webkit-scrollbar-thumb {
-            background-color: #C3EBFA;
-            border-radius: 4px;
-        }
-    
-        &::-webkit-scrollbar-track {
-            background-color: #EDF9FD;
-            border-radius: 10px;
+  :root {
+  }
 
-        }
-    }
-    
-    html {
-        scroll-behavior: smooth;
+  * {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+
+    &::-webkit-scrollbar {
+      width: 6px;
     }
 
-    body {
-        font-family: "Poppins", sans-serif;
-        font-size: 1.6rem;
-        text-rendering: optimizeSpeed;
-        color: black;
-        /* background-color: black; */
+    &::-webkit-scrollbar-thumb {
+      background-color: #c3ebfa;
+      border-radius: 4px;
     }
-    
-    a[href] {
-        text-decoration: none;
-        display: inline-block;
-        outline: none;
+
+    &::-webkit-scrollbar-track {
+      background-color: #edf9fd;
+      border-radius: 10px;
     }
-    
-    button {
-        border: none;
-    }
+  }
+
+  html {
+    scroll-behavior: smooth;
+  }
+
+  body {
+    font-family: "Poppins", sans-serif;
+    font-size: 1.6rem;
+    text-rendering: optimizeSpeed;
+    color: black;
+    /* background-color: black; */
+  }
+
+  a[href] {
+    text-decoration: none;
+    display: inline-block;
+    outline: none;
+  }
+
+  button {
+    border: none;
+  }
 }
 
 @layer utilities {
+  .custom-background-image-login {
+    background: linear-gradient(#294652a9, #2946523c),
+      url("/public/assets/school.jpg");
+    background-size: cover;
+  }
 
-    .custom-background-image-login {
-        background: linear-gradient(#294652a9, #2946523c),
-        url('/public/assets/school.jpg');
-        background-size: cover;
-    };
+  .custom-scrollbar-transparent::-webkit-scrollbar {
+    width: 4px;
+  }
+  .custom-scrollbar-transparent::-webkit-scrollbar-thumb {
+    background-color: transparent;
+  }
 
-    .custom-scrollbar-transparent::-webkit-scrollbar {
-        width: 4px;
-    }
-    .custom-scrollbar-transparent::-webkit-scrollbar-thumb {
-        background-color: transparent;
-    }
+  .custom-scrollbar-transparent::-webkit-scrollbar-track {
+    background-color: transparent;
+  }
 
-    .custom-scrollbar-transparent::-webkit-scrollbar-track {
-        background-color: transparent;
-    }
+  .custom-scrollbar-hover::-webkit-scrollbar-thumb {
+    background-color: #c3ebfa;
+    transition: background-color 0.3s ease;
+    will-change: background-color;
+  }
 
-    .custom-scrollbar-hover::-webkit-scrollbar-thumb {
-        background-color: #C3EBFA;
-        transition: background-color 0.3s ease;
-        will-change: background-color;
-    }
+  .custom-scrollbar-hover::-webkit-scrollbar-track {
+    background-color: #edf9fd;
+    transition: background-color 0.3s ease;
+  }
 
-    .custom-scrollbar-hover::-webkit-scrollbar-track {
-        background-color: #EDF9FD;
-        transition: background-color 0.3s ease;
-    }
-
-    .custom-box-shadow {
-        box-shadow: 0px 2px 75px -6px rgba(0,0,0,0.1);
-        -webkit-box-shadow: 0px 2px 75px -6px rgba(0,0,0,0.1);
-        -moz-box-shadow: 0px 2px 75px -6px rgba(0,0,0,0.1);
-    }
-    
-
+  .custom-box-shadow {
+    box-shadow: 0px 2px 75px -6px rgba(0, 0, 0, 0.1);
+    -webkit-box-shadow: 0px 2px 75px -6px rgba(0, 0, 0, 0.1);
+    -moz-box-shadow: 0px 2px 75px -6px rgba(0, 0, 0, 0.1);
+  }
 }
