@@ -115,19 +115,19 @@ Before running the application, ensure you have the following installed:
 
 ## 🖼️ Screenshots
 __1. Login Page__
-![Login Page](./public/images/login_page.jpg)
+![Login Page](./public/assets/login_default.jpg)
 
-__2. Home Page (Light Mode)__
-![Home Page Light Mode](./public/images/home_page.jpg)
+__2. Home Page (Admin Role)__
+![Home Page Light Mode](./public/assets/home_page.jpg)
 
-__3. Home Page (Dark Mode)__
-![Home Page Dark Mode](./public/images/home_page_dark.jpg)
+__3. Home Page (Student Role)__
+![Home Page Dark Mode](./public/assets/home.jpg)
 
-__4. User Profile (Light Mode)__
-![Home Page Dark Mode](./public/images/user_profile.jpg)
+__4. List of Students__
+![Home Page Dark Mode](./public/assets/01-default.jpg)
 
-__5. User Profile (Dark Mode)__
-![Home Page Dark Mode](./public/images/user_profile_dark.jpg)
+__5. Student Profile__
+![Home Page Dark Mode](./public/assets/08-profile-student-with-data-class.jpg)
 
 ## ⚠️ Important Notice
 - This project uses PostgreSQL and Prisma for database operations. Ensure the database is properly set up and accessible via the configured DATABASE_URL.
