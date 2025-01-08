@@ -204,8 +204,8 @@ const ListStudentsClass = () => {
           <div className="w-full sm:w-[48%] md:w-full lg:w-[48%] flex items-center gap-3 p-4 rounded-xl bg-white custom-box-shadow">
             <HouseRounded style={{ fontSize: 28, color: "#CFCEFF" }} />
             <div className="flex flex-col">
-              <h3 className="text-[20px] font-medium">????</h3>
-              <span className="text-[14px] text-gray-400">Class</span>
+              <h3 className="text-[20px] font-medium"></h3>
+              <span className="text-[14px] text-gray-400">Status</span>
             </div>
           </div>
         </div>

@@ -25,6 +25,11 @@ const columns = [
     className: "hidden lg:table-cell",
   },
   {
+    header: "Email",
+    accessor: "email",
+    className: "hidden lg:table-cell",
+  },
+  {
     header: "Phone",
     accessor: "phone",
     className: "hidden md:table-cell",
@@ -60,7 +65,13 @@ const renderRows = (data) => {
           <div className="flex flex-col">
             <h2 className="text-[12px] font-semibold">{`${item.fullName}`}</h2>
             <span className="text-[8px] text-gray-500">
-              {item.studentClasses[0]?.classSchoolYear.class.name}{" "}
+              {item.studentClasses.map((studentClass, index) => (
+                <span key={index}>
+                  {studentClass?.classSchoolYear?.class?.name}
+                  {index < item.studentClasses.length - 1 && ", "}{" "}
+                  {/* Thêm dấu phẩy giữa các lớp, không thêm dấu cuối */}
+                </span>
+              ))}
               {/* Sẽ cần phải bổ sung các lớp qua từng năm họcg*/}
             </span>
           </div>
@@ -69,6 +80,7 @@ const renderRows = (data) => {
         {/* <td className="hidden lg:table-cell">
           {item.studentClasses[0]?.classSchoolYear?.class?.grade?.level}
         </td> */}
+        <td className="hidden md:table-cell">{item.email}</td>
         <td className="hidden md:table-cell">{item.phone}</td>
         <td className="hidden lg:table-cell">{item.address}</td>
         <td>
@@ -127,9 +139,10 @@ const ListStudents = () => {
         <div className="flex flex-col lg:flex-row gap-4">
           <SearchList table="students" />
           <div className="flex gap-4 items-center">
-            <button className="flex items-center justify-center w-4 h-4 p-4 rounded-full bg-webYellow">
+            {/* <button className="flex items-center justify-center w-4 h-4 p-4 rounded-full bg-webYellow">
               <TuneRounded style={{ fontSize: 16 }} />
-            </button>
+            </button> */}
+            <FormModal type="filter" table="student" />
             <button className="flex items-center justify-center w-4 h-4 p-4 rounded-full bg-webYellow">
               <SortRounded fontSize="small" />
             </button>

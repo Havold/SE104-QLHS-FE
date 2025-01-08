@@ -8,7 +8,7 @@ const NavBar = () => {
   const { currentUser } = useContext(AuthContext);
   return (
     <div className="flex items-center justify-between p-2 sticky top-0 bg-white custom-box-shadow z-50">
-      <Search />
+      {/* <Search /> */}
       <div className="flex items-center gap-12 w-full justify-end ">
         <ReviewsOutlined
           fontSize="small"
@@ -29,7 +29,11 @@ const NavBar = () => {
           </div>
           <img
             className="w-[40px] h-[40px] rounded-full object-cover"
-            src={currentUser.img ? currentUser.img : "/assets/noAvatar.jpg"}
+            src={
+              currentUser.img
+                ? `${process.env.REACT_APP_API_URL}${currentUser.img}`
+                : "/assets/noAvatar.jpg"
+            }
             alt="profilePic"
           />
         </div>
