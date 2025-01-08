@@ -1,31 +1,43 @@
+import { useEffect, useState } from "react";
 import Announcements from "../../components/Announcements/Announcements";
 import AttendanceChart from "../../components/AttendanceChart/AttendanceChart";
 import CountChart from "../../components/CountChart/CountChart";
 import EventCalendar from "../../components/EventCalendar/EventCalendar";
 import FinanceChart from "../../components/FinanceChart/FinanceChart";
 import UserCard from "../../components/UserCard/UserCard";
+import { makeRequest } from "../../axios";
 
 const Admin = () => {
+  const [students, setStudents] = useState();
+  useEffect(() => {
+    const fetchData = async () => {
+      const data = (await makeRequest("/students")).data;
+      setStudents(data);
+    };
+    fetchData();
+  }, []);
+
+  console.log(students);
   const data = [
     {
       type: "students",
       date: "2024/25",
-      total: "6,123",
+      total: students?.totalCount,
     },
     {
       type: "teachers",
       date: "2024/25",
-      total: "1,123",
+      total: "0",
     },
     {
       type: "parents",
       date: "2024/25",
-      total: "1,123",
+      total: "0",
     },
     {
       type: "staffs",
       date: "2024/25",
-      total: "1,123",
+      total: "0",
     },
   ];
   return (
