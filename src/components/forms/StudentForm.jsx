@@ -1,19 +1,11 @@
-import {
-  CloseRounded,
-  CloudUploadOutlined,
-  SubwayTwoTone,
-} from "@mui/icons-material";
+import { CloseRounded, CloudUploadOutlined } from "@mui/icons-material";
 import InputField from "../InputField/InputField";
 import { z } from "zod";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { makeRequest } from "../../axios";
 import { useEffect, useRef, useState } from "react";
-import {
-  dataTagErrorSymbol,
-  useMutation,
-  useQueryClient,
-} from "@tanstack/react-query";
+import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { toast } from "react-toastify";
 import moment from "moment";
 import { useLocation, useNavigate, useSearchParams } from "react-router-dom";
@@ -62,26 +54,6 @@ const getSchema = (type) =>
     // img: z.instanceof(File, { message: "Image is required!" }),
     // img: z.optional(),
   });
-
-// const schema = z.object({
-//   username:  z
-//     .string()
-//     .min(3, { message: "Username must be at least 3 characters long!" })
-//     .max(20, { message: "Username must be at most 20 characters long!" }),
-//   email: z.string().email({ message: "Invalid email address!" }),
-//   fullName: z.string().min(1, { message: "Full Name is required!" }),
-//   password: z
-//     .string()
-//     .min(6, { message: "Password must be at least 6 characters long!" }),
-//   phone: z
-//     .string()
-//     .min(10, { message: "Phone number must be at least 10 numbers long!" }),
-//   address: z.string().min(1, { message: "Address is required!" }).optional(),
-//   birthday: z.coerce.date(),
-//   sex: z.enum(["Male", "Female"], { message: "Sex is required!" }),
-//   // img: z.instanceof(File, { message: "Image is required!" }),
-//   // img: z.optional(),
-// });
 
 export const StudentForm = ({ data, type = "create", setOpenForm }) => {
   const schema = getSchema(type);
