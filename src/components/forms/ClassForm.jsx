@@ -7,12 +7,19 @@ import { makeRequest } from "../../axios";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { toast } from "react-toastify";
 import SelectDropDown from "../SelectDropDown/SelectDropDown";
+import { useLocation, useNavigate, useSearchParams } from "react-router-dom";
+import { ITEMS_PER_PAGE } from "../../lib/settings";
 
-const schema = z.object({
-  name: z.string().min(1, { message: "Name is required!" }),
-});
+const getSchema = (type) =>
+  z.object({
+    name:
+      type === "filter"
+        ? z.string().optional()
+        : z.string().min(1, { message: "Name is required!" }),
+  });
 
 const ClassForm = ({ data, type = "create", setOpenForm }) => {
+  const schema = getSchema(type);
   const {
     register,
     handleSubmit,
@@ -20,7 +27,12 @@ const ClassForm = ({ data, type = "create", setOpenForm }) => {
   } = useForm({
     resolver: zodResolver(schema),
   });
-
+  const navigate = useNavigate();
+  const location = useLocation();
+  const [searchParams, setSearchParams] = useSearchParams();
+  let pageItems = searchParams.get("pageItems")
+    ? parseInt(searchParams.get("pageItems"))
+    : ITEMS_PER_PAGE;
   const [grades, setGrades] = useState();
   const [selectedGrade, setSelectedGrade] = useState(data?.grade?.id || 1);
   const btnColor =
@@ -33,7 +45,14 @@ const ClassForm = ({ data, type = "create", setOpenForm }) => {
       console.log(newClass);
       if (type === "create")
         return makeRequest.post("/classes", newClass).then((res) => res.data);
-      else
+      else if (type === "filter") {
+        searchParams.set("search", newClass.name);
+        searchParams.set("grade", newClass.grade);
+        const queryString = new URLSearchParams(searchParams);
+        queryString.set("page", 1);
+        queryString.set("pageItems", pageItems);
+        navigate(`${location.pathname}?${queryString}`, { replace: true });
+      } else
         return makeRequest
           .put(`/classes/${data.id}`, newClass)
           .then((res) => res.data);
@@ -75,7 +94,11 @@ const ClassForm = ({ data, type = "create", setOpenForm }) => {
       onSubmit={onSubmit}
     >
       <h1 className="text-[18px] font-semibold ">
-        {type === "create" ? "Create a new class" : "Update this class"}
+        {type === "create"
+          ? "Create a new class"
+          : type === "filter"
+          ? "Filter class"
+          : "Update a class"}
       </h1>
 
       <div className="flex flex-col md:flex-row justify-between gap-4">
@@ -84,7 +107,11 @@ const ClassForm = ({ data, type = "create", setOpenForm }) => {
           error={errors.name}
           label="Class name"
           name="name"
-          defaultValue={data?.name.slice(2, data.name.length)}
+          defaultValue={
+            type === "filter"
+              ? searchParams.get("search")
+              : data?.name.slice(2, data.name.length)
+          }
         />
         <div className="flex flex-col w-full md:w-1/4 gap-1">
           <label
@@ -93,23 +120,6 @@ const ClassForm = ({ data, type = "create", setOpenForm }) => {
           >
             Grade
           </label>
-          {/* <select
-            className="text-[12px] p-2 h-[40px] border border-gray-400 outline-webSkyBold caret-webSkyBold transition-colors rounded-md"
-            id="grade"
-            onChange={handleChangeSelection}
-            value={selectedGrade}
-            // {...register("grade")}
-          >
-            {!grades ? (
-              <option value="">Loading...</option>
-            ) : (
-              grades.map((grade, index) => (
-                <option key={index} value={grade.id}>
-                  {grade.level}
-                </option>
-              ))
-            )}
-          </select> */}
           <SelectDropDown
             options={grades}
             selectedOption={selectedGrade}
@@ -121,7 +131,7 @@ const ClassForm = ({ data, type = "create", setOpenForm }) => {
       <button
         className={`text-[18px] w-full p-2 rounded-md ${btnColor} transition-colors text-white`}
       >
-        {type === "create" ? "Create" : "Update"}
+        {type === "create" ? "Create" : type === "filter" ? "Filter" : "Update"}
       </button>
     </form>
   );
