@@ -16,32 +16,85 @@ import {
 } from "@tanstack/react-query";
 import { toast } from "react-toastify";
 import moment from "moment";
+import { useLocation, useNavigate, useSearchParams } from "react-router-dom";
+import { ITEMS_PER_PAGE } from "../../lib/settings";
 
-const schema = z.object({
-  username: z
-    .string()
-    .min(3, { message: "Username must be at least 3 characters long!" })
-    .max(20, { message: "Username must be at most 20 characters long!" }),
-  email: z.string().email({ message: "Invalid email address!" }),
-  fullName: z.string().min(1, { message: "Full Name is required!" }),
-  password: z
-    .string()
-    .min(6, { message: "Password must be at least 6 characters long!" }),
-  phone: z
-    .string()
-    .min(10, { message: "Phone number must be at least 10 numbers long!" }),
-  address: z.string().min(1, { message: "Address is required!" }).optional(),
-  birthday: z.coerce.date(),
-  sex: z.enum(["Male", "Female"], { message: "Sex is required!" }),
-  // img: z.instanceof(File, { message: "Image is required!" }),
-  // img: z.optional(),
-});
+const getSchema = (type) =>
+  z.object({
+    username:
+      type === "filter"
+        ? z.string().optional()
+        : z
+            .string()
+            .min(3, { message: "Username must be at least 3 characters long!" })
+            .max(20, {
+              message: "Username must be at most 20 characters long!",
+            }),
+    email:
+      type === "filter"
+        ? z.string().optional()
+        : z.string().email({ message: "Invalid email address!" }),
+    fullName:
+      type === "filter"
+        ? z.string().optional()
+        : z.string().min(1, { message: "Full Name is required!" }),
+    password:
+      type === "filter"
+        ? z.string().optional()
+        : z.string().min(6, {
+            message: "Password must be at least 6 characters long!",
+          }),
+    phone:
+      type === "filter"
+        ? z.string().optional()
+        : z.string().min(10, {
+            message: "Phone number must be at least 10 numbers long!",
+          }),
+    address:
+      type === "filter"
+        ? z.string().optional()
+        : z.string().min(1, { message: "Address is required!" }).optional(),
+    birthday: type === "filter" ? z.string().optional() : z.coerce.date(),
+    sex:
+      type === "filter"
+        ? z.string().optional()
+        : z.enum(["Male", "Female"], { message: "Sex is required!" }),
+    // img: z.instanceof(File, { message: "Image is required!" }),
+    // img: z.optional(),
+  });
+
+// const schema = z.object({
+//   username:  z
+//     .string()
+//     .min(3, { message: "Username must be at least 3 characters long!" })
+//     .max(20, { message: "Username must be at most 20 characters long!" }),
+//   email: z.string().email({ message: "Invalid email address!" }),
+//   fullName: z.string().min(1, { message: "Full Name is required!" }),
+//   password: z
+//     .string()
+//     .min(6, { message: "Password must be at least 6 characters long!" }),
+//   phone: z
+//     .string()
+//     .min(10, { message: "Phone number must be at least 10 numbers long!" }),
+//   address: z.string().min(1, { message: "Address is required!" }).optional(),
+//   birthday: z.coerce.date(),
+//   sex: z.enum(["Male", "Female"], { message: "Sex is required!" }),
+//   // img: z.instanceof(File, { message: "Image is required!" }),
+//   // img: z.optional(),
+// });
 
 export const StudentForm = ({ data, type = "create", setOpenForm }) => {
+  const schema = getSchema(type);
   const [changeImg, setChangImg] = useState(false);
   const [profilePic, setProfilePic] = useState(
     data?.img ? { preview: `${data.img}` } : { preview: null }
   );
+  const navigate = useNavigate();
+  const location = useLocation();
+  const [searchParams, setSearchParams] = useSearchParams();
+  let pageItems = searchParams.get("pageItems")
+    ? parseInt(searchParams.get("pageItems"))
+    : ITEMS_PER_PAGE;
   const btnColor =
     type === "create"
       ? "bg-webYellow hover:bg-webYellowLight"
@@ -82,6 +135,16 @@ export const StudentForm = ({ data, type = "create", setOpenForm }) => {
         return makeRequest
           .post("/students/", newStudent)
           .then((res) => res.data);
+      } else if (type === "filter") {
+        searchParams.set("username", newStudent.username);
+        searchParams.set("email", newStudent.email);
+        searchParams.set("search", newStudent.fullName);
+        searchParams.set("phone", newStudent.phone);
+        searchParams.set("address", newStudent.address);
+        const queryString = new URLSearchParams(searchParams);
+        queryString.set("page", 1);
+        queryString.set("pageItems", pageItems);
+        navigate(`${location.pathname}?${queryString}`, { replace: true });
       } else
         return makeRequest
           .put(`/students/${data.id}`, newStudent)
@@ -101,6 +164,7 @@ export const StudentForm = ({ data, type = "create", setOpenForm }) => {
   });
 
   const onValid = async (data) => {
+    console.log("Hello");
     let imgUrl = null;
     if (profilePic && changeImg) {
       imgUrl = await upload();
@@ -138,7 +202,9 @@ export const StudentForm = ({ data, type = "create", setOpenForm }) => {
             error={errors.username}
             label="Username"
             name="username"
-            defaultValue={data?.username}
+            defaultValue={
+              type === "filter" ? searchParams.get("username") : data?.username
+            }
           />
           <InputField
             register={register}
@@ -146,7 +212,9 @@ export const StudentForm = ({ data, type = "create", setOpenForm }) => {
             label="Email"
             name="email"
             type="email"
-            defaultValue={data?.email}
+            defaultValue={
+              type === "filter" ? searchParams.get("email") : data?.email
+            }
           />
           {type === "filter" ? (
             <></>
@@ -170,21 +238,27 @@ export const StudentForm = ({ data, type = "create", setOpenForm }) => {
             error={errors.fullName}
             label="Full Name"
             name="fullName"
-            defaultValue={data?.fullName}
+            defaultValue={
+              type === "filter" ? searchParams.get("search") : data?.fullName
+            }
           />
           <InputField
             register={register}
             error={errors.phone}
             label="Phone"
             name="phone"
-            defaultValue={data?.phone}
+            defaultValue={
+              type === "filter" ? searchParams.get("phone") : data?.phone
+            }
           />
           <InputField
             register={register}
             error={errors.address}
             label="Address"
             name="address"
-            defaultValue={data?.address}
+            defaultValue={
+              type === "filter" ? searchParams.get("address") : data?.address
+            }
           />
           {type === "filter" ? (
             <></>

@@ -1,18 +1,24 @@
 import React, { useEffect, useState } from "react";
 import SearchList from "../../components/SearchList/SearchList";
 import {
+  ReplayRounded,
   SortRounded,
   TuneRounded,
   VisibilityOutlined,
 } from "@mui/icons-material";
 import Pagination from "../../components/Pagination/Pagination";
 import Table from "../../components/Table/Table";
-import { Link, useSearchParams } from "react-router-dom";
+import {
+  Link,
+  useLocation,
+  useNavigate,
+  useSearchParams,
+} from "react-router-dom";
 import { role } from "../../lib/data";
 import FormModal from "../../components/FormModal/FormModal";
 import { makeRequest } from "../../axios";
 import { ITEMS_PER_PAGE } from "../../lib/settings";
-import { useQuery } from "@tanstack/react-query";
+import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 
 const columns = [
   {
@@ -108,12 +114,15 @@ const renderRows = (data) => {
 
 const ListStudents = () => {
   const [searchParams, setSearchParams] = useSearchParams();
+  const location = useLocation();
+  const navigate = useNavigate();
   let page = searchParams.get("page") ? parseInt(searchParams.get("page")) : 1;
   let pageItems = searchParams.get("pageItems")
     ? parseInt(searchParams.get("pageItems"))
     : ITEMS_PER_PAGE;
-
   console.log(process.env.REACT_APP_API_URL);
+
+  const queryClient = useQueryClient();
 
   const { isPending, error, data } = useQuery({
     queryKey: ["students"],
@@ -124,6 +133,15 @@ const ListStudents = () => {
       return makeRequest.get(`/students?${queryString}`).then((res) => {
         return res.data;
       });
+    },
+  });
+
+  const mutation = useMutation({
+    mutationFn: () => {
+      return navigate(location.pathname);
+    },
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ["students"] });
     },
   });
 
@@ -139,12 +157,14 @@ const ListStudents = () => {
         <div className="flex flex-col lg:flex-row gap-4">
           <SearchList table="students" />
           <div className="flex gap-4 items-center">
-            {/* <button className="flex items-center justify-center w-4 h-4 p-4 rounded-full bg-webYellow">
-              <TuneRounded style={{ fontSize: 16 }} />
-            </button> */}
             <FormModal type="filter" table="student" />
-            <button className="flex items-center justify-center w-4 h-4 p-4 rounded-full bg-webYellow">
-              <SortRounded fontSize="small" />
+            <button
+              onClick={(e) => {
+                mutation.mutate();
+              }}
+              className="flex items-center justify-center w-4 h-4 p-4 rounded-full bg-webYellow"
+            >
+              <ReplayRounded fontSize="small" />
             </button>
             <FormModal type="create" table="student" />
           </div>
