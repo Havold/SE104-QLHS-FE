@@ -7,6 +7,8 @@ import { makeRequest } from "../../axios";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { toast } from "react-toastify";
 import SelectDropDown from "../SelectDropDown/SelectDropDown";
+import { useLocation, useNavigate, useSearchParams } from "react-router-dom";
+import { ITEMS_PER_PAGE } from "../../lib/settings";
 
 const schema = z.object({});
 
@@ -19,13 +21,25 @@ const DetailClassForm = ({ data, type = "create", setOpenForm }) => {
     resolver: zodResolver(schema),
   });
   console.log(data);
-
+  const navigate = useNavigate();
+  const location = useLocation();
+  const [searchParams, setSearchParams] = useSearchParams();
+  let pageItems = searchParams.get("pageItems")
+    ? parseInt(searchParams.get("pageItems"))
+    : ITEMS_PER_PAGE;
   const [schoolYears, setSchoolYears] = useState();
   const [classes, setClasses] = useState();
   const [selectedSchoolYear, setSelectedSchoolYear] = useState(
-    data?.schoolYearId || 1
+    searchParams.get("schoolYearId")
+      ? parseInt(searchParams.get("schoolYearId"))
+      : data?.schoolYearId || ""
   );
-  const [selectedClass, setSelectedClass] = useState(data?.classId || 1);
+
+  const [selectedClass, setSelectedClass] = useState(
+    searchParams.get("classId")
+      ? parseInt(searchParams.get("classId"))
+      : data?.classId || ""
+  );
   const btnColor =
     type === "create"
       ? "bg-webYellow hover:bg-webYellowLight"
@@ -37,7 +51,15 @@ const DetailClassForm = ({ data, type = "create", setOpenForm }) => {
         return makeRequest
           .post("/detail-classes", newClass)
           .then((res) => res.data);
-      else
+      else if (type === "filter") {
+        searchParams.set("classId", newClass.classId);
+        searchParams.set("schoolYearId", newClass.schoolYearId);
+        searchParams.set("search", "");
+        const queryString = new URLSearchParams(searchParams);
+        queryString.set("page", 1);
+        queryString.set("pageItems", pageItems);
+        navigate(`${location.pathname}?${queryString}`, { replace: true });
+      } else
         return makeRequest
           .put(`/detail-classes/${data.id}`, newClass)
           .then((res) => res.data);
@@ -56,7 +78,6 @@ const DetailClassForm = ({ data, type = "create", setOpenForm }) => {
     },
   });
   const onValid = async (data) => {
-    console.log(selectedClass, selectedSchoolYear);
     const newClass = {
       ...data,
       classId: selectedClass,
@@ -80,7 +101,6 @@ const DetailClassForm = ({ data, type = "create", setOpenForm }) => {
     fetchClasses();
   }, []);
 
-  console.log(schoolYears);
   return (
     <form
       className="h-full flex flex-col justify-center gap-4"
@@ -88,8 +108,10 @@ const DetailClassForm = ({ data, type = "create", setOpenForm }) => {
     >
       <h1 className="text-[18px] font-semibold text-black ">
         {type === "create"
-          ? "Add a new class to a school year"
-          : "Update this class"}
+          ? "Add A New Class To A School Year"
+          : type === "filter"
+          ? "Filter Classes Through The School Years"
+          : ""}
       </h1>
 
       <div className="flex flex-col md:flex-row justify-between gap-4">
@@ -113,23 +135,7 @@ const DetailClassForm = ({ data, type = "create", setOpenForm }) => {
           >
             School Year
           </label>
-          {/* <select
-            className="text-[12px] text-black p-2 h-[40px] border border-gray-400 outline-webSkyBold caret-webSkyBold transition-colors rounded-md"
-            id="schoolYear"
-            onChange={handleChangeSchoolYearSelection}
-            value={selectedSchoolYear}
-            // {...register("grade")}
-          >
-            {!schoolYears ? (
-              <option value="">Loading...</option>
-            ) : (
-              schoolYears.map((schoolYear, index) => (
-                <option key={index} value={schoolYear.id}>
-                  {schoolYear.value}
-                </option>
-              ))
-            )}
-          </select> */}
+
           <SelectDropDown
             options={schoolYears}
             selectedOption={selectedSchoolYear}
@@ -141,7 +147,7 @@ const DetailClassForm = ({ data, type = "create", setOpenForm }) => {
       <button
         className={`text-[18px] w-full p-2 rounded-md ${btnColor} transition-colors text-white`}
       >
-        {type === "create" ? "Create" : "Update"}
+        {type === "create" ? "Create" : type === "filter" ? "Filter" : "Update"}
       </button>
     </form>
   );

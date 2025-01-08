@@ -18,6 +18,8 @@ const SelectDropDown = ({
     setIsOpen(false); // Close dropdown after selection
   };
 
+  console.log(selectedOption);
+
   return (
     <div className="relative w-full text-[12px]">
       {/* Selected value / button */}

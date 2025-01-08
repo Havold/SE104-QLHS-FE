@@ -3,18 +3,24 @@ import SearchList from "../../components/SearchList/SearchList";
 import {
   AddRounded,
   DeleteOutline,
+  ReplayRounded,
   SortRounded,
   TuneRounded,
   VisibilityOutlined,
 } from "@mui/icons-material";
 import Pagination from "../../components/Pagination/Pagination";
 import Table from "../../components/Table/Table";
-import { Link, useSearchParams } from "react-router-dom";
+import {
+  Link,
+  useLocation,
+  useNavigate,
+  useSearchParams,
+} from "react-router-dom";
 import { role } from "../../lib/data";
 import { makeRequest } from "../../axios";
 import { ITEMS_PER_PAGE } from "../../lib/settings";
 import FormModal from "../../components/FormModal/FormModal";
-import { useQuery } from "@tanstack/react-query";
+import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 
 const columns = [
   {
@@ -82,6 +88,9 @@ const renderRows = (data) => {
 
 const ListDetailClasses = () => {
   const [searchParams, setSearchParams] = useSearchParams();
+  const location = useLocation();
+  const navigate = useNavigate();
+  const queryClient = useQueryClient();
   const page = searchParams.get("page")
     ? parseInt(searchParams.get("page"))
     : 1;
@@ -101,6 +110,15 @@ const ListDetailClasses = () => {
     },
   });
 
+  const mutation = useMutation({
+    mutationFn: () => {
+      return navigate(location.pathname);
+    },
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ["detail-classes"] });
+    },
+  });
+
   return (
     <div className="flex flex-col gap-4 flex-1 p-4 m-2 rounded-xl bg-white">
       {/* TOP */}
@@ -109,13 +127,16 @@ const ListDetailClasses = () => {
           All Classes Through The School Years
         </h1>
         <div className="flex flex-col lg:flex-row gap-4">
-          <SearchList />
+          <SearchList table="detail-classes" />
           <div className="flex gap-4 items-center">
-            <button className="flex items-center justify-center w-4 h-4 p-4 rounded-full bg-webYellow">
-              <TuneRounded style={{ fontSize: 16 }} />
-            </button>
-            <button className="flex items-center justify-center w-4 h-4 p-4 rounded-full bg-webYellow">
-              <SortRounded fontSize="small" />
+            <FormModal table="detailClass" type="filter" />
+            <button
+              onClick={(e) => {
+                mutation.mutate();
+              }}
+              className="flex items-center justify-center w-4 h-4 p-4 rounded-full bg-webYellow"
+            >
+              <ReplayRounded fontSize="small" />
             </button>
             <FormModal table="detailClass" type="create" />
           </div>
