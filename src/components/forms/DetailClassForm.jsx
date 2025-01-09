@@ -20,7 +20,6 @@ const DetailClassForm = ({ data, type = "create", setOpenForm }) => {
   } = useForm({
     resolver: zodResolver(schema),
   });
-  console.log(data);
   const navigate = useNavigate();
   const location = useLocation();
   const [searchParams, setSearchParams] = useSearchParams();
@@ -52,12 +51,17 @@ const DetailClassForm = ({ data, type = "create", setOpenForm }) => {
           .post("/detail-classes", newClass)
           .then((res) => res.data);
       else if (type === "filter") {
-        searchParams.set("classId", newClass.classId);
-        searchParams.set("schoolYearId", newClass.schoolYearId);
+        if (selectedClass) {
+          searchParams.set("classId", newClass.classId);
+        }
+        if (selectedSchoolYear) {
+          searchParams.set("schoolYearId", newClass.schoolYearId);
+        }
         searchParams.set("search", "");
         const queryString = new URLSearchParams(searchParams);
         queryString.set("page", 1);
         queryString.set("pageItems", pageItems);
+
         navigate(`${location.pathname}?${queryString}`, { replace: true });
       } else
         return makeRequest
