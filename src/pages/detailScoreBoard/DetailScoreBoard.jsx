@@ -53,11 +53,6 @@ const columns = [
     accessor: "score",
     className: "table-cell text-center",
   },
-  // {
-  //   header: "Actions",
-  //   accessor: "actions",
-  //   className: "text-center",
-  // },
 ];
 
 const DetailScoreBoard = () => {
@@ -117,12 +112,14 @@ const DetailScoreBoard = () => {
             <div className="flex flex-col items-center">
               {currentUser.role.authorities
                 .map((authority) => authority.name)
-                .includes("Edit") ? (
+                .includes("Update") ? (
                 <input
                   className="w-8 h-8 text-center text-[12px] rounded-md border-2 outline-webSkyBold border-gray-500"
                   value={
                     scores[item.student.id] !== undefined
                       ? scores[item.student.id]
+                      : item.score == null
+                      ? ""
                       : item.score
                   }
                   type="text"
@@ -152,21 +149,6 @@ const DetailScoreBoard = () => {
               )}
             </div>
           </td>
-          {/* <td>
-            <div className="flex gap-4 items-center justify-center">
-              {currentUser.role.authorities
-                .map((authority) => authority.name)
-                .includes("Delete") ? (
-                <FormModal
-                  type="remove"
-                  table={`detail-score-boards/${scoreBoardId}/students`}
-                  id={item.student.id}
-                />
-              ) : (
-                <></>
-              )}
-            </div>
-          </td> */}
         </tr>
       ))
     ) : (
@@ -219,6 +201,7 @@ const DetailScoreBoard = () => {
   };
 
   console.log(data);
+
   return (
     <div className="flex flex-col gap-4 flex-1 p-4 m-2 rounded-xl bg-white">
       {/* TOP */}
@@ -346,7 +329,7 @@ const DetailScoreBoard = () => {
       <div className="flex items-center justify-end">
         {currentUser.role.authorities
           .map((authority) => authority.name)
-          .includes("Edit") ? (
+          .includes("Update") ? (
           <button
             onClick={saveScores}
             className="w-full md:w-[100px] text-[20px] p-1 bg-webSkyBold text-white rounded-md hover:bg-webSky transition-colors"
