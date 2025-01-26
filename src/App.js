@@ -39,6 +39,7 @@ import DetailScoreBoard from "./pages/detailScoreBoard/DetailScoreBoard";
 import ListSubjectReports from "./pages/listSubjectReports/ListSubjectReports";
 import ListSemesterReports from "./pages/listSemesterReports/ListSemesterReports";
 import ListRules from "./pages/listRules/ListRules";
+import DetailSubjectReport from "./pages/detailSubjectReport/DetailSubjectReport";
 
 const queryClient = new QueryClient();
 
@@ -159,6 +160,10 @@ function App() {
         {
           path: "/list/score-boards/:id",
           element: <DetailScoreBoard />,
+        },
+        {
+          path: "/list/subject-reports/:id",
+          element: <DetailSubjectReport />,
         },
         {
           path: "/list/subject-reports",

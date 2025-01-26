@@ -50,7 +50,14 @@ const renderRows = (data) => {
         <td className="hidden md:table-cell">{item.semester.name}</td>
         <td>
           <div className="flex gap-4">
-            <Link to={`/list/score-boards/${item.id}`}>
+            <Link
+              to={`/list/subject-reports/${item.id}`}
+              state={{
+                subjectName: item.subject.name,
+                schoolYear: item.schoolYear.value,
+                semester: item.semester.name,
+              }}
+            >
               <button className="flex w-8 h-8 rounded-full bg-webSky items-center justify-center">
                 <VisibilityOutlined
                   style={{ fontSize: 16, color: "whitesmoke" }}

@@ -17,6 +17,8 @@ module.exports = {
         webPurpleLight: "#F1F0FF",
         webYellow: "#FAE27C",
         webYellowLight: "#fae37c93",
+        webGreen: "#2D9D14",
+        webRed: "#DB0606",
       },
     },
   },
