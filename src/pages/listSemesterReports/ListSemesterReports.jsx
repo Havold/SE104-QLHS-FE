@@ -18,7 +18,7 @@ const columns = [
   {
     header: "School Year",
     accessor: "schoolYear",
-    className: "hidden md:table-cell",
+    className: "table-cell",
   },
   {
     header: "Semester",
@@ -38,7 +38,7 @@ const renderRows = (data) => {
         className="text-sm border-b-2 border-gray-100 even:bg-slate-100 hover:bg-webPurpleLight "
         key={item.id}
       >
-        <td className="hidden md:table-cell p-4">{item.schoolYear.value}</td>
+        <td className="table-cell p-4">{item.schoolYear.value}</td>
         <td className="hidden md:table-cell">{item.semester.name}</td>
         <td>
           <div className="flex gap-4">
