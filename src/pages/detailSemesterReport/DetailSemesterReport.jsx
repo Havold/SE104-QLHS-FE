@@ -28,7 +28,7 @@ const columns = [
   },
 ];
 
-const DetailSubjectReport = () => {
+const DetailSemesterReport = () => {
   const renderRows = (data) => {
     return data ? (
       data.map((item) => (
@@ -57,14 +57,14 @@ const DetailSubjectReport = () => {
     );
   };
   const location = useLocation();
-  const { subjectName, schoolYear, semester } = location.state || {};
-  const reportSubjectId = location.pathname.split("/")[3];
+  const { schoolYear, semester } = location.state || {};
+  const reportSemesterId = location.pathname.split("/")[3];
 
   const { isPending, error, data } = useQuery({
-    queryKey: ["detail-subject-report"],
+    queryKey: ["detail-semester-report"],
     queryFn: () => {
       return makeRequest
-        .get(`/detail-subject-report/${reportSubjectId}`)
+        .get(`/detail-semester-report/${reportSemesterId}`)
         .then((res) => {
           return res.data;
         });
@@ -78,26 +78,15 @@ const DetailSubjectReport = () => {
       {/* TOP */}
       <div className="flex flex-col gap-2 md:flex-row">
         {/* ITEM CARD */}
-        <div className="w-full sm:w-[48%] md:w-full flex justify-between items-center gap-3 p-4 rounded-xl bg-white custom-box-shadow">
-          <span className="text-[14px] text-gray-400">Subject</span>
-          <h3 className="text-[20px] font-medium">
-            {error
-              ? "Something went wrong with class data!"
-              : isPending
-              ? "Loading..."
-              : data?.capacity}
-            {subjectName}
-          </h3>
-        </div>
         <div className="w-full sm:w-[48%] md:w-full flex items-center gap-3 p-4 rounded-xl bg-white custom-box-shadow">
-          <BusinessCenterRounded style={{ fontSize: 28, color: "#CFCEFF" }} />
+          <BusinessCenterRounded style={{ fontSize: 60, color: "#CFCEFF" }} />
           <div className="flex flex-col">
             <h3 className="text-[20px] font-medium">{schoolYear}</h3>
             <span className="text-[14px] text-gray-400">School Year</span>
           </div>
         </div>
         <div className="w-full sm:w-[48%] md:w-full flex items-center gap-3 p-4 rounded-xl bg-white custom-box-shadow">
-          <SchoolRounded style={{ fontSize: 28, color: "#CFCEFF" }} />
+          <SchoolRounded style={{ fontSize: 60, color: "#CFCEFF" }} />
           <div className="flex flex-col">
             <h3 className="text-[20px] font-medium">{semester}</h3>
             <span className="text-[14px] text-gray-400">Semester</span>
@@ -122,4 +111,4 @@ const DetailSubjectReport = () => {
   );
 };
 
-export default DetailSubjectReport;
+export default DetailSemesterReport;

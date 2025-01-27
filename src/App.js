@@ -40,6 +40,7 @@ import ListSubjectReports from "./pages/listSubjectReports/ListSubjectReports";
 import ListSemesterReports from "./pages/listSemesterReports/ListSemesterReports";
 import ListRules from "./pages/listRules/ListRules";
 import DetailSubjectReport from "./pages/detailSubjectReport/DetailSubjectReport";
+import DetailSemesterReport from "./pages/detailSemesterReport/DetailSemesterReport";
 
 const queryClient = new QueryClient();
 
@@ -172,6 +173,10 @@ function App() {
         {
           path: "/list/semester-reports",
           element: <ListSemesterReports />,
+        },
+        {
+          path: "/list/semester-reports/:id",
+          element: <DetailSemesterReport />,
         },
         {
           path: "/list/attendance",

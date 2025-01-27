@@ -42,7 +42,13 @@ const renderRows = (data) => {
         <td className="hidden md:table-cell">{item.semester.name}</td>
         <td>
           <div className="flex gap-4">
-            <Link to={`/list/score-boards/${item.id}`}>
+            <Link
+              to={`/list/semester-reports/${item.id}`}
+              state={{
+                schoolYear: item.schoolYear.value,
+                semester: item.semester.name,
+              }}
+            >
               <button className="flex w-8 h-8 rounded-full bg-webSky items-center justify-center">
                 <VisibilityOutlined
                   style={{ fontSize: 16, color: "whitesmoke" }}
@@ -91,7 +97,7 @@ const ListSemesterReports = () => {
       {/* TOP */}
       <div className="flex flex-col lg:flex-row justify-between">
         <h1 className="hidden lg:block text-[18px] font-semibold">
-          All Subject Reports
+          All Semester Reports
         </h1>
         <div className="flex flex-col lg:flex-row gap-4">
           <SearchList />
