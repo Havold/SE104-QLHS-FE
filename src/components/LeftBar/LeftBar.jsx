@@ -17,7 +17,7 @@ import {
   SettingsSuggestOutlined,
   SubjectOutlined,
 } from "@mui/icons-material";
-import { Link, useNavigate } from "react-router-dom";
+import { Link, useLocation, useNavigate } from "react-router-dom";
 import { makeRequest } from "../../axios";
 import { useContext } from "react";
 import { AuthContext } from "../../context/authContext";
@@ -25,6 +25,7 @@ import { toast } from "react-toastify";
 
 const LeftBar = ({ className }) => {
   const { setHasAccessToken, currentUser } = useContext(AuthContext);
+  const location = useLocation();
   const navigate = useNavigate();
   const menus = [
     {
@@ -176,13 +177,6 @@ const LeftBar = ({ className }) => {
           href: "/list/events",
           visible: false,
         },
-        // {
-        //   id: 13,
-        //   icon: <ReviewsOutlined fontSize="small" />,
-        //   title: "Messages",
-        //   href: "/list/messages",
-        //   visible: ["admin", "teacher", "parent", "student"],
-        // },
         {
           id: 15,
           icon: <CampaignOutlined fontSize="small" />,
@@ -248,7 +242,13 @@ const LeftBar = ({ className }) => {
                   if (item.visible)
                     return (
                       <Link onClick={item.onClick} key={item.id} to={item.href}>
-                        <div className="flex gap-2 items-center p-2 text-[gray] font-normal cursor-pointer hover:bg-webSkyLight">
+                        <div
+                          className={`flex gap-2 items-center p-2 text-[gray] font-normal cursor-pointer hover:bg-webSkyLight ${
+                            location.pathname === item.href
+                              ? "bg-webSkyLight text-black"
+                              : ""
+                          }`}
+                        >
                           {item.icon}
                           <span className="hidden lg:block text-[12px]">
                             {item.title}
