@@ -4,15 +4,20 @@ import {
   AddRounded,
   DeleteOutline,
   EditOutlined,
+  ReplayRounded,
   SortRounded,
   TuneRounded,
   VisibilityOutlined,
 } from "@mui/icons-material";
 import Pagination from "../../components/Pagination/Pagination";
 import Table from "../../components/Table/Table";
-import { Link, useSearchParams } from "react-router-dom";
-import { role, resultsData } from "../../lib/data";
-import { useQuery } from "@tanstack/react-query";
+import {
+  Link,
+  useLocation,
+  useNavigate,
+  useSearchParams,
+} from "react-router-dom";
+import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { ITEMS_PER_PAGE } from "../../lib/settings";
 import { makeRequest } from "../../axios";
 import FormModal from "../../components/FormModal/FormModal";
@@ -26,23 +31,18 @@ const columns = [
   {
     header: "School Year",
     accessor: "schoolYear",
-    className: "hidden md:table-cell",
+    className: "hidden lg:table-cell",
   },
   {
     header: "Class",
     accessor: "class",
-    className: "hidden md:table-cell",
+    className: "hidden lg:table-cell",
   },
   {
     header: "Semester",
     accessor: "student",
     className: "hidden md:table-cell",
   },
-  // {
-  //   header: "Date",
-  //   accessor: "date",
-  //   className: "hidden lg:table-cell",
-  // },
   {
     header: "Type",
     accessor: "type",
@@ -64,10 +64,10 @@ const ListScoreBoards = () => {
         <td className="flex items-center p-4">
           <h2 className="text-[12px] font-semibold">{item.subject.name}</h2>
         </td>
-        <td className="hidden md:table-cell">{item.schoolYear.value}</td>
-        <td className="hidden md:table-cell">{item.class.name}</td>
+        <td className="hidden lg:table-cell">{item.schoolYear.value}</td>
+        <td className="hidden lg:table-cell">{item.class.name}</td>
         <td className="hidden md:table-cell">{item.semester.name}</td>
-        <td className="hidden lg:table-cell">{item.typeOfExam.name}</td>
+        <td className="table-cell">{item.typeOfExam.name}</td>
         {/* <td className="hidden lg:table-cell">{item.date}</td> */}
         <td>
           <div className="flex gap-4">
@@ -91,6 +91,9 @@ const ListScoreBoards = () => {
     ));
   };
   const [searchParams, setSearchParams] = useSearchParams();
+  const queryClient = useQueryClient();
+  const navigate = useNavigate();
+  const location = useLocation();
   const page = searchParams.get("page")
     ? parseInt(searchParams.get("page"))
     : 1;
@@ -110,6 +113,15 @@ const ListScoreBoards = () => {
     },
   });
 
+  const mutation = useMutation({
+    mutationFn: () => {
+      navigate(location.pathname);
+    },
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ["score-boards"] });
+    },
+  });
+
   console.log(data);
 
   return (
@@ -120,13 +132,15 @@ const ListScoreBoards = () => {
           All Score Boards
         </h1>
         <div className="flex flex-col lg:flex-row gap-4">
-          <SearchList />
           <div className="flex gap-4 items-center">
-            <button className="flex items-center justify-center w-4 h-4 p-4 rounded-full bg-webYellow">
-              <TuneRounded style={{ fontSize: 16 }} />
-            </button>
-            <button className="flex items-center justify-center w-4 h-4 p-4 rounded-full bg-webYellow">
-              <SortRounded fontSize="small" />
+            <FormModal table="scoreBoard" type="filter" />
+            <button
+              onClick={(e) => {
+                mutation.mutate();
+              }}
+              className="flex items-center justify-center w-4 h-4 p-4 rounded-full bg-webYellow"
+            >
+              <ReplayRounded fontSize="small" />
             </button>
             {currentUser.role.authorities
               .map((authority) => authority.name)
