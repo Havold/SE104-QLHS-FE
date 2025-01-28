@@ -33,17 +33,17 @@ const ScoreBoardForm = ({ data, type = "create", setOpenForm }) => {
   const [classes, setClasses] = useState();
   const [typesOfExam, setTypesOfExam] = useState();
   const [selectedSchoolYear, setSelectedSchoolYear] = useState(
-    data?.schoolYearId || -1
+    data?.schoolYearId || ""
   );
 
-  const [selectedClass, setSelectedClass] = useState(data?.classId || -1);
+  const [selectedClass, setSelectedClass] = useState(data?.classId || "");
 
-  const [selectedSubject, setSelectedSubject] = useState(data?.subjectId || -1);
+  const [selectedSubject, setSelectedSubject] = useState(data?.subjectId || "");
   const [selectedSemester, setSelectedSemester] = useState(
-    data?.semesterId || -1
+    data?.semesterId || ""
   );
   const [selectedTypeOfExam, setSelectedTypeOfExam] = useState(
-    data?.typeOfExamId || -1
+    data?.typeOfExamId || ""
   );
 
   const btnColor =
@@ -58,7 +58,7 @@ const ScoreBoardForm = ({ data, type = "create", setOpenForm }) => {
           .post("/score-boards", newScoreBoard)
           .then((res) => res.data);
       else if (type === "filter") {
-        if (selectedSubject || selectedSubject !== -1) {
+        if (selectedSubject || selectedSubject !== "") {
           searchParams.set("subjectId", newScoreBoard.subjectId);
         }
         if (selectedSchoolYear || selectedSchoolYear !== -1) {
