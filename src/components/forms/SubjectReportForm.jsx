@@ -2,7 +2,6 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import React, { useEffect, useState } from "react";
 import { useForm } from "react-hook-form";
 import { z } from "zod";
-import InputField from "../InputField/InputField";
 import { makeRequest } from "../../axios";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { toast } from "react-toastify";
@@ -13,13 +12,7 @@ import { ITEMS_PER_PAGE } from "../../lib/settings";
 const schema = z.object({});
 
 const SubjectReportForm = ({ data, type = "create", setOpenForm }) => {
-  const [searchParams, setSearchParams] = useSearchParams();
-  const navigate = useNavigate();
-  const location = useLocation();
-  let pageItems = searchParams.get("pageItems")
-    ? parseInt(searchParams.get("pageItems"))
-    : ITEMS_PER_PAGE;
-
+  // Khai báo dùng zod
   const {
     register,
     handleSubmit,
@@ -27,8 +20,11 @@ const SubjectReportForm = ({ data, type = "create", setOpenForm }) => {
   } = useForm({
     resolver: zodResolver(schema),
   });
-  console.log(data);
 
+  // Khai báo các hằng, biến
+  const [searchParams, setSearchParams] = useSearchParams();
+  const navigate = useNavigate();
+  const location = useLocation();
   const [schoolYears, setSchoolYears] = useState();
   const [subjects, setSubjects] = useState();
   const [semesters, setSemesters] = useState();
@@ -39,12 +35,17 @@ const SubjectReportForm = ({ data, type = "create", setOpenForm }) => {
   const [selectedSemester, setSelectedSemester] = useState(
     data?.semesterId || ""
   );
+  const queryClient = useQueryClient();
+  let pageItems = searchParams.get("pageItems")
+    ? parseInt(searchParams.get("pageItems"))
+    : ITEMS_PER_PAGE;
 
   const btnColor =
     type === "create"
       ? "bg-webYellow hover:bg-webYellowLight"
       : "bg-webSkyBold hover:bg-webSky";
-  const queryClient = useQueryClient();
+
+  // Dùng useMutation
   const mutation = useMutation({
     mutationFn: ({ newSubjectReport, type }) => {
       if (type === "create")
@@ -52,14 +53,14 @@ const SubjectReportForm = ({ data, type = "create", setOpenForm }) => {
           .post("/subject-reports", newSubjectReport)
           .then((res) => res.data);
       else if (type === "filter") {
-        if (selectedSubject || selectedSubject !== "") {
+        if (selectedSubject) {
           searchParams.set("subjectId", newSubjectReport.subjectId);
         }
-        if (selectedSchoolYear || selectedSchoolYear !== -1) {
+        if (selectedSchoolYear) {
           searchParams.set("schoolYearId", newSubjectReport.schoolYearId);
         }
 
-        if (selectedSemester || selectedSemester !== -1) {
+        if (selectedSemester) {
           searchParams.set("semesterId", newSubjectReport.semesterId);
         }
 
@@ -86,6 +87,8 @@ const SubjectReportForm = ({ data, type = "create", setOpenForm }) => {
       });
     },
   });
+
+  // Khi zod xác nhận các trường đã hợp lệ
   const onValid = async (data) => {
     const newSubjectReport = {
       ...data,
@@ -100,6 +103,7 @@ const SubjectReportForm = ({ data, type = "create", setOpenForm }) => {
 
   const onSubmit = handleSubmit(onValid);
 
+  // fetch data cho các selection fields.
   useEffect(() => {
     const fetchSchoolYears = async () => {
       const res = await makeRequest.get("/school-years?type=all");
@@ -118,6 +122,8 @@ const SubjectReportForm = ({ data, type = "create", setOpenForm }) => {
     fetchSubjects();
     fetchSemesters();
   }, []);
+
+  console.log(data);
 
   return (
     <form

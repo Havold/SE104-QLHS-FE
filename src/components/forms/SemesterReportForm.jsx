@@ -2,15 +2,17 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import React, { useEffect, useState } from "react";
 import { useForm } from "react-hook-form";
 import { z } from "zod";
-import InputField from "../InputField/InputField";
 import { makeRequest } from "../../axios";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { toast } from "react-toastify";
 import SelectDropDown from "../SelectDropDown/SelectDropDown";
+import { useLocation, useNavigate, useSearchParams } from "react-router-dom";
+import { ITEMS_PER_PAGE } from "../../lib/settings";
 
 const schema = z.object({});
 
 const SemesterReportForm = ({ data, type = "create", setOpenForm }) => {
+  // Khai báo dùng zod
   const {
     register,
     handleSubmit,
@@ -18,32 +20,51 @@ const SemesterReportForm = ({ data, type = "create", setOpenForm }) => {
   } = useForm({
     resolver: zodResolver(schema),
   });
-  console.log(data);
 
+  // Khai báo các hằng, biến
+  const queryClient = useQueryClient();
+  const [searchParams, setSearchParams] = useSearchParams();
+  const navigate = useNavigate();
+  const location = useLocation();
+  let pageItems = searchParams.get("pageItems")
+    ? parseInt(searchParams.get("pageItems"))
+    : ITEMS_PER_PAGE;
   const [schoolYears, setSchoolYears] = useState();
   const [semesters, setSemesters] = useState();
   const [selectedSchoolYear, setSelectedSchoolYear] = useState(
-    data?.schoolYearId || 1
+    data?.schoolYearId || ""
   );
-  const [selectedSubject, setSelectedSubject] = useState(data?.subjectId || 1);
   const [selectedSemester, setSelectedSemester] = useState(
-    data?.semesterId || 1
+    data?.semesterId || ""
   );
-
-  console.log(selectedSchoolYear);
 
   const btnColor =
     type === "create"
       ? "bg-webYellow hover:bg-webYellowLight"
       : "bg-webSkyBold hover:bg-webSky";
-  const queryClient = useQueryClient();
+
+  // Dùng useMutation
   const mutation = useMutation({
     mutationFn: ({ newSemesterReport, type }) => {
       if (type === "create")
         return makeRequest
           .post("/semester-reports", newSemesterReport)
           .then((res) => res.data);
-      else
+      else if (type === "filter") {
+        if (selectedSchoolYear) {
+          searchParams.set("schoolYearId", newSemesterReport.schoolYearId);
+        }
+
+        if (selectedSemester) {
+          searchParams.set("semesterId", newSemesterReport.semesterId);
+        }
+
+        const queryString = new URLSearchParams(searchParams);
+        queryString.set("page", 1);
+        queryString.set("pageItems", pageItems);
+
+        navigate(`${location.pathname}?${queryString}`, { replace: true });
+      } else
         return makeRequest
           .put(`/semester-reports/${data.id}`, newSemesterReport)
           .then((res) => res.data);
@@ -53,9 +74,7 @@ const SemesterReportForm = ({ data, type = "create", setOpenForm }) => {
       queryClient.invalidateQueries({
         queryKey: ["semester-reports"],
       });
-      //   queryClient.invalidateQueries({
-      //     queryKey: ["subject-report"],
-      //   });
+
       toast(data, { type: "success" });
     },
     onError: (error) => {
@@ -64,6 +83,8 @@ const SemesterReportForm = ({ data, type = "create", setOpenForm }) => {
       });
     },
   });
+
+  // Khi zod xác nhận các trường đã hợp lệ
   const onValid = async (data) => {
     const newSemesterReport = {
       ...data,
@@ -77,6 +98,7 @@ const SemesterReportForm = ({ data, type = "create", setOpenForm }) => {
 
   const onSubmit = handleSubmit(onValid);
 
+  // fetch data cho các selection fields.
   useEffect(() => {
     const fetchSchoolYears = async () => {
       const res = await makeRequest.get("/school-years?type=all");
@@ -91,6 +113,8 @@ const SemesterReportForm = ({ data, type = "create", setOpenForm }) => {
     fetchSemesters();
   }, []);
 
+  console.log(data);
+
   return (
     <form
       className="h-full flex flex-col justify-center gap-4"
@@ -99,6 +123,8 @@ const SemesterReportForm = ({ data, type = "create", setOpenForm }) => {
       <h1 className="text-[18px] font-semibold text-black ">
         {type === "create"
           ? "Create a new semester report"
+          : type === "filter"
+          ? "Filter Semester Reports"
           : "Update this report"}
       </h1>
 
@@ -136,7 +162,7 @@ const SemesterReportForm = ({ data, type = "create", setOpenForm }) => {
       <button
         className={`text-[18px] w-full p-2 rounded-md ${btnColor} transition-colors text-white`}
       >
-        {type === "create" ? "Create" : "Update"}
+        {type === "create" ? "Create" : type === "filter" ? "Filter" : "Update"}
       </button>
     </form>
   );
