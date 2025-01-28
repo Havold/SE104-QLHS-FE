@@ -7,10 +7,19 @@ import { makeRequest } from "../../axios";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { toast } from "react-toastify";
 import SelectDropDown from "../SelectDropDown/SelectDropDown";
+import { useLocation, useNavigate, useSearchParams } from "react-router-dom";
+import { ITEMS_PER_PAGE } from "../../lib/settings";
 
 const schema = z.object({});
 
 const SubjectReportForm = ({ data, type = "create", setOpenForm }) => {
+  const [searchParams, setSearchParams] = useSearchParams();
+  const navigate = useNavigate();
+  const location = useLocation();
+  let pageItems = searchParams.get("pageItems")
+    ? parseInt(searchParams.get("pageItems"))
+    : ITEMS_PER_PAGE;
+
   const {
     register,
     handleSubmit,
@@ -24,14 +33,12 @@ const SubjectReportForm = ({ data, type = "create", setOpenForm }) => {
   const [subjects, setSubjects] = useState();
   const [semesters, setSemesters] = useState();
   const [selectedSchoolYear, setSelectedSchoolYear] = useState(
-    data?.schoolYearId || 1
+    data?.schoolYearId || ""
   );
-  const [selectedSubject, setSelectedSubject] = useState(data?.subjectId || 1);
+  const [selectedSubject, setSelectedSubject] = useState(data?.subjectId || "");
   const [selectedSemester, setSelectedSemester] = useState(
-    data?.semesterId || 1
+    data?.semesterId || ""
   );
-
-  console.log(selectedSchoolYear);
 
   const btnColor =
     type === "create"
@@ -44,7 +51,24 @@ const SubjectReportForm = ({ data, type = "create", setOpenForm }) => {
         return makeRequest
           .post("/subject-reports", newSubjectReport)
           .then((res) => res.data);
-      else
+      else if (type === "filter") {
+        if (selectedSubject || selectedSubject !== "") {
+          searchParams.set("subjectId", newSubjectReport.subjectId);
+        }
+        if (selectedSchoolYear || selectedSchoolYear !== -1) {
+          searchParams.set("schoolYearId", newSubjectReport.schoolYearId);
+        }
+
+        if (selectedSemester || selectedSemester !== -1) {
+          searchParams.set("semesterId", newSubjectReport.semesterId);
+        }
+
+        const queryString = new URLSearchParams(searchParams);
+        queryString.set("page", 1);
+        queryString.set("pageItems", pageItems);
+
+        navigate(`${location.pathname}?${queryString}`, { replace: true });
+      } else
         return makeRequest
           .put(`/subject-reports/${data.id}`, newSubjectReport)
           .then((res) => res.data);
@@ -54,9 +78,6 @@ const SubjectReportForm = ({ data, type = "create", setOpenForm }) => {
       queryClient.invalidateQueries({
         queryKey: ["subject-reports"],
       });
-      //   queryClient.invalidateQueries({
-      //     queryKey: ["subject-report"],
-      //   });
       toast(data, { type: "success" });
     },
     onError: (error) => {
@@ -106,6 +127,8 @@ const SubjectReportForm = ({ data, type = "create", setOpenForm }) => {
       <h1 className="text-[18px] font-semibold text-black ">
         {type === "create"
           ? "Create a new subject report"
+          : type === "filter"
+          ? "Filter Subject Reports"
           : "Update this report"}
       </h1>
 
@@ -156,7 +179,7 @@ const SubjectReportForm = ({ data, type = "create", setOpenForm }) => {
       <button
         className={`text-[18px] w-full p-2 rounded-md ${btnColor} transition-colors text-white`}
       >
-        {type === "create" ? "Create" : "Update"}
+        {type === "create" ? "Create" : type === "filter" ? "Filter" : "Update"}
       </button>
     </form>
   );

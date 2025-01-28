@@ -115,7 +115,7 @@ const ListScoreBoards = () => {
 
   const mutation = useMutation({
     mutationFn: () => {
-      navigate(location.pathname);
+      return navigate(location.pathname);
     },
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ["score-boards"] });

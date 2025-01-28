@@ -1,15 +1,15 @@
 import React from "react";
-import SearchList from "../../components/SearchList/SearchList";
-import {
-  SortRounded,
-  TuneRounded,
-  VisibilityOutlined,
-} from "@mui/icons-material";
+import { ReplayRounded, VisibilityOutlined } from "@mui/icons-material";
 import Pagination from "../../components/Pagination/Pagination";
 import Table from "../../components/Table/Table";
-import { Link, useSearchParams } from "react-router-dom";
+import {
+  Link,
+  useLocation,
+  useNavigate,
+  useSearchParams,
+} from "react-router-dom";
 import { role } from "../../lib/data";
-import { useQuery } from "@tanstack/react-query";
+import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { ITEMS_PER_PAGE } from "../../lib/settings";
 import { makeRequest } from "../../axios";
 import FormModal from "../../components/FormModal/FormModal";
@@ -80,6 +80,9 @@ const renderRows = (data) => {
 
 const ListSubjectReports = () => {
   const [searchParams, setSearchParams] = useSearchParams();
+  const queryClient = useQueryClient();
+  const navigate = useNavigate();
+  const location = useLocation();
   const page = searchParams.get("page")
     ? parseInt(searchParams.get("page"))
     : 1;
@@ -99,6 +102,15 @@ const ListSubjectReports = () => {
     },
   });
 
+  const mutation = useMutation({
+    mutationFn: () => {
+      return navigate(location.pathname);
+    },
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ["subject-reports"] });
+    },
+  });
+
   console.log(data);
 
   return (
@@ -109,13 +121,15 @@ const ListSubjectReports = () => {
           All Subject Reports
         </h1>
         <div className="flex flex-col lg:flex-row gap-4">
-          <SearchList />
           <div className="flex gap-4 items-center">
-            <button className="flex items-center justify-center w-4 h-4 p-4 rounded-full bg-webYellow">
-              <TuneRounded style={{ fontSize: 16 }} />
-            </button>
-            <button className="flex items-center justify-center w-4 h-4 p-4 rounded-full bg-webYellow">
-              <SortRounded fontSize="small" />
+            <FormModal table="subjectReport" type="filter" />
+            <button
+              onClick={(e) => {
+                mutation.mutate();
+              }}
+              className="flex items-center justify-center w-4 h-4 p-4 rounded-full bg-webYellow"
+            >
+              <ReplayRounded fontSize="small" />
             </button>
             <FormModal table="subjectReport" type="create" />
           </div>
