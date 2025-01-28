@@ -21,6 +21,7 @@ import FormModal from "../../components/FormModal/FormModal";
 import { makeRequest } from "../../axios";
 import { ITEMS_PER_PAGE } from "../../lib/settings";
 import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
+import { toast } from "react-toastify";
 
 const columns = [
   {
@@ -62,6 +63,22 @@ const renderRows = (data) => {
 
 const ListSchoolYears = () => {
   const [searchParams, setSearchParams] = useSearchParams();
+
+  // Lấy giá trị search từ URL query parameters
+  const search = searchParams.get("search")?.trim();
+
+  // Kiểm tra nếu search không phải là số
+  useEffect(() => {
+    if (search && isNaN(Number(search))) {
+      toast.error("Search input must be a number!");
+      // Xóa tham số `search` khỏi URL nếu không hợp lệ
+      setSearchParams((prevParams) => {
+        prevParams.delete("search");
+        return prevParams;
+      });
+    }
+  }, [search, setSearchParams]);
+
   const location = useLocation();
   const navigate = useNavigate();
   const queryClient = useQueryClient();
@@ -80,6 +97,7 @@ const ListSchoolYears = () => {
         return res.data;
       });
     },
+    enabled: !search || !isNaN(Number(search)), // Chỉ thực hiện query nếu search là số hoặc rỗng
   });
 
   const mutation = useMutation({
