@@ -44,27 +44,27 @@ const columns = [
 ];
 
 const studentClassData = [
-  // {
-  //   id: 1,
-  //   schoolYear: 2021,
-  //   class: "10A1",
-  //   avgI: 9.2,
-  //   avgII: 8.0,
-  // },
-  // {
-  //   id: 2,
-  //   schoolYear: 2022,
-  //   class: "11B1",
-  //   avgI: 7.2,
-  //   avgII: 8.5,
-  // },
-  // {
-  //   id: 3,
-  //   schoolYear: 2023,
-  //   class: "12C1",
-  //   avgI: 9.5,
-  //   avgII: 8.5,
-  // },
+  {
+    id: 1,
+    schoolYear: 2021,
+    class: "10A1",
+    avgI: 9.2,
+    avgII: 8.0,
+  },
+  {
+    id: 2,
+    schoolYear: 2022,
+    class: "11B1",
+    avgI: 7.2,
+    avgII: 8.5,
+  },
+  {
+    id: 3,
+    schoolYear: 2023,
+    class: "12C1",
+    avgI: 9.5,
+    avgII: 8.5,
+  },
 ];
 
 const renderRows = (data) => {
@@ -75,11 +75,15 @@ const renderRows = (data) => {
         key={item.id}
       >
         <td className="flex items-center justify-center p-4">
-          <h2 className="text-[12px] font-semibold">{item.schoolYear}</h2>
+          <h2 className="text-[12px] font-semibold">{item.schoolYear.value}</h2>
         </td>
-        <td className="table-cell text-center">{item.class}</td>
-        <td className="table-cell text-center">{item.avgI}</td>
-        <td className="table-cell text-center">{item.avgII}</td>
+        <td className="table-cell text-center">{item.class.name}</td>
+        <td className="table-cell text-center">
+          {item.avgSemI ? parseFloat(item.avgSemI).toFixed(2) : ""}
+        </td>
+        <td className="table-cell text-center">
+          {item.avgSemII ? parseFloat(item.avgSemII).toFixed(2) : ""}
+        </td>
       </tr>
     ))
   ) : (
@@ -90,10 +94,24 @@ const renderRows = (data) => {
 const StudentProfile = () => {
   const [student, setStudent] = useState("");
   const studentId = useLocation().pathname.split("/")[3];
+
   const { isPending, error, data } = useQuery({
     queryKey: ["profile"],
     queryFn: () => {
       return makeRequest.get(`/students/${studentId}`).then((res) => {
+        return res.data;
+      });
+    },
+  });
+
+  const {
+    isPending: resultsIsPending,
+    error: resultsError,
+    data: studentResultsData,
+  } = useQuery({
+    queryKey: ["student-results"],
+    queryFn: () => {
+      return makeRequest.get(`/results?studentId=${studentId}`).then((res) => {
         return res.data;
       });
     },
@@ -208,11 +226,17 @@ const StudentProfile = () => {
 
         <div className="flex flex-col bg-white rounded-xl p-4 custom-box-shadow">
           <h1 className="text-[16px] font-semibold">Classes Through Years</h1>
-          <Table
-            columns={columns}
-            renderRows={renderRows}
-            data={studentClassData}
-          />
+          {resultsIsPending ? (
+            "Loading..."
+          ) : resultsError ? (
+            "Something went wrong!"
+          ) : (
+            <Table
+              columns={columns}
+              renderRows={renderRows}
+              data={studentResultsData}
+            />
+          )}
         </div>
         <div className="flex flex-col bg-white rounded-xl p-4 custom-box-shadow">
           <h1 className="text-[16px] font-semibold">Student's Schedule</h1>
