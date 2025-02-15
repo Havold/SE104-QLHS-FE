@@ -4,12 +4,13 @@ import { z } from "zod";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { makeRequest } from "../../axios";
-import { useEffect, useRef, useState } from "react";
+import { useContext, useEffect, useRef, useState } from "react";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { toast } from "react-toastify";
 import moment from "moment";
 import { useLocation, useNavigate, useSearchParams } from "react-router-dom";
 import { ITEMS_PER_PAGE } from "../../lib/settings";
+import { AuthContext } from "../../context/authContext";
 
 const getSchema = (type) =>
   z.object({
@@ -51,13 +52,13 @@ const getSchema = (type) =>
       type === "filter"
         ? z.string().optional()
         : z.enum(["Male", "Female"], { message: "Sex is required!" }),
-    // img: z.instanceof(File, { message: "Image is required!" }),
-    // img: z.optional(),
   });
 
 export const StudentForm = ({ data, type = "create", setOpenForm }) => {
+  console.log(data);
   const schema = getSchema(type);
-  const [changeImg, setChangImg] = useState(false);
+  const { currentUser, setCurrentUser } = useContext(AuthContext);
+  const [changeImg, setChangeImg] = useState(false);
   const [profilePic, setProfilePic] = useState(
     data?.img ? { preview: `${data.img}` } : { preview: null }
   );
@@ -75,7 +76,7 @@ export const StudentForm = ({ data, type = "create", setOpenForm }) => {
   const queryClient = useQueryClient();
 
   const handleChangeImg = (e) => {
-    setChangImg(true);
+    setChangeImg(true);
     const file = e.target.files[0];
     if (file) {
       file.preview = URL.createObjectURL(file);
@@ -117,10 +118,14 @@ export const StudentForm = ({ data, type = "create", setOpenForm }) => {
         queryString.set("page", 1);
         queryString.set("pageItems", pageItems);
         navigate(`${location.pathname}?${queryString}`, { replace: true });
-      } else
+      } else {
+        if (data.id === currentUser.id) {
+          setCurrentUser({ ...currentUser, img: newStudent.img });
+        }
         return makeRequest
           .put(`/students/${data.id}`, newStudent)
           .then((res) => res.data);
+      }
     },
     onSuccess: (data) => {
       setOpenForm(false);
@@ -136,7 +141,6 @@ export const StudentForm = ({ data, type = "create", setOpenForm }) => {
   });
 
   const onValid = async (data) => {
-    console.log("Hello");
     let imgUrl = null;
     if (profilePic && changeImg) {
       imgUrl = await upload();
