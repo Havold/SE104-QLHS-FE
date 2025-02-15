@@ -210,10 +210,10 @@ const LeftBar = ({ className }) => {
           icon: <LogoutRounded className="text-xl" />,
           title: "Logout",
           onClick: async () => {
+            navigate("/login");
             await makeRequest.post("/auth/logout");
             setHasAccessToken(false);
             toast("Logout successfully!", { type: "success" });
-            navigate("/login");
           },
           visible: true,
         },
