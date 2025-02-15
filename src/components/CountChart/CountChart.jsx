@@ -1,29 +1,28 @@
 import { MoreHorizRounded } from "@mui/icons-material";
 import React from "react";
-import {
-  RadialBarChart,
-  RadialBar,
-  ResponsiveContainer,
-} from "recharts";
+import { RadialBarChart, RadialBar, ResponsiveContainer } from "recharts";
 
-const CountChart = () => {
+const CountChart = ({ totalMale, totalFemale }) => {
+  let totals = totalMale + totalFemale;
   const data = [
     {
       name: "Totals",
-      count: 104,
+      count: totals,
       fill: "white",
     },
     {
       name: "Boys",
-      count: 52,
+      count: totalMale,
       fill: "#C3EBFA",
     },
     {
       name: "Girls",
-      count: 52,
+      count: totalFemale,
       fill: "#FAE27C",
     },
   ];
+
+  console.log(totals);
 
   return (
     <div className="flex flex-col w-full h-full rounded-2xl bg-white p-4 custom-box-shadow">
@@ -43,12 +42,7 @@ const CountChart = () => {
             barSize={32}
             data={data}
           >
-            <RadialBar
-              minAngle={15}
-              background
-              clockWise
-              dataKey="count"
-            />
+            <RadialBar minAngle={15} background clockWise dataKey="count" />
           </RadialBarChart>
         </ResponsiveContainer>
       </div>
@@ -56,13 +50,19 @@ const CountChart = () => {
       <div className="flex justify-center item-center gap-8">
         <div className="flex flex-col items-center gap-1">
           <div className="w-4 h-4 rounded-full bg-webSky"></div>
-          <h1 className="text-xl font-bold">1,234</h1>
-          <h2 className="text-sm text-gray-300 font-light">Boys (65%)</h2>
+          <h1 className="text-xl font-bold">{totalMale}</h1>
+          <h2 className="text-sm text-gray-300 font-light">{`Boys (${(
+            (totalMale / totals) *
+            100
+          ).toFixed(2)}%)`}</h2>
         </div>
         <div className="flex flex-col items-center gap-1">
           <div className="w-4 h-4 rounded-full bg-webYellow"></div>
-          <h1 className="text-xl font-bold">1,234</h1>
-          <h2 className="text-sm text-gray-300 font-light">Girls (35%)</h2>
+          <h1 className="text-xl font-bold">{totalFemale}</h1>
+          <h2 className="text-sm text-gray-300 font-light">{`Girls (${(
+            (totalFemale / totals) *
+            100
+          ).toFixed(2)}%)`}</h2>
         </div>
       </div>
     </div>

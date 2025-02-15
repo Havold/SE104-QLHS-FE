@@ -6,40 +6,48 @@ import EventCalendar from "../../components/EventCalendar/EventCalendar";
 import FinanceChart from "../../components/FinanceChart/FinanceChart";
 import UserCard from "../../components/UserCard/UserCard";
 import { makeRequest } from "../../axios";
+import moment from "moment/moment";
 
 const Admin = () => {
   const [students, setStudents] = useState();
+  const [sexOfStudents, setSexOfStudents] = useState();
   useEffect(() => {
     const fetchData = async () => {
       const data = (await makeRequest("/students")).data;
       setStudents(data);
+      const sexData = (
+        await makeRequest("/students/utils/count-sex-of-students")
+      ).data;
+      setSexOfStudents(sexData);
     };
     fetchData();
   }, []);
 
-  console.log(students);
+  const date = moment(Date.now()).format("yyyy/MM");
+
   const data = [
     {
       type: "students",
-      date: "2024/25",
+      date: date,
       total: students?.totalCount,
     },
     {
       type: "teachers",
-      date: "2024/25",
+      date: date,
       total: "0",
     },
     {
       type: "parents",
-      date: "2024/25",
+      date: date,
       total: "0",
     },
     {
       type: "staffs",
-      date: "2024/25",
+      date: date,
       total: "0",
     },
   ];
+
   return (
     <div className="flex p-2">
       {/* LEFT */}
@@ -61,7 +69,10 @@ const Admin = () => {
         <div className="flex gap-2 flex-col lg:flex-row">
           {/* COUNT CHART */}
           <div className="w-full lg:w-1/3 h-[450px]">
-            <CountChart />
+            <CountChart
+              totalMale={sexOfStudents?.totalMale}
+              totalFemale={sexOfStudents?.totalFemale}
+            />
           </div>
           {/* ATTENDANCE CHART */}
           <div className="w-full lg:w-2/3 h-[450px]">
