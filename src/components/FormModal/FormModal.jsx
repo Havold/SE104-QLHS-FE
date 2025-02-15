@@ -185,7 +185,7 @@ const FormModal = ({ table, type, id, data }) => {
       </button>
       {openForm ? (
         <div className="w-screen h-screen bg-black bg-opacity-50 fixed top-0 left-0 z-50 flex items-center justify-center">
-          <div className="p-8 h-[90%] overflow-auto md:h-fit md:overflow-visible w-[90%] sm:w-[80%] md:w-[70%] lg:w-[60%] xl:w-[50%] bg-white rounded-xl relative">
+          <div className="p-8 h-[90%] overflow-auto md:h-fit md:overflow-visible w-[90%] sm:w-[80%] md:w-[70%] lg:w-[60%] xl:w-[60%] bg-white rounded-xl relative">
             <CloseRounded
               onClick={() => {
                 setOpenForm(false);
