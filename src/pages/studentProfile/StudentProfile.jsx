@@ -233,13 +233,13 @@ const StudentProfile = () => {
             <div className="flex flex-wrap gap-2">
               <Link
                 className="text-[12px] font-light p-2 rounded-md bg-webSkyLight"
-                to={`/list/classes`}
+                to={`/list/detail-classes?studentId=${studentId}`}
               >
                 Student's Classes
               </Link>
               <Link
                 className="text-[12px] font-light p-2 rounded-md bg-webPurpleLight"
-                to={`/list/results`}
+                to={`/list/score-boards?studentId=${studentId}`}
               >
                 Student's Results
               </Link>
