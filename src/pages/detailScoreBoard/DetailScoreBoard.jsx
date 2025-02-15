@@ -22,6 +22,7 @@ import {
 import { z } from "zod";
 import { toast } from "react-toastify";
 import { AuthContext } from "../../context/authContext";
+import BackButton from "../../components/BackButton/BackButton";
 
 const schema = z.object({
   score: z.coerce
@@ -201,105 +202,108 @@ const DetailScoreBoard = () => {
     mutation.mutate(updatedScores);
   };
 
-  console.log(data);
-
   return (
-    <div className="flex flex-col gap-4 flex-1 p-4 m-2 rounded-xl bg-white">
-      {/* TOP */}
-      <div className="flex flex-col gap-2 md:flex-row">
-        {/* USER CARD */}
-        <div className="flex flex-1 p-4 gap-4 items-center bg-webSky rounded-xl custom-box-shadow">
-          <div className="w-full flex items-center justify-between gap-2">
-            <div className="flex gap-2">
-              <h2 className="text-[24px] font-semibold">Subject:</h2>
+    <div className="flex flex-col p-4 m-2 bg-white rounded-xl">
+      <BackButton />
+      <div className="flex flex-col gap-4 flex-1 bg-white">
+        {/* TOP */}
+        <div className="flex flex-col gap-2 md:flex-row">
+          {/* USER CARD */}
+          <div className="flex flex-1 p-4 gap-4 items-center bg-webSky rounded-xl custom-box-shadow">
+            <div className="w-full flex items-center justify-between gap-2">
+              <div className="flex gap-2">
+                <h2 className="text-[24px] font-semibold">Subject:</h2>
+              </div>
+              <span className="flex text-[100px] text-webSkyBold font-semibold">
+                {subject}
+                {currentUser.role.authorities
+                  .map((authority) => authority.name)
+                  .includes("Edit") ? (
+                  <FormModal type="edit" table="scoreBoard" data={data} />
+                ) : (
+                  <></>
+                )}
+              </span>
             </div>
-            <span className="flex text-[100px] text-webSkyBold font-semibold">
-              {subject}
-              {currentUser.role.authorities
-                .map((authority) => authority.name)
-                .includes("Edit") ? (
-                <FormModal type="edit" table="scoreBoard" data={data} />
-              ) : (
-                <></>
-              )}
-            </span>
+          </div>
+          {/* ITEM CARD */}
+          <div className="flex-1 flex justify-center gap-2 flex-wrap">
+            <div className="w-full sm:w-[48%] md:w-full lg:w-[48%] flex items-center gap-3 p-4 rounded-xl bg-white custom-box-shadow">
+              <BusinessCenterRounded
+                style={{ fontSize: 28, color: "#CFCEFF" }}
+              />
+              <div className="flex flex-col">
+                <h3 className="text-[20px] font-medium">{schoolYear}</h3>
+                <span className="text-[14px] text-gray-400">School Year</span>
+              </div>
+            </div>
+            <div className="w-full sm:w-[48%] md:w-full lg:w-[48%] flex items-center gap-3 p-4 rounded-xl bg-white custom-box-shadow">
+              <SchoolRounded style={{ fontSize: 28, color: "#CFCEFF" }} />
+              <div className="flex flex-col">
+                <h3 className="text-[20px] font-medium">{semester}</h3>
+                <span className="text-[14px] text-gray-400">Semester</span>
+              </div>
+            </div>
+            <div className="w-full sm:w-[48%] md:w-full lg:w-[48%] flex items-center gap-3 p-4 rounded-xl bg-white custom-box-shadow">
+              <LocalLibraryRounded style={{ fontSize: 28, color: "#CFCEFF" }} />
+              <div className="flex flex-col">
+                <h3 className="text-[20px] font-medium">{className}</h3>
+                <span className="text-[14px] text-gray-400">Class</span>
+              </div>
+            </div>
+            <div className="w-full sm:w-[48%] md:w-full lg:w-[48%] flex items-center gap-3 p-4 rounded-xl bg-white custom-box-shadow">
+              <HouseRounded style={{ fontSize: 28, color: "#CFCEFF" }} />
+              <div className="flex flex-col">
+                <h3 className="text-[20px] font-medium">{typeOfExam}</h3>
+                <span className="text-[14px] text-gray-400">Type of Exam</span>
+              </div>
+            </div>
           </div>
         </div>
-        {/* ITEM CARD */}
-        <div className="flex-1 flex justify-center gap-2 flex-wrap">
-          <div className="w-full sm:w-[48%] md:w-full lg:w-[48%] flex items-center gap-3 p-4 rounded-xl bg-white custom-box-shadow">
-            <BusinessCenterRounded style={{ fontSize: 28, color: "#CFCEFF" }} />
-            <div className="flex flex-col">
-              <h3 className="text-[20px] font-medium">{schoolYear}</h3>
-              <span className="text-[14px] text-gray-400">School Year</span>
-            </div>
-          </div>
-          <div className="w-full sm:w-[48%] md:w-full lg:w-[48%] flex items-center gap-3 p-4 rounded-xl bg-white custom-box-shadow">
-            <SchoolRounded style={{ fontSize: 28, color: "#CFCEFF" }} />
-            <div className="flex flex-col">
-              <h3 className="text-[20px] font-medium">{semester}</h3>
-              <span className="text-[14px] text-gray-400">Semester</span>
-            </div>
-          </div>
-          <div className="w-full sm:w-[48%] md:w-full lg:w-[48%] flex items-center gap-3 p-4 rounded-xl bg-white custom-box-shadow">
-            <LocalLibraryRounded style={{ fontSize: 28, color: "#CFCEFF" }} />
-            <div className="flex flex-col">
-              <h3 className="text-[20px] font-medium">{className}</h3>
-              <span className="text-[14px] text-gray-400">Class</span>
-            </div>
-          </div>
-          <div className="w-full sm:w-[48%] md:w-full lg:w-[48%] flex items-center gap-3 p-4 rounded-xl bg-white custom-box-shadow">
-            <HouseRounded style={{ fontSize: 28, color: "#CFCEFF" }} />
-            <div className="flex flex-col">
-              <h3 className="text-[20px] font-medium">{typeOfExam}</h3>
-              <span className="text-[14px] text-gray-400">Type of Exam</span>
-            </div>
+        {/* TOP */}
+        <div className="flex flex-col lg:flex-row justify-between">
+          <h1 className="hidden lg:block text-[18px] font-semibold">
+            All Students
+          </h1>
+          <div className="flex flex-col lg:flex-row gap-4">
+            {/* <SearchList /> */}
+            {/* <div className="flex gap-4 items-center">
+              <button className="flex items-center justify-center w-4 h-4 p-4 rounded-full bg-webYellow">
+                <TuneRounded style={{ fontSize: 16 }} />
+              </button>
+              <button className="flex items-center justify-center w-4 h-4 p-4 rounded-full bg-webYellow">
+                <SortRounded fontSize="small" />
+              </button>
+              <FormModal type="create" table="detailScoreBoard" />
+            </div> */}
           </div>
         </div>
-      </div>
-      {/* TOP */}
-      <div className="flex flex-col lg:flex-row justify-between">
-        <h1 className="hidden lg:block text-[18px] font-semibold">
-          All Students
-        </h1>
-        <div className="flex flex-col lg:flex-row gap-4">
-          {/* <SearchList /> */}
-          {/* <div className="flex gap-4 items-center">
-            <button className="flex items-center justify-center w-4 h-4 p-4 rounded-full bg-webYellow">
-              <TuneRounded style={{ fontSize: 16 }} />
-            </button>
-            <button className="flex items-center justify-center w-4 h-4 p-4 rounded-full bg-webYellow">
-              <SortRounded fontSize="small" />
-            </button>
-            <FormModal type="create" table="detailScoreBoard" />
-          </div> */}
-        </div>
-      </div>
-      {/* LIST */}
-      {error ? (
-        "Something went wrong!"
-      ) : isPending ? (
-        "Loading..."
-      ) : (
-        <Table
-          columns={columns}
-          renderRows={renderRows}
-          data={data.dtScoreBoards}
-        />
-      )}
-      <div className="flex items-center justify-end">
-        {currentUser.role.authorities
-          .map((authority) => authority.name)
-          .includes("Update") ? (
-          <button
-            onClick={saveScores}
-            className="w-full md:w-[100px] text-[20px] p-1 bg-webSkyBold text-white rounded-md hover:bg-webSky transition-colors"
-          >
-            Save
-          </button>
+        {/* LIST */}
+        {error ? (
+          "Something went wrong!"
+        ) : isPending ? (
+          "Loading..."
         ) : (
-          <></>
+          <Table
+            columns={columns}
+            renderRows={renderRows}
+            data={data.dtScoreBoards}
+          />
         )}
+        <div className="flex items-center justify-end">
+          {currentUser.role.authorities
+            .map((authority) => authority.name)
+            .includes("Update") ? (
+            <button
+              onClick={saveScores}
+              className="w-full md:w-[100px] text-[20px] p-1 bg-webSkyBold text-white rounded-md hover:bg-webSky transition-colors"
+            >
+              Save
+            </button>
+          ) : (
+            <></>
+          )}
+        </div>
       </div>
     </div>
   );

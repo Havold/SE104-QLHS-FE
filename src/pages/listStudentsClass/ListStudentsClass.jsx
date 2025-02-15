@@ -18,6 +18,7 @@ import {
   LocalLibraryRounded,
   SchoolRounded,
 } from "@mui/icons-material";
+import BackButton from "../../components/BackButton/BackButton";
 
 const columns = [
   {
@@ -140,113 +141,122 @@ const ListStudentsClass = () => {
   });
 
   return (
-    <div className="flex flex-col gap-4 flex-1 p-4 m-2 rounded-xl bg-white">
-      {/* TOP */}
-      <div className="flex flex-col gap-2 md:flex-row">
-        {/* USER CARD */}
-        <div className="flex flex-1 p-4 gap-4 items-center bg-webSky rounded-xl custom-box-shadow">
-          <div className="w-full flex items-center justify-between gap-2">
-            <div className="flex gap-2">
-              <h2 className="text-[24px] font-semibold">Class:</h2>
+    <div className="flex flex-col p-4 m-2 bg-white rounded-xl">
+      <BackButton />
+      <div className="flex flex-col gap-4 flex-1">
+        {/* TOP */}
+        <div className="flex flex-col gap-2 md:flex-row">
+          {/* USER CARD */}
+          <div className="flex flex-1 p-4 gap-4 items-center bg-webSky rounded-xl custom-box-shadow">
+            <div className="w-full flex items-center justify-between gap-2">
+              <div className="flex gap-2">
+                <h2 className="text-[24px] font-semibold">Class:</h2>
+              </div>
+              <span className="flex text-[100px] text-webSkyBold font-semibold">
+                {classError
+                  ? "Something went wrong with class data!"
+                  : classIsPending
+                  ? "Loading..."
+                  : classData.name}
+                <FormModal type="edit" table="detailClass" data={classData} />
+              </span>
             </div>
-            <span className="flex text-[100px] text-webSkyBold font-semibold">
-              {classError
-                ? "Something went wrong with class data!"
-                : classIsPending
-                ? "Loading..."
-                : classData.name}
-              <FormModal type="edit" table="detailClass" data={classData} />
-            </span>
+          </div>
+          {/* ITEM CARD */}
+          <div className="flex-1 flex justify-center gap-2 flex-wrap">
+            <div className="w-full sm:w-[48%] md:w-full lg:w-[48%] flex items-center gap-3 p-4 rounded-xl bg-white custom-box-shadow">
+              <BusinessCenterRounded
+                style={{ fontSize: 28, color: "#CFCEFF" }}
+              />
+              <div className="flex flex-col">
+                <h3 className="text-[20px] font-medium">
+                  {classError
+                    ? "Something went wrong with class data!"
+                    : classIsPending
+                    ? "Loading..."
+                    : classData.schoolYearValue}
+                </h3>
+                <span className="text-[14px] text-gray-400">School Year</span>
+              </div>
+            </div>
+            <div className="w-full sm:w-[48%] md:w-full lg:w-[48%] flex items-center gap-3 p-4 rounded-xl bg-white custom-box-shadow">
+              <SchoolRounded style={{ fontSize: 28, color: "#CFCEFF" }} />
+              <div className="flex flex-col">
+                <h3 className="text-[20px] font-medium">
+                  {classError
+                    ? "Something went wrong with class data!"
+                    : classIsPending
+                    ? "Loading..."
+                    : classData.gradeLevel}
+                </h3>
+                <span className="text-[14px] text-gray-400">Grade</span>
+              </div>
+            </div>
+            <div className="w-full sm:w-[48%] md:w-full lg:w-[48%] flex items-center gap-3 p-4 rounded-xl bg-white custom-box-shadow">
+              <LocalLibraryRounded style={{ fontSize: 28, color: "#CFCEFF" }} />
+              <div className="flex flex-col">
+                <h3 className="text-[20px] font-medium">
+                  {classError
+                    ? "Something went wrong with class data!"
+                    : classIsPending
+                    ? "Loading..."
+                    : classData.capacity}
+                </h3>
+                <span className="text-[14px] text-gray-400">Capacity</span>
+              </div>
+            </div>
+            <div className="w-full sm:w-[48%] md:w-full lg:w-[48%] flex items-center gap-3 p-4 rounded-xl bg-white custom-box-shadow">
+              <HouseRounded style={{ fontSize: 28, color: "#CFCEFF" }} />
+              <div className="flex flex-col">
+                <h3 className="text-[20px] font-medium"></h3>
+                <span className="text-[14px] text-gray-400">Status</span>
+              </div>
+            </div>
           </div>
         </div>
-        {/* ITEM CARD */}
-        <div className="flex-1 flex justify-center gap-2 flex-wrap">
-          <div className="w-full sm:w-[48%] md:w-full lg:w-[48%] flex items-center gap-3 p-4 rounded-xl bg-white custom-box-shadow">
-            <BusinessCenterRounded style={{ fontSize: 28, color: "#CFCEFF" }} />
-            <div className="flex flex-col">
-              <h3 className="text-[20px] font-medium">
-                {classError
-                  ? "Something went wrong with class data!"
-                  : classIsPending
-                  ? "Loading..."
-                  : classData.schoolYearValue}
-              </h3>
-              <span className="text-[14px] text-gray-400">School Year</span>
-            </div>
-          </div>
-          <div className="w-full sm:w-[48%] md:w-full lg:w-[48%] flex items-center gap-3 p-4 rounded-xl bg-white custom-box-shadow">
-            <SchoolRounded style={{ fontSize: 28, color: "#CFCEFF" }} />
-            <div className="flex flex-col">
-              <h3 className="text-[20px] font-medium">
-                {classError
-                  ? "Something went wrong with class data!"
-                  : classIsPending
-                  ? "Loading..."
-                  : classData.gradeLevel}
-              </h3>
-              <span className="text-[14px] text-gray-400">Grade</span>
-            </div>
-          </div>
-          <div className="w-full sm:w-[48%] md:w-full lg:w-[48%] flex items-center gap-3 p-4 rounded-xl bg-white custom-box-shadow">
-            <LocalLibraryRounded style={{ fontSize: 28, color: "#CFCEFF" }} />
-            <div className="flex flex-col">
-              <h3 className="text-[20px] font-medium">
-                {classError
-                  ? "Something went wrong with class data!"
-                  : classIsPending
-                  ? "Loading..."
-                  : classData.capacity}
-              </h3>
-              <span className="text-[14px] text-gray-400">Capacity</span>
-            </div>
-          </div>
-          <div className="w-full sm:w-[48%] md:w-full lg:w-[48%] flex items-center gap-3 p-4 rounded-xl bg-white custom-box-shadow">
-            <HouseRounded style={{ fontSize: 28, color: "#CFCEFF" }} />
-            <div className="flex flex-col">
-              <h3 className="text-[20px] font-medium"></h3>
-              <span className="text-[14px] text-gray-400">Status</span>
+        {/* TOP */}
+        <div className="flex flex-col lg:flex-row justify-between">
+          <h1 className="hidden lg:block text-[18px] font-semibold">
+            All Students
+          </h1>
+          <div className="flex flex-col lg:flex-row gap-4">
+            {/* <SearchList /> */}
+            <div className="flex gap-4 items-center">
+              <button className="flex items-center justify-center w-4 h-4 p-4 rounded-full bg-webYellow">
+                <TuneRounded style={{ fontSize: 16 }} />
+              </button>
+              <button className="flex items-center justify-center w-4 h-4 p-4 rounded-full bg-webYellow">
+                <SortRounded fontSize="small" />
+              </button>
+              <FormModal type="create" table="listStudent" />
             </div>
           </div>
         </div>
+        {/* LIST */}
+        {error ? (
+          "Something went wrong!"
+        ) : isPending ? (
+          "Loading..."
+        ) : (
+          <Table
+            columns={columns}
+            renderRows={renderRows}
+            data={data.students}
+          />
+        )}
+        {/* PAGINATION */}
+        {error ? (
+          "Something went wrong!"
+        ) : isPending ? (
+          <></>
+        ) : (
+          <Pagination
+            tableType="students-class"
+            page={data.currentPage}
+            total={data.totalCount}
+          />
+        )}
       </div>
-      {/* TOP */}
-      <div className="flex flex-col lg:flex-row justify-between">
-        <h1 className="hidden lg:block text-[18px] font-semibold">
-          All Students
-        </h1>
-        <div className="flex flex-col lg:flex-row gap-4">
-          {/* <SearchList /> */}
-          <div className="flex gap-4 items-center">
-            <button className="flex items-center justify-center w-4 h-4 p-4 rounded-full bg-webYellow">
-              <TuneRounded style={{ fontSize: 16 }} />
-            </button>
-            <button className="flex items-center justify-center w-4 h-4 p-4 rounded-full bg-webYellow">
-              <SortRounded fontSize="small" />
-            </button>
-            <FormModal type="create" table="listStudent" />
-          </div>
-        </div>
-      </div>
-      {/* LIST */}
-      {error ? (
-        "Something went wrong!"
-      ) : isPending ? (
-        "Loading..."
-      ) : (
-        <Table columns={columns} renderRows={renderRows} data={data.students} />
-      )}
-      {/* PAGINATION */}
-      {error ? (
-        "Something went wrong!"
-      ) : isPending ? (
-        <></>
-      ) : (
-        <Pagination
-          tableType="students-class"
-          page={data.currentPage}
-          total={data.totalCount}
-        />
-      )}
     </div>
   );
 };

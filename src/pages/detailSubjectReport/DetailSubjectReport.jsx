@@ -4,6 +4,7 @@ import { useLocation } from "react-router-dom";
 import { makeRequest } from "../../axios";
 import { useQuery } from "@tanstack/react-query";
 import { BusinessCenterRounded, SchoolRounded } from "@mui/icons-material";
+import BackButton from "../../components/BackButton/BackButton";
 
 const columns = [
   {
@@ -74,50 +75,53 @@ const DetailSubjectReport = () => {
   console.log(data);
 
   return (
-    <div className="flex flex-col gap-4 flex-1 p-4 m-2 rounded-xl bg-white">
-      {/* TOP */}
-      <div className="flex flex-col gap-2 md:flex-row">
-        {/* ITEM CARD */}
-        <div className="w-full sm:w-[48%] md:w-full flex justify-between items-center gap-3 p-4 rounded-xl bg-white custom-box-shadow">
-          <span className="text-[14px] text-gray-400">Subject</span>
-          <h3 className="text-[20px] font-medium">
-            {error
-              ? "Something went wrong with class data!"
-              : isPending
-              ? "Loading..."
-              : data?.capacity}
-            {subjectName}
-          </h3>
-        </div>
-        <div className="w-full sm:w-[48%] md:w-full flex items-center gap-3 p-4 rounded-xl bg-white custom-box-shadow">
-          <BusinessCenterRounded style={{ fontSize: 28, color: "#CFCEFF" }} />
-          <div className="flex flex-col">
-            <h3 className="text-[20px] font-medium">{schoolYear}</h3>
-            <span className="text-[14px] text-gray-400">School Year</span>
+    <div className="flex flex-col p-4 m-2 bg-white rounded-xl">
+      <BackButton />
+      <div className="flex flex-col gap-4 flex-1">
+        {/* TOP */}
+        <div className="flex flex-col gap-2 md:flex-row">
+          {/* ITEM CARD */}
+          <div className="w-full sm:w-[48%] md:w-full flex justify-between items-center gap-3 p-4 rounded-xl bg-white custom-box-shadow">
+            <span className="text-[14px] text-gray-400">Subject</span>
+            <h3 className="text-[20px] font-medium">
+              {error
+                ? "Something went wrong with class data!"
+                : isPending
+                ? "Loading..."
+                : data?.capacity}
+              {subjectName}
+            </h3>
+          </div>
+          <div className="w-full sm:w-[48%] md:w-full flex items-center gap-3 p-4 rounded-xl bg-white custom-box-shadow">
+            <BusinessCenterRounded style={{ fontSize: 28, color: "#CFCEFF" }} />
+            <div className="flex flex-col">
+              <h3 className="text-[20px] font-medium">{schoolYear}</h3>
+              <span className="text-[14px] text-gray-400">School Year</span>
+            </div>
+          </div>
+          <div className="w-full sm:w-[48%] md:w-full flex items-center gap-3 p-4 rounded-xl bg-white custom-box-shadow">
+            <SchoolRounded style={{ fontSize: 28, color: "#CFCEFF" }} />
+            <div className="flex flex-col">
+              <h3 className="text-[20px] font-medium">{semester}</h3>
+              <span className="text-[14px] text-gray-400">Semester</span>
+            </div>
           </div>
         </div>
-        <div className="w-full sm:w-[48%] md:w-full flex items-center gap-3 p-4 rounded-xl bg-white custom-box-shadow">
-          <SchoolRounded style={{ fontSize: 28, color: "#CFCEFF" }} />
-          <div className="flex flex-col">
-            <h3 className="text-[20px] font-medium">{semester}</h3>
-            <span className="text-[14px] text-gray-400">Semester</span>
-          </div>
+        {/* TOP */}
+        <div className="flex flex-col lg:flex-row justify-between">
+          <h1 className="hidden lg:block text-[18px] font-semibold">
+            Detail Report
+          </h1>
         </div>
+        {/* LIST */}
+        {error ? (
+          "Something went wrong!"
+        ) : isPending ? (
+          "Loading..."
+        ) : (
+          <Table columns={columns} renderRows={renderRows} data={data} />
+        )}
       </div>
-      {/* TOP */}
-      <div className="flex flex-col lg:flex-row justify-between">
-        <h1 className="hidden lg:block text-[18px] font-semibold">
-          Detail Report
-        </h1>
-      </div>
-      {/* LIST */}
-      {error ? (
-        "Something went wrong!"
-      ) : isPending ? (
-        "Loading..."
-      ) : (
-        <Table columns={columns} renderRows={renderRows} data={data} />
-      )}
     </div>
   );
 };
