@@ -43,30 +43,6 @@ const columns = [
   },
 ];
 
-const studentClassData = [
-  {
-    id: 1,
-    schoolYear: 2021,
-    class: "10A1",
-    avgI: 9.2,
-    avgII: 8.0,
-  },
-  {
-    id: 2,
-    schoolYear: 2022,
-    class: "11B1",
-    avgI: 7.2,
-    avgII: 8.5,
-  },
-  {
-    id: 3,
-    schoolYear: 2023,
-    class: "12C1",
-    avgI: 9.5,
-    avgII: 8.5,
-  },
-];
-
 const renderRows = (data) => {
   return data ? (
     data.map((item, index) => (
@@ -92,7 +68,6 @@ const renderRows = (data) => {
 };
 
 const StudentProfile = () => {
-  const [student, setStudent] = useState("");
   const studentId = useLocation().pathname.split("/")[3];
 
   const { isPending, error, data } = useQuery({
@@ -117,7 +92,6 @@ const StudentProfile = () => {
     },
   });
 
-  console.log(student);
   return (
     <div className="flex flex-col xl:flex-row flex-1 gap-3 p-4 m-2 rounded-xl">
       {/* LEFT */}

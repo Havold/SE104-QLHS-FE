@@ -21,8 +21,6 @@ import {
 } from "@mui/icons-material";
 import { z } from "zod";
 import { toast } from "react-toastify";
-import { useForm } from "react-hook-form";
-import { zodResolver } from "@hookform/resolvers/zod";
 import { AuthContext } from "../../context/authContext";
 
 const schema = z.object({
@@ -57,6 +55,9 @@ const columns = [
 
 const DetailScoreBoard = () => {
   const { hasAccessToken, currentUser } = useContext(AuthContext);
+  const location = useLocation();
+  const { subject, schoolYear, className, semester, typeOfExam } =
+    location.state || {};
   const [errors, setErrors] = useState({});
   const [scores, setScores] = useState({});
   const handleScoreChange = (studentId, newScore) => {
@@ -213,11 +214,7 @@ const DetailScoreBoard = () => {
               <h2 className="text-[24px] font-semibold">Subject:</h2>
             </div>
             <span className="flex text-[100px] text-webSkyBold font-semibold">
-              {error
-                ? "Something went wrong with class data!"
-                : isPending
-                ? "Loading..."
-                : data.subject.name}
+              {subject}
               {currentUser.role.authorities
                 .map((authority) => authority.name)
                 .includes("Edit") ? (
@@ -233,52 +230,28 @@ const DetailScoreBoard = () => {
           <div className="w-full sm:w-[48%] md:w-full lg:w-[48%] flex items-center gap-3 p-4 rounded-xl bg-white custom-box-shadow">
             <BusinessCenterRounded style={{ fontSize: 28, color: "#CFCEFF" }} />
             <div className="flex flex-col">
-              <h3 className="text-[20px] font-medium">
-                {error
-                  ? "Something went wrong with class data!"
-                  : isPending
-                  ? "Loading..."
-                  : data.schoolYear.value}
-              </h3>
+              <h3 className="text-[20px] font-medium">{schoolYear}</h3>
               <span className="text-[14px] text-gray-400">School Year</span>
             </div>
           </div>
           <div className="w-full sm:w-[48%] md:w-full lg:w-[48%] flex items-center gap-3 p-4 rounded-xl bg-white custom-box-shadow">
             <SchoolRounded style={{ fontSize: 28, color: "#CFCEFF" }} />
             <div className="flex flex-col">
-              <h3 className="text-[20px] font-medium">
-                {error
-                  ? "Something went wrong with class data!"
-                  : isPending
-                  ? "Loading..."
-                  : data.semester.name}
-              </h3>
+              <h3 className="text-[20px] font-medium">{semester}</h3>
               <span className="text-[14px] text-gray-400">Semester</span>
             </div>
           </div>
           <div className="w-full sm:w-[48%] md:w-full lg:w-[48%] flex items-center gap-3 p-4 rounded-xl bg-white custom-box-shadow">
             <LocalLibraryRounded style={{ fontSize: 28, color: "#CFCEFF" }} />
             <div className="flex flex-col">
-              <h3 className="text-[20px] font-medium">
-                {error
-                  ? "Something went wrong with class data!"
-                  : isPending
-                  ? "Loading..."
-                  : data?.capacity}
-              </h3>
-              <span className="text-[14px] text-gray-400">Total</span>
+              <h3 className="text-[20px] font-medium">{className}</h3>
+              <span className="text-[14px] text-gray-400">Class</span>
             </div>
           </div>
           <div className="w-full sm:w-[48%] md:w-full lg:w-[48%] flex items-center gap-3 p-4 rounded-xl bg-white custom-box-shadow">
             <HouseRounded style={{ fontSize: 28, color: "#CFCEFF" }} />
             <div className="flex flex-col">
-              <h3 className="text-[20px] font-medium">
-                {error
-                  ? "Something went wrong with class data!"
-                  : isPending
-                  ? "Loading..."
-                  : data.typeOfExam.name}
-              </h3>
+              <h3 className="text-[20px] font-medium">{typeOfExam}</h3>
               <span className="text-[14px] text-gray-400">Type of Exam</span>
             </div>
           </div>
@@ -312,18 +285,6 @@ const DetailScoreBoard = () => {
           columns={columns}
           renderRows={renderRows}
           data={data.dtScoreBoards}
-        />
-      )}
-      {/* PAGINATION */}
-      {error ? (
-        "Something went wrong!"
-      ) : isPending ? (
-        <></>
-      ) : (
-        <Pagination
-          tableType="students-class"
-          page={data.currentPage}
-          total={data.totalCount}
         />
       )}
       <div className="flex items-center justify-end">

@@ -1,14 +1,6 @@
 import React, { useContext } from "react";
 import SearchList from "../../components/SearchList/SearchList";
-import {
-  AddRounded,
-  DeleteOutline,
-  EditOutlined,
-  ReplayRounded,
-  SortRounded,
-  TuneRounded,
-  VisibilityOutlined,
-} from "@mui/icons-material";
+import { ReplayRounded, VisibilityOutlined } from "@mui/icons-material";
 import Pagination from "../../components/Pagination/Pagination";
 import Table from "../../components/Table/Table";
 import {
@@ -71,7 +63,16 @@ const ListScoreBoards = () => {
         {/* <td className="hidden lg:table-cell">{item.date}</td> */}
         <td>
           <div className="flex gap-4">
-            <Link to={`/list/score-boards/${item.id}`}>
+            <Link
+              to={`/list/score-boards/${item.id}`}
+              state={{
+                subject: item.subject.name,
+                schoolYear: item.schoolYear.value,
+                className: item.class.name,
+                semester: item.semester.name,
+                typeOfExam: item.typeOfExam.name,
+              }}
+            >
               <button className="flex w-8 h-8 rounded-full bg-webSky items-center justify-center">
                 <VisibilityOutlined
                   style={{ fontSize: 16, color: "whitesmoke" }}

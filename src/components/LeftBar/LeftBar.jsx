@@ -47,10 +47,44 @@ const LeftBar = ({ className }) => {
         //   visible: ["admin", "teacher"],
         // },
         {
-          id: 3,
+          id: 2,
           icon: <PeopleAltOutlined fontSize="small" />,
           title: "Students",
           href: "/list/students",
+          visible: currentUser.role.authorities
+            .map((authority) => authority.name)
+            .includes("View"),
+        },
+        {
+          id: 3,
+          icon: <LocalLibraryOutlined fontSize="small" />,
+          title: "Detail Classes",
+          href: "/list/detail-classes",
+          visible: currentUser.role.authorities
+            .map((authority) => authority.name)
+            .includes("View"),
+        },
+        {
+          id: 4,
+          icon: <FactCheckOutlined fontSize="small" />,
+          title: "Score boards",
+          href: "/list/score-boards",
+          visible: true,
+        },
+        {
+          id: 5,
+          icon: <HistoryEduOutlined fontSize="small" />,
+          title: "Subject Reports",
+          href: "/list/subject-reports",
+          visible: currentUser.role.authorities
+            .map((authority) => authority.name)
+            .includes("View"),
+        },
+        {
+          id: 6,
+          icon: <ReceiptLongOutlined fontSize="small" />,
+          title: "Semester Reports",
+          href: "/list/semester-reports",
           visible: currentUser.role.authorities
             .map((authority) => authority.name)
             .includes("View"),
@@ -63,16 +97,7 @@ const LeftBar = ({ className }) => {
         //   visible: ["admin", "teacher"],
         // },
         {
-          id: 5,
-          icon: <SubjectOutlined fontSize="small" />,
-          title: "Subjects",
-          href: "/list/subjects",
-          visible: currentUser.role.authorities
-            .map((authority) => authority.name)
-            .includes("View"),
-        },
-        {
-          id: 6,
+          id: 7,
           icon: <HouseOutlined fontSize="small" />,
           title: "Classes",
           href: "/list/classes",
@@ -81,7 +106,17 @@ const LeftBar = ({ className }) => {
             .includes("View"),
         },
         {
-          id: 7,
+          id: 8,
+          icon: <SubjectOutlined fontSize="small" />,
+          title: "Subjects",
+          href: "/list/subjects",
+          visible: currentUser.role.authorities
+            .map((authority) => authority.name)
+            .includes("View"),
+        },
+
+        {
+          id: 9,
           icon: <Numbers fontSize="small" />,
           title: "Grades",
           href: "/list/grades",
@@ -89,18 +124,8 @@ const LeftBar = ({ className }) => {
             .map((authority) => authority.name)
             .includes("View"),
         },
-
         {
-          id: 8,
-          icon: <LocalLibraryOutlined fontSize="small" />,
-          title: "Detail Classes",
-          href: "/list/detail-classes",
-          visible: currentUser.role.authorities
-            .map((authority) => authority.name)
-            .includes("View"),
-        },
-        {
-          id: 9,
+          id: 10,
           icon: <HourglassBottomOutlined fontSize="small" />,
           title: "School Years",
           href: "/list/school-years",
@@ -108,6 +133,7 @@ const LeftBar = ({ className }) => {
             .map((authority) => authority.name)
             .includes("View"),
         },
+
         // {
         //   id: 7,
         //   icon: <LocalLibraryOutlined fontSize="small" />,
@@ -129,33 +155,9 @@ const LeftBar = ({ className }) => {
         //   href: "/list/assignments",
         //   visible: ["admin", "teacher", "parent", "student"],
         // },
-        {
-          id: 10,
-          icon: <FactCheckOutlined fontSize="small" />,
-          title: "Score boards",
-          href: "/list/score-boards",
-          visible: true,
-        },
+
         {
           id: 11,
-          icon: <HistoryEduOutlined fontSize="small" />,
-          title: "Subject Reports",
-          href: "/list/subject-reports",
-          visible: currentUser.role.authorities
-            .map((authority) => authority.name)
-            .includes("View"),
-        },
-        {
-          id: 12,
-          icon: <ReceiptLongOutlined fontSize="small" />,
-          title: "Semester Reports",
-          href: "/list/semester-reports",
-          visible: currentUser.role.authorities
-            .map((authority) => authority.name)
-            .includes("View"),
-        },
-        {
-          id: 20,
           icon: <FormatListNumberedOutlined fontSize="small" />,
           title: "Rules",
           href: "/list/rules",
@@ -164,21 +166,21 @@ const LeftBar = ({ className }) => {
             .includes("View"),
         },
         {
-          id: 13,
+          id: 12,
           icon: <Diversity3Outlined fontSize="small" />,
           title: "Attendance",
           href: "/list/attendance",
           visible: false,
         },
         {
-          id: 14,
+          id: 13,
           icon: <CalendarMonthOutlined fontSize="small" />,
           title: "Events",
           href: "/list/events",
           visible: false,
         },
         {
-          id: 15,
+          id: 14,
           icon: <CampaignOutlined fontSize="small" />,
           title: "Announcements",
           href: "/list/announcements",
@@ -226,9 +228,11 @@ const LeftBar = ({ className }) => {
       }
     >
       <div className="flex items-center justify-center p-1">
-        <h1 className="text-2xl font-medium cursor-pointer text-center ">
-          METAN
-        </h1>
+        <Link to="/">
+          <h1 className="text-2xl font-medium cursor-pointer text-center ">
+            METAN
+          </h1>
+        </Link>
       </div>
       <div className="flex flex-col gap-[10px]">
         {menus.map((menu, index) => {

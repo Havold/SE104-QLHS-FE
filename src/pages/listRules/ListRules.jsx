@@ -120,11 +120,7 @@ const ListRules = () => {
       ) : isPending ? (
         "Loading..."
       ) : (
-        <Table
-          columns={columns}
-          renderRows={renderRows}
-          data={data.parameters}
-        />
+        <Table columns={columns} renderRows={renderRows} data={data.rules} />
       )}
       {/* PAGINATION */}
       {error ? (

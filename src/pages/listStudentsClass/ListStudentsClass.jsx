@@ -1,5 +1,4 @@
 import React, { useEffect, useState } from "react";
-import SearchList from "../../components/SearchList/SearchList";
 import {
   SortRounded,
   TuneRounded,
@@ -82,7 +81,7 @@ const renderRows = (data) => {
         <td className="hidden lg:table-cell">{item.student.address}</td>
         <td>
           <div className="flex gap-4">
-            <Link to={`/list/students/${item.id}`}>
+            <Link to={`/list/students/${item.studentId}`}>
               <button className="flex w-8 h-8 rounded-full bg-webSky items-center justify-center">
                 <VisibilityOutlined
                   style={{ fontSize: 16, color: "whitesmoke" }}
