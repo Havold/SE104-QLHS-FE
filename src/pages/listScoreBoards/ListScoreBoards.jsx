@@ -108,6 +108,9 @@ const ListScoreBoards = () => {
       const queryString = new URLSearchParams(searchParams);
       queryString.set("page", page);
       queryString.set("pageItems", pageItems);
+      if (currentUser.role.name === "Student") {
+        queryString.set("studentId", currentUser.id);
+      }
       return makeRequest.get(`/score-boards?${queryString}`).then((res) => {
         return res.data;
       });
