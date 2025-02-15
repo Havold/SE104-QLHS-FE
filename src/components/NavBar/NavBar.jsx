@@ -8,7 +8,7 @@ import { Link } from "react-router-dom";
 const NavBar = () => {
   const { currentUser } = useContext(AuthContext);
   return (
-    <div className="flex items-center justify-between p-2 sticky top-0 bg-white custom-box-shadow z-50">
+    <div className="flex items-center justify-between p-2 sticky top-0 bg-white custom-box-shadow z-2">
       {/* <Search /> */}
       <div className="flex items-center gap-12 w-full justify-end ">
         <ReviewsOutlined

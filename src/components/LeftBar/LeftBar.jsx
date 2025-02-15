@@ -251,7 +251,7 @@ const LeftBar = ({ className }) => {
                             location.pathname === item.href
                               ? "bg-webSkyLight text-black"
                               : ""
-                          }`}
+                          } transition-colors`}
                         >
                           {item.icon}
                           <span className="hidden lg:block text-[12px]">
