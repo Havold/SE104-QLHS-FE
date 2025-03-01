@@ -12,6 +12,7 @@ const Admin = () => {
   const [students, setStudents] = useState();
   const [sexOfStudents, setSexOfStudents] = useState();
   useEffect(() => {
+    document.title = "METAN";
     const fetchData = async () => {
       const data = (await makeRequest("/students")).data;
       setStudents(data);
@@ -29,7 +30,7 @@ const Admin = () => {
     {
       type: "students",
       date: date,
-      total: students?.totalCount,
+      total: students?.totalCount || 0,
     },
     {
       type: "teachers",
@@ -70,8 +71,8 @@ const Admin = () => {
           {/* COUNT CHART */}
           <div className="w-full lg:w-1/3 h-[450px]">
             <CountChart
-              totalMale={sexOfStudents?.totalMale}
-              totalFemale={sexOfStudents?.totalFemale}
+              totalMale={sexOfStudents?.totalMale || 0}
+              totalFemale={sexOfStudents?.totalFemale || 0}
             />
           </div>
           {/* ATTENDANCE CHART */}

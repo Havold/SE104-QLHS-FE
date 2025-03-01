@@ -1,5 +1,5 @@
 import { zodResolver } from "@hookform/resolvers/zod";
-import React, { useContext, useState } from "react";
+import React, { useContext, useEffect, useState } from "react";
 import { useForm } from "react-hook-form";
 import { z } from "zod";
 import { makeRequest } from "../../axios";
@@ -41,6 +41,10 @@ const Login = () => {
   };
 
   const onSubmit = handleSubmit(onValid);
+
+  useEffect(() => {
+    document.title = "Login | METAN";
+  }, []);
 
   return (
     <div className="h-screen flex items-center justify-center bg-webSky">
