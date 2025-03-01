@@ -22,8 +22,6 @@ const CountChart = ({ totalMale, totalFemale }) => {
     },
   ];
 
-  console.log(totals);
-
   return (
     <div className="flex flex-col w-full h-full rounded-2xl bg-white p-4 custom-box-shadow">
       {/* TITLE */}

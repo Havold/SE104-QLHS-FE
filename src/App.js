@@ -26,7 +26,7 @@ import ListAnnouncements from "./pages/listAnnouncements/ListAnnouncements";
 import TeacherProfile from "./pages/teacherProfile/TeacherProfile";
 import StudentProfile from "./pages/studentProfile/StudentProfile";
 import ListDetailClasses from "./pages/listDetailClasses/ListDetailClasses";
-import { useContext } from "react";
+import { useContext, useState } from "react";
 import { AuthContext } from "./context/authContext";
 import Error from "./pages/error/Error";
 import { ToastContainer } from "react-toastify";
@@ -45,14 +45,16 @@ import DetailSemesterReport from "./pages/detailSemesterReport/DetailSemesterRep
 const queryClient = new QueryClient();
 
 function App() {
-  const { hasAccessToken, currentUser } = useContext(AuthContext);
-  const role = currentUser?.role.name.toLowerCase();
+  const [role, setRole] = useState();
   const ProtectedRoute = ({ children }) => {
-    if (!hasAccessToken) {
-      return <Navigate to="/login" />;
-    }
-    return children;
+    const { hasAccessToken, currentUser } = useContext(AuthContext);
+    setRole(currentUser?.role.name.toLowerCase());
+    console.log(hasAccessToken);
+
+    if (hasAccessToken === null) return <p>Loading...</p>; // Chờ kiểm tra
+    return hasAccessToken ? children : <Navigate to="/login" />;
   };
+
   const Layout = () => {
     return (
       <div className="h-screen flex">

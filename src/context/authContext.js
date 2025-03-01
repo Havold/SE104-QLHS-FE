@@ -4,21 +4,42 @@ import { makeRequest } from "../axios";
 export const AuthContext = createContext();
 
 export const AuthContextProvider = ({ children }) => {
-  const [hasAccessToken, setHasAccessToken] = useState(
-    JSON.parse(localStorage.getItem("hasAccessToken")) || null
-  );
-  const [currentUser, setCurrentUser] = useState(
-    JSON.parse(localStorage.getItem("user")) || null
-  );
+  const [hasAccessToken, setHasAccessToken] = useState(null);
+  const [currentUser, setCurrentUser] = useState(null);
+  // Kiểm tra token khi ứng dụng khởi động
+  useEffect(() => {
+    const checkAuthStatus = async () => {
+      try {
+        const res = await makeRequest.get("/auth/check-token", {
+          withCredentials: true,
+        });
 
-  const checkAccessToken = async () => {
-    const token = await makeRequest.get("/auth/check-token").then((res) => {
-      return res.data;
-    });
-    setHasAccessToken(token);
-  };
+        if (res.data.isAuthenticated) {
+          setHasAccessToken(true);
+          setCurrentUser(res.data.user);
+        } else {
+          setHasAccessToken(false);
+          setCurrentUser(null);
+        }
+      } catch (error) {
+        setHasAccessToken(false);
+        setCurrentUser(null);
+      }
+    };
 
-  checkAccessToken();
+    checkAuthStatus();
+  }, []);
+
+  // Cập nhật localStorage khi trạng thái đăng nhập thay đổi
+  useEffect(() => {
+    if (hasAccessToken) {
+      localStorage.setItem("hasAccessToken", "true");
+      localStorage.setItem("user", JSON.stringify(currentUser));
+    } else {
+      localStorage.removeItem("hasAccessToken");
+      localStorage.removeItem("user");
+    }
+  }, [hasAccessToken]);
 
   const login = async (inputs) => {
     const res = await makeRequest.post("/auth/login", inputs, {
@@ -28,16 +49,6 @@ export const AuthContextProvider = ({ children }) => {
     setCurrentUser(res.data);
     return res.data.role.name;
   };
-
-  useEffect(() => {
-    if (hasAccessToken) {
-      localStorage.setItem("hasAccessToken", JSON.stringify(hasAccessToken));
-      localStorage.setItem("user", JSON.stringify(currentUser));
-    } else {
-      if (localStorage.getItem("user")) localStorage.removeItem("user");
-      localStorage.setItem("hasAccessToken", JSON.stringify(hasAccessToken));
-    }
-  }, [currentUser, hasAccessToken]);
 
   return (
     <AuthContext.Provider
