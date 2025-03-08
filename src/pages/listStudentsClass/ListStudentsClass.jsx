@@ -65,7 +65,7 @@ const renderRows = (data) => {
             src={
               item.student.img
                 ? `${process.env.REACT_APP_API_URL}${item.student.img}`
-                : "../../assets/noAvatar.jpg"
+                : "/assets/noAvatar.jpg"
             }
             alt="profilePic"
           />

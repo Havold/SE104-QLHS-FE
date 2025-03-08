@@ -115,7 +115,7 @@ const StudentProfile = () => {
                   src={
                     data.img
                       ? `${process.env.REACT_APP_API_URL}${data.img}`
-                      : "../../assets/noAvatar.jpg"
+                      : "/assets/noAvatar.jpg"
                   }
                   alt="profilePic"
                 />
