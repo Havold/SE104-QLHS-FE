@@ -34,7 +34,7 @@ const NavBar = () => {
               src={
                 currentUser.img
                   ? `${process.env.REACT_APP_API_URL}${currentUser.img}`
-                  : "/assets/noAvatar.jpg"
+                  : "../../assets/noAvatar.jpg"
               }
               alt="profilePic"
             />

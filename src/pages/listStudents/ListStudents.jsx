@@ -1,11 +1,6 @@
 import React, { useEffect, useState } from "react";
 import SearchList from "../../components/SearchList/SearchList";
-import {
-  ReplayRounded,
-  SortRounded,
-  TuneRounded,
-  VisibilityOutlined,
-} from "@mui/icons-material";
+import { ReplayRounded, VisibilityOutlined } from "@mui/icons-material";
 import Pagination from "../../components/Pagination/Pagination";
 import Table from "../../components/Table/Table";
 import {
@@ -64,7 +59,7 @@ const renderRows = (data) => {
             src={
               item.img
                 ? `${process.env.REACT_APP_API_URL}${item.img}`
-                : "/assets/noAvatar.jpg"
+                : "../../assets/noAvatar.jpg"
             }
             alt="profilePic"
           />
