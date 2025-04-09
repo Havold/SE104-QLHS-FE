@@ -32,7 +32,7 @@ The School Management System is a web application designed to streamline the man
 - **ReactJS**: Front-end framework for building user interfaces.
 - **React Router**: For managing navigation between pages.
 - **@tanstack/react-query**: For managing server state and data fetching.
-- **SCSS**: For styling the application.
+- **Tailwind**: For styling the application.
 
 ### ✔️ Back-end
 - **Node.js:** To build scalable server-side logic.
